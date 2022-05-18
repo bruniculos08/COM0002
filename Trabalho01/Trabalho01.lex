@@ -155,8 +155,8 @@ LETRA[a-z]
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 				num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf("linha = %i, coluna = %i,\n", num_lines, num_columns);
+				printf("token = %s, número = %i\n", pilhaDeTokens->token, numberOfTokens);
             }
 
 {DIGITO}+"."{DIGITO}*$      {
