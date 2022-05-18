@@ -192,7 +192,7 @@ if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"(
 		}
 
 .           {
-				printf( "Caracter não reconhecido: %s\n", yytext );
+				printf( "Caracter não reconhecido ou id: %s\n", yytext );
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
