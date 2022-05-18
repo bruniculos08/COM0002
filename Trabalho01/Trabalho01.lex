@@ -184,7 +184,7 @@ if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"(
 
 [ \t]+  {
 			num_columns++;
-		}/* Lembre-se... espaços em branco não tem utilidade! */
+		}	/* Lembre-se... espaços em branco não tem utilidade! */
 
 \n      {
 			++num_lines; num_columns = 0;
