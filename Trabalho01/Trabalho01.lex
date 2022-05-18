@@ -48,6 +48,20 @@ void addToken(char *string){
     }
 }
 
+char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
+	if(stack == NULL) return NULL;
+	else{
+		char *tokenRemoved = stack->token;
+		stackLen = stack->token_len;
+		stackLine = stack->line;
+		stackColumn = stack->column;
+		talble *OldStack = stack;
+		stack = stack->next;
+		free(OldStack);
+		return tokenRemoved;
+	}
+}
+
 // Um vetor é uma solução ineficiente comparada à uma pilha pois ambos tem as mesmas vantagens (busca O(n) e inserção O(1))...
 // ... mas a pilha é um meio de alocação dinâmica o que proporciona uma melhor forma de armazenamento.
 
@@ -150,7 +164,8 @@ LETRA[a-z]
 								printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
             				}
 
-if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=   {
+if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=   
+										{
          									printf( "Uma palavra-chave: %s\n", yytext );
 											addToken(yytext);
 											pilhaDeTokens->line = num_lines;
@@ -159,6 +174,18 @@ if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"(
 											printf("linha = %i, coluna = %i \n", num_lines, num_columns);
 											printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
             							}
+
+if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=   
+										{
+         									printf( "Uma palavra-chave: %s\n", yytext );
+											addToken(yytext);
+											pilhaDeTokens->line = num_lines;
+											pilhaDeTokens->column = num_columns;
+	    									num_columns += strlen(yytext);
+											printf("linha = %i, coluna = %i \n", num_lines, num_columns);
+											printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+            							}
+
 
 "{"[^}\n]*"}"     /* Lembre-se... comentários não tem utilidade! */
 
