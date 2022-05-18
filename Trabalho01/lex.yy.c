@@ -742,79 +742,78 @@ case 1:
 YY_RULE_SETUP
 #line 92 "Trabalho01.lex"
 {
-			printf("Um operador de adição: %s\n", yytext);
+			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
 			pilhaDeTokens->line = num_lines;
 			pilhaDeTokens->column = num_columns;
 			num_columns += strlen(yytext);
-			printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-			printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
-			return 'a';
+			printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+			printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 		}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 103 "Trabalho01.lex"
+#line 102 "Trabalho01.lex"
 {
-				printf("Um operador de multiplicação: %s\n", yytext);
+				printf("Um operador de multiplicação: %s", yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 				num_columns += strlen(yytext);
 				addToken(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 113 "Trabalho01.lex"
+#line 112 "Trabalho01.lex"
 {
-				printf("Um operador de relação: %s\n", yytext);
+				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 				num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 123 "Trabalho01.lex"
+#line 122 "Trabalho01.lex"
 {
-				printf("Um caracter especial: %s\n", yytext);
+				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 				num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 133 "Trabalho01.lex"
+#line 132 "Trabalho01.lex"
 {	
-			printf("Um tipo: %s\n", yytext);
+			printf("Um tipo: %s", yytext);
 			addToken(yytext);
 			pilhaDeTokens->line = num_lines;
 			pilhaDeTokens->column = num_columns;
 			num_columns += strlen(yytext);
-			printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-			printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+			printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+			printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 		}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 143 "Trabalho01.lex"
+#line 142 "Trabalho01.lex"
 {	
-				printf("Um epsilon (vazio): %s\n", yytext);
+				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 				num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 	YY_BREAK
 case 7:
@@ -822,9 +821,9 @@ case 7:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 153 "Trabalho01.lex"
+#line 152 "Trabalho01.lex"
 {
-            	printf( "Um valor inteiro: %s (%d)\n", yytext, atoi( yytext )); 
+            	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
@@ -838,68 +837,68 @@ case 8:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 163 "Trabalho01.lex"
+#line 162 "Trabalho01.lex"
 {
-            					printf( "Um valor real: %s (%g)\n", yytext, atof( yytext ) );
+            					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
 								pilhaDeTokens->line = num_lines;
 								pilhaDeTokens->column = num_columns; 
 								num_columns += strlen(yytext);
-								printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-								printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+								printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+								printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
             				}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 173 "Trabalho01.lex"
+#line 172 "Trabalho01.lex"
 {
-         									printf( "Uma palavra-chave: %s\n", yytext );
+         									printf( "Uma palavra-chave: %s", yytext );
 											addToken(yytext);
 											pilhaDeTokens->line = num_lines;
 											pilhaDeTokens->column = num_columns;
 	    									num_columns += strlen(yytext);
-											printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-											printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+											printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+											printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
             							}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 184 "Trabalho01.lex"
+#line 183 "Trabalho01.lex"
 /* Lembre-se... comentários não tem utilidade! */
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 186 "Trabalho01.lex"
+#line 185 "Trabalho01.lex"
 {
 			num_columns++;
 		}/* Lembre-se... espaços em branco não tem utilidade! */
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 190 "Trabalho01.lex"
+#line 189 "Trabalho01.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 194 "Trabalho01.lex"
+#line 193 "Trabalho01.lex"
 {
-				printf( "Caracter não reconhecido: %s\n", yytext );
+				printf( "Caracter não reconhecido ou id: %s", yytext );
 				addToken(yytext);
 				pilhaDeTokens->line = num_lines;
 				pilhaDeTokens->column = num_columns;
 	      		num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i \n", num_lines, num_columns);
-				printf("token = %s\nnúmero = %i\n", pilhaDeTokens->token, numberOfTokens);
+				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 		    }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 204 "Trabalho01.lex"
+#line 203 "Trabalho01.lex"
 ECHO;
 	YY_BREAK
-#line 903 "lex.yy.c"
+#line 902 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1785,7 +1784,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 204 "Trabalho01.lex"
+#line 203 "Trabalho01.lex"
 
 
 
