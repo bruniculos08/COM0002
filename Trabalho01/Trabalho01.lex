@@ -11,6 +11,7 @@ int num_lines = 0;
 int num_columns = 0;
 
 
+
 typedef struct Table table;
 struct Table {
     char *token;
@@ -21,72 +22,61 @@ struct Table {
 	table *next;
 };
 
-char *actualType = NULL;
-table *pilhaDeTokens = NULL;
-int numberOfTokens = 0;
+typedef struct HeadTable headTable;
+struct HeadTable {
+	table *first;
+	table *last;
+};
 
-// podemos botar o token em uma pilha ou em um vetor (penso em colocar em um vetor e fazer
-// uma função para realocar a memória quando necessário, pois pilha e lista não tem indice
-// logo não são as melhores opções para uma tabela)
+
+char *actualType = NULL;
+headTable *fila = NULL;
+table *filaDeTokens = NULL;
+int numberOfTokens = 0;
 
 // Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
 
 void addToken(char *string){
     numberOfTokens++;
-    if(pilhaDeTokens == NULL){
-        pilhaDeTokens = (table *)malloc(sizeof(table));
-        pilhaDeTokens->next = NULL;
-    }
-    else{
-        table *newToken;
-        newToken = (table *)malloc(sizeof(table));
-        newToken->next = pilhaDeTokens;
-        pilhaDeTokens = newToken;
-    }
-	pilhaDeTokens->token = string;
-    pilhaDeTokens->lenght = strlen(string);
-	pilhaDeTokens->line = num_lines;
-	pilhaDeTokens->column = num_columns;
-	pilhaDeTokens->type = NULL; 
+    if(fila == NULL){
+		fila = (headTable *)malloc(sizeof(headTable));
+		fila->first = (table *)malloc(sizeof(table));
+		fila->first->token = string;
+		fila->first->lenght = strlen(string);
+		fila->first->line = num_lines;
+		fila->first->column = num_columns;
+		fila->first->next = NULL;
+		fila->last = fila->first;
+	}
+	else{
+		table *newToken;
+		newToken = (table *)malloc(sizeof(table));
+		newToken->token = string;
+    	newToken->lenght = strlen(string);
+		newToken->line = num_lines;
+		newToken->column = num_columns;
+		newToken->type = NULL; 
+		newToken->next = NULL;
+		fila->last->next = newToken;
+		fila->last = newToken;
+	}
 	num_columns += strlen(string);
-	printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-	printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
+	printf(" Linha = %i, Coluna = %i ", num_lines, num_columns);
+	printf("Número do Token (Posição na tabela) = %i\n", numberOfTokens);
 }
 
 void setTypeID(char *string){
 	if(actualType == NULL) actualType = string;
 	else{
-		pilhaDeTokens->type = actualType;
+		fila->last->type = actualType;
 		actualType = NULL;
 	}
 }
 
 void setType(char *string){
-	pilhaDeTokens->type = actualType;
+	fila->last->type = actualType;
 	actualType = NULL;
 }
-
-
-/*
-char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
-	if(stack == NULL) return NULL;
-	else{
-		char *tokenRemoved = stack->token;
-		*stackLen = stack->lenght;
-		*stackLine = stack->line;
-		*stackColumn = stack->column;
-		table *OldStack = stack;
-		stack = stack->next;
-		free(OldStack);
-		return tokenRemoved;
-	}
-}
-*/
-
-// Um vetor é uma solução ineficiente comparada à uma pilha pois ambos tem as mesmas vantagens (busca O(n) e inserção O(1))...
-// ... mas a pilha é um meio de alocação dinâmica o que proporciona uma melhor forma de armazenamento.
-
-// Para os atributos talvez seja melhor salvar o nome do atributo na própria estrutura de token.
 
 %}
 /*Definições*/
