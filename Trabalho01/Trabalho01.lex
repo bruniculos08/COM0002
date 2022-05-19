@@ -1,8 +1,5 @@
 /* Linguagem: Pascal-like */
-
-/* ========================================================================== */
 /* Abaixo, indicado pelos limitadores "%{" e "%}", as includes necessárias... */
-/* ========================================================================== */
 
 %{
 #include <math.h>
@@ -17,14 +14,14 @@ int num_columns = 0;
 typedef struct Table table;
 struct Table {
     char *token;
-	char *escope;
-    int token_len;
-    table *next;
+	char *type;
+    int lenght;
     int line;
     int column;
+	table *next;
 };
 
-
+char *actualType = NULL;
 table *pilhaDeTokens = NULL;
 int numberOfTokens = 0;
 
@@ -34,30 +31,42 @@ int numberOfTokens = 0;
 
 // Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
 
-
 void addToken(char *string){
     numberOfTokens++;
     if(pilhaDeTokens == NULL){
         pilhaDeTokens = (table *)malloc(sizeof(table));
-        pilhaDeTokens->token = string;
-        pilhaDeTokens->token_len = strlen(string);
         pilhaDeTokens->next = NULL;
     }
     else{
         table *newToken;
         newToken = (table *)malloc(sizeof(table));
-        newToken->token = string;
-        newToken->token_len = strlen(string);
         newToken->next = pilhaDeTokens;
         pilhaDeTokens = newToken;
     }
+	pilhaDeTokens->token = string;
+    pilhaDeTokens->lenght = strlen(string);
+	pilhaDeTokens->line = num_lines;
+	pilhaDeTokens->column = num_columns;
+	pilhaDeTokens->type = NULL; 
+	num_columns += strlen(string);
+	printf(" linha = %i, coluna = %i ", num_lines, num_columns);
+	printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 }
 
+void setTypeID(char *string){
+	if(actualType == NULL) actualType = string;
+	else{
+		pilhaDeTokens->type = actualType;
+		actualType = NULL;
+	}
+}
+
+/*
 char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 	if(stack == NULL) return NULL;
 	else{
 		char *tokenRemoved = stack->token;
-		*stackLen = stack->token_len;
+		*stackLen = stack->lenght;
 		*stackLine = stack->line;
 		*stackColumn = stack->column;
 		table *OldStack = stack;
@@ -66,6 +75,7 @@ char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 		return tokenRemoved;
 	}
 }
+*/
 
 // Um vetor é uma solução ineficiente comparada à uma pilha pois ambos tem as mesmas vantagens (busca O(n) e inserção O(1))...
 // ... mas a pilha é um meio de alocação dinâmica o que proporciona uma melhor forma de armazenamento.
@@ -73,10 +83,7 @@ char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 // Para os atributos talvez seja melhor salvar o nome do atributo na própria estrutura de token.
 
 %}
-
-/* ========================================================================== */
-/* ===========================  Sessão DEFINIÇÔES  ========================== */
-/* ========================================================================== */
+/*Definições*/
 
 DIGITO  ([0-9])
 BOOL-LIT true|false
@@ -87,98 +94,60 @@ OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"
 TIPO "integer"|"real"|"boolean"
 VAZIO "ε"
 LETRA[a-z]
+KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=
 %%
 
 {OP-AD} {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
-			pilhaDeTokens->line = num_lines;
-			pilhaDeTokens->column = num_columns;
-			num_columns += strlen(yytext);
-			printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-			printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 		}
 
 {OP-MUL} 	{
 				printf("Um operador de multiplicação: %s", yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-				num_columns += strlen(yytext);
 				addToken(yytext);
-				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 
 {OP-REL} 	{
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-				num_columns += strlen(yytext);
-				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 
 {OUTROS} 	{
 				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-				num_columns += strlen(yytext);
-				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 
 {TIPO} 	{	
 			printf("Um tipo: %s", yytext);
 			addToken(yytext);
-			pilhaDeTokens->line = num_lines;
-			pilhaDeTokens->column = num_columns;
-			num_columns += strlen(yytext);
-			printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-			printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
+			setTypeID(yytext);
 		}
 
 {VAZIO} 	{	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-				num_columns += strlen(yytext);
-				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 			}
 
 {DIGITO}+$  {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-				num_columns += strlen(yytext);
-				printf("linha = %i, coluna = %i,\n", num_lines, num_columns);
-				printf("token = %s, número = %i\n", pilhaDeTokens->token, numberOfTokens);
             }
 
 {DIGITO}+"."{DIGITO}*$      {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
-								pilhaDeTokens->line = num_lines;
-								pilhaDeTokens->column = num_columns; 
-								num_columns += strlen(yytext);
-								printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-								printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
             				}
 
-if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=   {
-         									printf( "Uma palavra-chave: %s", yytext );
-											addToken(yytext);
-											pilhaDeTokens->line = num_lines;
-											pilhaDeTokens->column = num_columns;
-	    									num_columns += strlen(yytext);
-											printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-											printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
-            							}
+{KEY-WORD}  {
+         		printf( "Uma palavra-chave: %s", yytext );
+				addToken(yytext);
+            }
 
+{LETRA}+({DIGITO}|{LETRA})* {
+								printf("Um id: %s", yytext);
+								addToken(yytext);
+								setTypeID(yytext);
+							}
 
 "{"[^}\n]*"}"     /* Lembre-se... comentários não tem utilidade! */
 
@@ -193,16 +162,9 @@ if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"(
 .           {
 				printf( "Caracter não reconhecido ou id: %s", yytext );
 				addToken(yytext);
-				pilhaDeTokens->line = num_lines;
-				pilhaDeTokens->column = num_columns;
-	      		num_columns += strlen(yytext);
-				printf(" linha = %i, coluna = %i ", num_lines, num_columns);
-				printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 		    }
 
 %%
-
-
 
 int main( argc, argv )
 int argc;
