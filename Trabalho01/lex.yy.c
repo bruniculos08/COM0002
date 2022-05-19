@@ -514,19 +514,27 @@ void addToken(char *string){
 
 void setTypeID(char *string, int flag){
 	if(flag == 0){
+		if(actualType != NULL){ 
+			fila->last->type = (char *)malloc(sizeof(char)*strlen("(erro)"));
+			strcpy(fila->last->type, "(erro)");
+			free(actualType);
+			actualType = (char *)malloc(sizeof(char)*strlen(string));
+			strcpy(actualType, "(erro)");
+			
+		}
+		else{
 		free(actualType);
 		actualType = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(actualType, string);
-		printf("Here 1\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(fila->last->type, string);
+		}
 	}
 	else{
 		if(actualType == NULL){
 			actualType = (char *)malloc(sizeof(char)*strlen("(erro)"));
 			strcpy(actualType, "(erro)");
 		}
-		printf("Here 2\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(actualType));
 		strcpy(fila->last->type, actualType);
 		actualType = NULL;
@@ -540,7 +548,7 @@ void setType(char *string){
 }
 
 /*Definições*/
-#line 544 "lex.yy.c"
+#line 552 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -691,10 +699,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 110 "Trabalho01.lex"
+#line 118 "Trabalho01.lex"
 
 
-#line 698 "lex.yy.c"
+#line 706 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -779,7 +787,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 112 "Trabalho01.lex"
+#line 120 "Trabalho01.lex"
 {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
@@ -788,7 +796,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 118 "Trabalho01.lex"
+#line 126 "Trabalho01.lex"
 {
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
@@ -797,7 +805,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 124 "Trabalho01.lex"
+#line 132 "Trabalho01.lex"
 {
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
@@ -806,7 +814,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 130 "Trabalho01.lex"
+#line 138 "Trabalho01.lex"
 {
 				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
@@ -815,7 +823,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 136 "Trabalho01.lex"
+#line 144 "Trabalho01.lex"
 {	
 			printf("Um tipo: %s", yytext);
 			addToken(yytext);
@@ -824,7 +832,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 142 "Trabalho01.lex"
+#line 150 "Trabalho01.lex"
 {	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
@@ -833,7 +841,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 148 "Trabalho01.lex"
+#line 156 "Trabalho01.lex"
 {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
@@ -842,7 +850,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 154 "Trabalho01.lex"
+#line 162 "Trabalho01.lex"
 {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
@@ -851,7 +859,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 160 "Trabalho01.lex"
+#line 168 "Trabalho01.lex"
 {
          		printf( "Uma palavra-chave: %s", yytext );
 				addToken(yytext);
@@ -860,7 +868,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 166 "Trabalho01.lex"
+#line 174 "Trabalho01.lex"
 {
 								printf("Um possível id: %s", yytext);
 								addToken(yytext);
@@ -869,26 +877,26 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 172 "Trabalho01.lex"
+#line 180 "Trabalho01.lex"
 /* Lembre-se... comentários não tem utilidade! */
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 174 "Trabalho01.lex"
+#line 182 "Trabalho01.lex"
 {
 			num_columns++;
 		}	/* Lembre-se... espaços em branco não tem utilidade! */
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 178 "Trabalho01.lex"
+#line 186 "Trabalho01.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 182 "Trabalho01.lex"
+#line 190 "Trabalho01.lex"
 {
 				printf( "Caracter nao reconhecido ou id: %s", yytext );
 				addToken(yytext);
@@ -897,10 +905,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 188 "Trabalho01.lex"
+#line 196 "Trabalho01.lex"
 ECHO;
 	YY_BREAK
-#line 904 "lex.yy.c"
+#line 912 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1786,7 +1794,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 188 "Trabalho01.lex"
+#line 196 "Trabalho01.lex"
 
 
 int main( argc, argv )

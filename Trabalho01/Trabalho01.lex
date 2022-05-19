@@ -69,19 +69,27 @@ void addToken(char *string){
 
 void setTypeID(char *string, int flag){
 	if(flag == 0){
+		if(actualType != NULL){ 
+			fila->last->type = (char *)malloc(sizeof(char)*strlen("(erro)"));
+			strcpy(fila->last->type, "(erro)");
+			free(actualType);
+			actualType = (char *)malloc(sizeof(char)*strlen(string));
+			strcpy(actualType, "(erro)");
+			
+		}
+		else{
 		free(actualType);
 		actualType = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(actualType, string);
-		//printf("Here 1\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(fila->last->type, string);
+		}
 	}
 	else{
 		if(actualType == NULL){
 			actualType = (char *)malloc(sizeof(char)*strlen("(erro)"));
 			strcpy(actualType, "(erro)");
 		}
-		//printf("Here 2\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(actualType));
 		strcpy(fila->last->type, actualType);
 		actualType = NULL;
@@ -98,7 +106,7 @@ void setType(char *string){
 /*Definições*/
 
 DIGITO  ([0-9])
-BOOL-LIT true|false
+BOOL-LIT "true"|"false"
 OP-AD "+"|"-"|"or"
 OP-MUL  "*"|"/"|"and"
 OP-REL "<"|">"|"<="|">="|"="|"<>"
@@ -106,7 +114,7 @@ OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"
 TIPO "integer"|"real"|"boolean"
 VAZIO "ε"
 LETRA[a-z]
-KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|procedure|of|"("|")"|:=
+KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="
 %%
 
 {OP-AD} {
