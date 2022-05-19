@@ -61,8 +61,8 @@ void addToken(char *string){
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
-	printf(" Linha = %i, Coluna = %i ", num_lines, num_columns);
-	printf("Número do Token (Posição na tabela) = %i\n", numberOfTokens);
+	//printf(" Linha = %i, Coluna = %i ", num_lines, num_columns);
+	//printf("Número do Token (Posição na tabela) = %i\n", numberOfTokens);
 }
 
 void setTypeID(char *string){
@@ -182,6 +182,10 @@ char **argv;
 		yyin = stdin;
 
 	yylex();
+
+	// Imprimir tabela aqui
+
+
 	
 	printf("# total de linhas = %d\n", num_lines);
     
