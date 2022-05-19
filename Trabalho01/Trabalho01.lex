@@ -72,7 +72,7 @@ void setTypeID(char *string, int flag){
 		free(actualType);
 		actualType = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(actualType, string);
-		printf("Here 1\n");
+		//printf("Here 1\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(fila->last->type, string);
 	}
@@ -81,7 +81,7 @@ void setTypeID(char *string, int flag){
 			actualType = (char *)malloc(sizeof(char)*strlen("(erro)"));
 			strcpy(actualType, "(erro)");
 		}
-		printf("Here 2\n");
+		//printf("Here 2\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(actualType));
 		strcpy(fila->last->type, actualType);
 		actualType = NULL;
