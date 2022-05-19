@@ -62,8 +62,6 @@ void addToken(char *string){
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
-	//printf(" Linha = %i, Coluna = %i ", num_lines, num_columns);
-	//printf("Número do Token (Posição na tabela) = %i\n", numberOfTokens);
 	printf("\n");
 }
 
