@@ -31,7 +31,6 @@ struct HeadTable {
 
 char *actualType = NULL;
 headTable *fila = NULL;
-table *filaDeTokens = NULL;
 int numberOfTokens = 0;
 
 // Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
@@ -41,7 +40,8 @@ void addToken(char *string){
     if(fila == NULL){
 		fila = (headTable *)malloc(sizeof(headTable));
 		fila->first = (table *)malloc(sizeof(table));
-		fila->first->token = string;
+		fila->first->token = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(fila->first->token, string);
 		fila->first->lenght = strlen(string);
 		fila->first->line = num_lines;
 		fila->first->column = num_columns;
@@ -51,7 +51,8 @@ void addToken(char *string){
 	else{
 		table *newToken;
 		newToken = (table *)malloc(sizeof(table));
-		newToken->token = string;
+		newToken->token = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(newToken->token, string);
     	newToken->lenght = strlen(string);
 		newToken->line = num_lines;
 		newToken->column = num_columns;
@@ -63,18 +64,26 @@ void addToken(char *string){
 	num_columns += strlen(string);
 	//printf(" Linha = %i, Coluna = %i ", num_lines, num_columns);
 	//printf("Número do Token (Posição na tabela) = %i\n", numberOfTokens);
+	printf("\n");
 }
 
 void setTypeID(char *string){
-	if(actualType == NULL) actualType = string;
+	if(actualType == NULL){
+		actualType = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(actualType, string);
+		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(fila->last->type, string);
+	}
 	else{
-		fila->last->type = actualType;
+		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(fila->last->type, actualType);
 		actualType = NULL;
 	}
 }
 
 void setType(char *string){
-	fila->last->type = actualType;
+	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(fila->last->type, string);
 	actualType = NULL;
 }
 
@@ -184,9 +193,19 @@ char **argv;
 	yylex();
 
 	// Imprimir tabela aqui
+	table *aux;
+	aux = (table *)malloc(sizeof(table));
+	aux = fila->first;
+	printf("------------------------------------------------------------------\n");
+	printf("|					Tabela de símbolos               			 |\n");
+	printf("------------------------------------------------------------------\n");
+	printf("| 	Token 	|	 Tipo	 |	 Tamanho	|	 Linha	 |	 Coluna	 |\n");
+	for(int i = 0; i < numberOfTokens; i++){
+		printf("| 	%s 	|	 %s	 |	 %i	|	 %i	 |	 %i	 |\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		aux = aux->next;
+	}
+	printf("------------------------------------------------------------------\n");
 
-
-	
 	printf("# total de linhas = %d\n", num_lines);
     
 	return 0;
