@@ -100,21 +100,25 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {OP-AD} {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
+			actualType = NULL;
 		}
 
 {OP-MUL} 	{
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
+				actualType = NULL;
 			}
 
 {OP-REL} 	{
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
+				actualType = NULL;
 			}
 
 {OUTROS} 	{
 				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
+				actualType = NULL;
 			}
 
 {TIPO} 	{	
@@ -126,25 +130,29 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {VAZIO} 	{	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
+				actualType = NULL;
 			}
 
 {DIGITO}+$  {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
+				actualType = NULL;
             }
 
 {DIGITO}+"."{DIGITO}*$      {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
+								actualType = NULL;
             				}
 
 {KEY-WORD}  {
          		printf( "Uma palavra-chave: %s", yytext );
 				addToken(yytext);
+				actualType = NULL;
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
-								printf("Um id: %s", yytext);
+								printf("Um possível id: %s", yytext);
 								addToken(yytext);
 								setTypeID(yytext);
 							}
@@ -162,6 +170,7 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 .           {
 				printf( "Caracter não reconhecido ou id: %s", yytext );
 				addToken(yytext);
+				actualType = NULL;
 		    }
 
 %%

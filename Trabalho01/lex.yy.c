@@ -449,10 +449,8 @@ char *yytext;
 #line 1 "Trabalho01.lex"
 #define INITIAL 0
 /* Linguagem: Pascal-like */
-/* ========================================================================== */
 /* Abaixo, indicado pelos limitadores "%{" e "%}", as includes necessárias... */
-/* ========================================================================== */
-#line 8 "Trabalho01.lex"
+#line 5 "Trabalho01.lex"
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -465,14 +463,14 @@ int num_columns = 0;
 typedef struct Table table;
 struct Table {
     char *token;
-	char *escope;
-    int token_len;
-    table *next;
+	char *type;
+    int lenght;
     int line;
     int column;
+	table *next;
 };
 
-
+char *actualType = NULL;
 table *pilhaDeTokens = NULL;
 int numberOfTokens = 0;
 
@@ -486,30 +484,38 @@ void addToken(char *string){
     numberOfTokens++;
     if(pilhaDeTokens == NULL){
         pilhaDeTokens = (table *)malloc(sizeof(table));
-        pilhaDeTokens->token = string;
-        pilhaDeTokens->token_len = strlen(string);
         pilhaDeTokens->next = NULL;
     }
     else{
         table *newToken;
         newToken = (table *)malloc(sizeof(table));
-        newToken->token = string;
-        newToken->token_len = strlen(string);
         newToken->next = pilhaDeTokens;
         pilhaDeTokens = newToken;
     }
+	pilhaDeTokens->token = string;
+    pilhaDeTokens->lenght = strlen(string);
 	pilhaDeTokens->line = num_lines;
-	pilhaDeTokens->column = num_columns; 
+	pilhaDeTokens->column = num_columns;
+	pilhaDeTokens->type = NULL; 
 	num_columns += strlen(string);
 	printf(" linha = %i, coluna = %i ", num_lines, num_columns);
 	printf(" token = %s número = %i\n", pilhaDeTokens->token, numberOfTokens);
 }
 
+void setTypeID(char *string){
+	if(actualType == NULL) actualType = string;
+	else{
+		pilhaDeTokens->type = actualType;
+		actualType = NULL;
+	}
+}
+
+/*
 char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 	if(stack == NULL) return NULL;
 	else{
 		char *tokenRemoved = stack->token;
-		*stackLen = stack->token_len;
+		*stackLen = stack->lenght;
 		*stackLine = stack->line;
 		*stackColumn = stack->column;
 		table *OldStack = stack;
@@ -518,16 +524,15 @@ char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 		return tokenRemoved;
 	}
 }
+*/
 
 // Um vetor é uma solução ineficiente comparada à uma pilha pois ambos tem as mesmas vantagens (busca O(n) e inserção O(1))...
 // ... mas a pilha é um meio de alocação dinâmica o que proporciona uma melhor forma de armazenamento.
 
 // Para os atributos talvez seja melhor salvar o nome do atributo na própria estrutura de token.
 
-/* ========================================================================== */
-/* ===========================  Sessão DEFINIÇÔES  ========================== */
-/* ========================================================================== */
-#line 531 "lex.yy.c"
+/*Definições*/
+#line 536 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -678,10 +683,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 95 "Trabalho01.lex"
+#line 98 "Trabalho01.lex"
 
 
-#line 685 "lex.yy.c"
+#line 690 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -766,7 +771,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 97 "Trabalho01.lex"
+#line 100 "Trabalho01.lex"
 {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
@@ -774,7 +779,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 102 "Trabalho01.lex"
+#line 105 "Trabalho01.lex"
 {
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
@@ -782,7 +787,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 107 "Trabalho01.lex"
+#line 110 "Trabalho01.lex"
 {
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
@@ -790,7 +795,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 112 "Trabalho01.lex"
+#line 115 "Trabalho01.lex"
 {
 				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
@@ -798,15 +803,16 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 117 "Trabalho01.lex"
+#line 120 "Trabalho01.lex"
 {	
 			printf("Um tipo: %s", yytext);
 			addToken(yytext);
+			setTypeID(yytext);
 		}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 122 "Trabalho01.lex"
+#line 126 "Trabalho01.lex"
 {	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
@@ -817,7 +823,7 @@ case 7:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 127 "Trabalho01.lex"
+#line 131 "Trabalho01.lex"
 {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
@@ -828,7 +834,7 @@ case 8:
 yy_c_buf_p = yy_cp -= 1;
 YY_DO_BEFORE_ACTION; /* set up yytext again */
 YY_RULE_SETUP
-#line 132 "Trabalho01.lex"
+#line 136 "Trabalho01.lex"
 {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
@@ -836,7 +842,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 137 "Trabalho01.lex"
+#line 141 "Trabalho01.lex"
 {
          		printf( "Uma palavra-chave: %s", yytext );
 				addToken(yytext);
@@ -844,34 +850,35 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 142 "Trabalho01.lex"
+#line 146 "Trabalho01.lex"
 {
-			printf("Um id: %s", yytext);
-			addToken(yytext);
-		}
+								printf("Um id: %s", yytext);
+								addToken(yytext);
+								setTypeID(yytext);
+							}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 147 "Trabalho01.lex"
+#line 152 "Trabalho01.lex"
 /* Lembre-se... comentários não tem utilidade! */
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 149 "Trabalho01.lex"
+#line 154 "Trabalho01.lex"
 {
 			num_columns++;
 		}	/* Lembre-se... espaços em branco não tem utilidade! */
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 153 "Trabalho01.lex"
+#line 158 "Trabalho01.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 157 "Trabalho01.lex"
+#line 162 "Trabalho01.lex"
 {
 				printf( "Caracter não reconhecido ou id: %s", yytext );
 				addToken(yytext);
@@ -879,10 +886,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 162 "Trabalho01.lex"
+#line 167 "Trabalho01.lex"
 ECHO;
 	YY_BREAK
-#line 886 "lex.yy.c"
+#line 893 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1768,7 +1775,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 162 "Trabalho01.lex"
+#line 167 "Trabalho01.lex"
 
 
 int main( argc, argv )
