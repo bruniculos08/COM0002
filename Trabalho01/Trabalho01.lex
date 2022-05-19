@@ -61,6 +61,12 @@ void setTypeID(char *string){
 	}
 }
 
+void setType(char *string){
+	pilhaDeTokens->type = actualType;
+	actualType = NULL;
+}
+
+
 /*
 char *getToken(table *stack, int *stackLen, int *stackLine, int *stackColumn){
 	if(stack == NULL) return NULL;
@@ -100,25 +106,25 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {OP-AD} {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
-			actualType = NULL;
+			setType("operador");
 		}
 
 {OP-MUL} 	{
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
-				actualType = NULL;
+				setType("operador");
 			}
 
 {OP-REL} 	{
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
-				actualType = NULL;
+				setType("operador");
 			}
 
 {OUTROS} 	{
 				printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
-				actualType = NULL;
+				setType("outro");
 			}
 
 {TIPO} 	{	
@@ -130,25 +136,25 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {VAZIO} 	{	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
-				actualType = NULL;
+				setType("operador");
 			}
 
 {DIGITO}+$  {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
-				actualType = NULL;
+				setType("integer");
             }
 
 {DIGITO}+"."{DIGITO}*$      {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
-								actualType = NULL;
+								setType("real");
             				}
 
 {KEY-WORD}  {
          		printf( "Uma palavra-chave: %s", yytext );
 				addToken(yytext);
-				actualType = NULL;
+				setType("keyWord");
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
@@ -170,7 +176,7 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 .           {
 				printf( "Caracter não reconhecido ou id: %s", yytext );
 				addToken(yytext);
-				actualType = NULL;
+				setType("NaoReconhecido");
 		    }
 
 %%
