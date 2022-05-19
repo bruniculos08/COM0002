@@ -67,15 +67,22 @@ void addToken(char *string){
 	printf("\n");
 }
 
-void setTypeID(char *string){
-	if(actualType == NULL){
+void setTypeID(char *string, int flag){
+	if(flag == 0){
+		free(actualType);
 		actualType = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(actualType, string);
+		printf("Here 1\n");
 		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 		strcpy(fila->last->type, string);
 	}
 	else{
-		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+		if(actualType == NULL){
+			actualType = (char *)malloc(sizeof(char)*strlen("(erro)"));
+			strcpy(actualType, "(erro)");
+		}
+		printf("Here 2\n");
+		fila->last->type = (char *)malloc(sizeof(char)*strlen(actualType));
 		strcpy(fila->last->type, actualType);
 		actualType = NULL;
 	}
@@ -129,7 +136,7 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {TIPO} 	{	
 			printf("Um tipo: %s", yytext);
 			addToken(yytext);
-			setTypeID(yytext);
+			setTypeID(yytext, 0);
 		}
 
 {VAZIO} 	{	
@@ -138,13 +145,13 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 				setType("operador");
 			}
 
-{DIGITO}+$  {
+{DIGITO}+  {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
-				setType("integer");
+				setType("inteiro");
             }
 
-{DIGITO}+"."{DIGITO}*$      {
+{DIGITO}+"."{DIGITO}*      {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
 								setType("real");
@@ -159,7 +166,7 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 {LETRA}+({DIGITO}|{LETRA})* {
 								printf("Um possível id: %s", yytext);
 								addToken(yytext);
-								setTypeID(yytext);
+								setTypeID(yytext, 1);
 							}
 
 "{"[^}\n]*"}"     /* Lembre-se... comentários não tem utilidade! */
@@ -173,7 +180,7 @@ KEY-WORD if|else|then|begin|end|function|;|:|while|do|,|array|"["|"]"|var|proced
 		}
 
 .           {
-				printf( "Caracter não reconhecido ou id: %s", yytext );
+				printf( "Caracter nao reconhecido ou id: %s", yytext );
 				addToken(yytext);
 				setType("NaoReconhecido");
 		    }
@@ -196,15 +203,15 @@ char **argv;
 	table *aux;
 	aux = (table *)malloc(sizeof(table));
 	aux = fila->first;
-	printf("------------------------------------------------------------------\n");
-	printf("|					Tabela de símbolos               			 |\n");
-	printf("------------------------------------------------------------------\n");
-	printf("| 	Token 	|	 Tipo	 |	 Tamanho	|	 Linha	 |	 Coluna	 |\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|                               Tabela de simbolos                              |\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		printf("| 	%s 	|	 %s	 |	 %i	|	 %i	 |	 %i	 |\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		printf("|\t%s\t|\t%s\t|\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
-	printf("------------------------------------------------------------------\n");
+	printf("---------------------------------------------------------------------------------\n");
 
 	printf("# total de linhas = %d\n", num_lines);
     
