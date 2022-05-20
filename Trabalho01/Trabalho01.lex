@@ -85,19 +85,19 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {OP-AD} {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
-			setType("operadorAd");
+			setType("opAd");
 		}
 
 {OP-MUL} 	{
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
-				setType("operadorMul");
+				setType("opMul");
 			}
 
 {OP-REL} 	{
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
-				setType("operadorRel");
+				setType("opRel");
 			}
 
 {OUTROS} 	{
@@ -115,23 +115,23 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {VAZIO} 	{	
 				printf("Um epsilon (vazio): %s", yytext);
 				addToken(yytext);
-				setType("operador");
+				setType("vazio");
 			}
 
 {DIGITO}+  {
-            	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
+            	printf("Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
 				setType("int-lit");
             }
 
-{DIGITO}+"."{DIGITO}*      {
-            					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
+({DIGITO}+"."{DIGITO}*)|({DIGITO}*"."{DIGITO}+)      {
+            					printf("Um valor real: %s (%g)", yytext, atof( yytext ));
 								addToken(yytext);
 								setType("float-lit");
             				}
 
 {KEY-WORD}  {
-         		printf( "Uma palavra-chave: %s", yytext );
+         		printf("Uma palavra-chave: %s", yytext);
 				addToken(yytext);
 				setType("keyWord");
             }
@@ -153,9 +153,9 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 		}
 
 .           {
-				printf( "Caracter nao reconhecido ou id: %s", yytext );
+				printf("Caracter nao reconhecido ou id: %s", yytext );
 				addToken(yytext);
-				setType("NaoReconhecido");
+				setType("naoRec");
 		    }
 
 %%
