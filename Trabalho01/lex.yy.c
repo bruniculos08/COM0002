@@ -1784,7 +1784,7 @@ char **argv;
     fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\t\tTamanho\t\t|\tLinha\t\t\t|\tColuna\t\t|\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t\t|\tLinha\t\t\t|\tColuna\t\t|\n");
 
 	printf("---------------------------------------------------------------------------------\n");
 	printf("|                               Tabela de simbolos                              |\n");
