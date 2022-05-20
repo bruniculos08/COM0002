@@ -59,7 +59,7 @@ void addToken(char *string){
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
-	printf("\n");
+	//printf("\n");
 }
 
 void setType(char *string){
@@ -75,69 +75,69 @@ BOOL-LIT "true"|"false"
 OP-AD "+"|"-"|"or"
 OP-MUL  "*"|"/"|"and"
 OP-REL "<"|">"|"<="|">="|"="|"<>"
-OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"
+OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"|"?"|"."|"'"|"{"|"}"
 TIPO "integer"|"real"|"boolean"
-VAZIO "ε"
+VAZIO ""
 LETRA[a-z]
 KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="
 %%
 
 {OP-AD} {
-			printf("Um operador de adição: %s", yytext);
+			//printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
 			setType("opAd");
 		}
 
 {OP-MUL} 	{
-				printf("Um operador de multiplicação: %s", yytext);
+				//printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
 				setType("opMul");
 			}
 
 {OP-REL} 	{
-				printf("Um operador de relação: %s", yytext);
+				//printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
 				setType("opRel");
 			}
 
 {OUTROS} 	{
-				printf("Um caracter especial: %s", yytext);
+				//printf("Um caracter especial: %s", yytext);
 				addToken(yytext);
 				setType("outro");
 			}
 
 {TIPO} 	{	
-			printf("Um tipo: %s", yytext);
+			//printf("Um tipo: %s", yytext);
 			addToken(yytext);
 			setType("tipo");
 		}
 
 {VAZIO} 	{	
-				printf("Um epsilon (vazio): %s", yytext);
-				addToken(yytext);
-				setType("vazio");
+				//printf("Um epsilon (vazio): %s", yytext);
+				//addToken(yytext);
+				//setType("vazio");
 			}
 
 {DIGITO}+  {
-            	printf("Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
+            	//printf("Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
-				setType("int-lit");
+				setType("intlit");
             }
 
 ({DIGITO}+"."{DIGITO}*)|({DIGITO}*"."{DIGITO}+)      {
-            					printf("Um valor real: %s (%g)", yytext, atof( yytext ));
+            					//printf("Um valor real: %s (%g)", yytext, atof( yytext ));
 								addToken(yytext);
-								setType("float-lit");
+								setType("floatlit");
             				}
 
 {KEY-WORD}  {
-         		printf("Uma palavra-chave: %s", yytext);
+         		//printf("Uma palavra-chave: %s", yytext);
 				addToken(yytext);
 				setType("keyWord");
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
-								printf("Um possível id: %s", yytext);
+								//printf("Um possível id: %s", yytext);
 								addToken(yytext);
 								setType("ID");
 							}
@@ -153,7 +153,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 		}
 
 .           {
-				printf("Caracter nao reconhecido ou id: %s", yytext );
+				//printf("Caracter nao reconhecido ou id: %s", yytext );
 				addToken(yytext);
 				setType("naoRec");
 		    }
@@ -176,15 +176,26 @@ char **argv;
 	table *aux;
 	aux = (table *)malloc(sizeof(table));
 	aux = fila->first;
+    
+	FILE *filePointer;
+    filePointer = fopen("resultado.txt", "w+");
+    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|\tToken\t\t|\tTipo\t\t|\tTamanho\t\t|\tLinha\t\t|\tColuna\t\t|\n");
+
 	printf("---------------------------------------------------------------------------------\n");
 	printf("|                               Tabela de simbolos                              |\n");
 	printf("---------------------------------------------------------------------------------\n");
 	printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		printf("|\t%s\t|\t%s\t|\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
 	printf("---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+
 
 	printf("# total de linhas = %d\n", num_lines);
     
