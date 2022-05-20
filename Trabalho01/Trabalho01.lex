@@ -142,8 +142,6 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 								setType("ID");
 							}
 
-"{"[^}\n]*"}"     /* Lembre-se... comentários não tem utilidade! */
-
 [ \t]+  {
 			num_columns++;
 		}	/* Lembre-se... espaços em branco não tem utilidade! */
