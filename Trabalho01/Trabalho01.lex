@@ -10,8 +10,6 @@
 int num_lines = 0;
 int num_columns = 0;
 
-
-
 typedef struct Table table;
 struct Table {
     char *token;
@@ -29,7 +27,6 @@ struct HeadTable {
 };
 
 
-char *actualType = NULL;
 headTable *fila = NULL;
 int numberOfTokens = 0;
 
@@ -65,39 +62,9 @@ void addToken(char *string){
 	printf("\n");
 }
 
-void setTypeID(char *string, int flag){
-	if(flag == 0){
-		if(actualType != NULL){ 
-			fila->last->type = (char *)malloc(sizeof(char)*strlen("(erro)"));
-			strcpy(fila->last->type, "(erro)");
-			free(actualType);
-			actualType = (char *)malloc(sizeof(char)*strlen(string));
-			strcpy(actualType, "(erro)");
-			
-		}
-		else{
-		free(actualType);
-		actualType = (char *)malloc(sizeof(char)*strlen(string));
-		strcpy(actualType, string);
-		fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
-		strcpy(fila->last->type, string);
-		}
-	}
-	else{
-		if(actualType == NULL){
-			actualType = (char *)malloc(sizeof(char)*strlen("(erro)"));
-			strcpy(actualType, "(erro)");
-		}
-		fila->last->type = (char *)malloc(sizeof(char)*strlen(actualType));
-		strcpy(fila->last->type, actualType);
-		actualType = NULL;
-	}
-}
-
 void setType(char *string){
 	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->type, string);
-	actualType = NULL;
 }
 
 %}
@@ -118,19 +85,19 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {OP-AD} {
 			printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
-			setType("operador");
+			setType("operadorAd");
 		}
 
 {OP-MUL} 	{
 				printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
-				setType("operador");
+				setType("operadorMul");
 			}
 
 {OP-REL} 	{
 				printf("Um operador de relação: %s", yytext);
 				addToken(yytext);
-				setType("operador");
+				setType("operadorRel");
 			}
 
 {OUTROS} 	{
@@ -142,7 +109,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {TIPO} 	{	
 			printf("Um tipo: %s", yytext);
 			addToken(yytext);
-			setTypeID(yytext, 0);
+			setType("tipo");
 		}
 
 {VAZIO} 	{	
@@ -154,13 +121,13 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {DIGITO}+  {
             	printf( "Um valor inteiro: %s (%d)", yytext, atoi( yytext )); 
 				addToken(yytext);
-				setType("inteiro");
+				setType("int-lit");
             }
 
 {DIGITO}+"."{DIGITO}*      {
             					printf( "Um valor real: %s (%g)", yytext, atof( yytext ) );
 								addToken(yytext);
-								setType("real");
+								setType("float-lit");
             				}
 
 {KEY-WORD}  {
@@ -172,7 +139,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 {LETRA}+({DIGITO}|{LETRA})* {
 								printf("Um possível id: %s", yytext);
 								addToken(yytext);
-								setTypeID(yytext, 1);
+								setType("ID");
 							}
 
 "{"[^}\n]*"}"     /* Lembre-se... comentários não tem utilidade! */
