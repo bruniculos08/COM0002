@@ -6,7 +6,7 @@
 #define YY_DECL int yylex()
 
 #include "calc.tab.h"
-
+// fazer converção de notação normal para polonesa
 %}
 
 DIGITO		[0-9]+
