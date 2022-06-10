@@ -31,12 +31,11 @@ void yyerror(const char* s);
 
 %%
 
-calculation:	/* Aqui temos a representação do epsilon na gramática... */
-	| calculation line
+opad: OP_AD { printf("\nOP-AD detectado\n";)}
 	;
 
-opad: ORTOKEN { printf("\nOR detectado\n";)}
-	| ADDTOKEN { printf("\nADD dectado\n";)}
+calculation:	/* Aqui temos a representação do epsilon na gramática... */
+	| calculation line
 	;
 
 line: T_NEWLINE
