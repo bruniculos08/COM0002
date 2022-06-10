@@ -24,15 +24,58 @@ void yyerror(const char* s);
 %left T_PLUS T_MINUS
 %left T_MULTIPLY T_DIVIDE
 
+//fazer a declaração dos tokens aqui (returns)
+%token OP_AD
+%token OP_DIV
+%token OP_REL
+
 %type<ival> expr
 %type<fval> mixed_expr
 
-%start calculation
+%start programa
 
 %%
 
+programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo {}
+		;
+
+id: letra
+  | id letra 
+  | id digito
+  ;
+
+corpo: declaracao comando-composto
+  	;
+
+declaracao: declaracao-de-variavel
+		  | declaracao-de-funcoes
+		  | declaracao-de-procedimento
+  		  ;
+
+declaracao-de-funcoes: FUNCTION_TOKEN id (_TOKEN lista-de-parametros TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
+  		  			 | FUNCTION_TOKEN id (_TOKEN VAZIO_TOKEN TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
+  		  			 ;
+
+declaracao-de-procedimento: PROCEDURE_TOKEN id (_TOKEN lista-de-parametros TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
+  		  			 	  | PROCEDURE_TOKEN id (_TOKEN VAZIO_TOKEN TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
+  		  			 	  ;
+
+declaracao-de-variavel: VAR_TOKEN lista-de-ids TWODOTS_TOKEN tipo
+  		  			  ;
+
+declaracoes: declaracao DOTCOMMA_TOKEN
+		   | declaracoes declaracao DOTCOMMA_TOKEN
+		   | VAZIO_TOKEN
+
 opad: OP_AD { printf("\nOP-AD detectado\n";)}
 	;
+
+opmul: OP_MUL { printf("\nOP-MUL detectado\n";)}
+	;
+
+oprel: OP_REL { printf("\nOP-REL detectado\n";)}
+	;
+
 
 calculation:	/* Aqui temos a representação do epsilon na gramática... */
 	| calculation line

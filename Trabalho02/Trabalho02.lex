@@ -140,6 +140,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
          		//printf("Uma palavra-chave: %s", yytext);
 				addToken(yytext);
 				setType("keyWord");
+				if(yytext == "if") return IF_TOKEN;
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
