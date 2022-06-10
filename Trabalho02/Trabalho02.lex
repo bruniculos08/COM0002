@@ -88,7 +88,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			setType("opAd");
 			if(yytext == "+") return ADD_TOKEN;
 			else if(yytext == "-") return LESS_TOKEN;
-			else return ORTOKEN;
+			else return OR_TOKEN;
 		}
 
 {OP-MUL} 	{
