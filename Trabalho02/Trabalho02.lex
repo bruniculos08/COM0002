@@ -86,8 +86,8 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			//printf("Um operador de adição: %s", yytext);
 			addToken(yytext);
 			setType("opAd");
-			if(yytext == "+") return ADDTOKEN;
-			else if(yytext == "-") return LESSTOKEN;
+			if(yytext == "+") return ADD_TOKEN;
+			else if(yytext == "-") return LESS_TOKEN;
 			else return ORTOKEN;
 		}
 
@@ -95,6 +95,9 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				//printf("Um operador de multiplicação: %s", yytext);
 				addToken(yytext);
 				setType("opMul");
+				if(yytext == "*") return MULT_TOKEN;
+				else if(yytext == "/") return DIVIDE_TOKEN;
+				else return AND_TOKEN;
 			}
 
 {OP-REL} 	{
