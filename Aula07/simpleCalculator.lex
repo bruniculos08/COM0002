@@ -1,48 +1,38 @@
-/* Linguagem: Pascal-like */
-/* Abaixo, indicado pelos limitadores "%{" e "%}", as includes necessárias... */
-
-%{
-#include <math.h>
+%{ 
+// (1) Colocar linhas entre "%{" e "%}" permite que se escreva código em C nestas linhas:	
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-
-// (1) Contador de linhas:
-int num_lines = 0, num_columns = 0;
-
+// (2) Deve-se declarar a função de erro (para quando um token não corresponde a nenhuma expressão regular):
+void yyerror(char *);
 %}
 
-/* Definições: */
-DIGITO  ([0-9])
+%option noyywrap
 
+/* (3) Definições de conjuntos de símbolos com o auxílio de expressões regulares (isto não é algo obrigatório,...
+   ... mas pode simplificar alguns itens da próxima etapa): */
+DIGITO [0-9]
+NUM {DIGITO}+
+
+/* (4) Definição do que ocorre qunando se encontra cada token:
+   Obs.: aqui também podem se utilizar expressões regulares.*/
 %%
 
-[ \t]+  {
-			num_columns++;
-		}	
+{NUM} { 
+        // (5) A varíavel global yylval é usada para passar o valor semántico associado à um token do analisador...
+        // ... léxico para o analisador sintático, por isso, neste caso o valor a ser passado deve ser o valor do...
+        // ... texto lido convertido para um inteiro, visto que queremos fazer uma calculadora:
+        yylval = atoi(yytext);
 
-\n      {
-			++num_lines; num_columns = 0;
-		}
+        // (6) As variáveis retornadas em blocos de código como este, em arquivos flex, podem, assim como quaisquer...
+        // ... outras variáveis serem declaradas no código bison (do analisador sintático):
+        return NUMBER;
+      }
 
-.           {
-				
-		    }
+[+()-/]   { 
+            // (7) Quando se retorna o conteúdo do endereço yytext, está se retornando o que foi lido sem nenhuma...
+            // ... alteração:
+            return *yytext;
+          }
+
 
 %%
-
-int main(argc, argv)
-int argc;
-char **argv;
-{
-	++argv;
-	--argc;
-
-	if (argc > 0) yyin = fopen( argv[0], "r" );
-	else yyin = stdin;
-
-	yylex();
-	printf("# total de linhas = %d\n", num_lines);
-    
-	return 0;
-}
