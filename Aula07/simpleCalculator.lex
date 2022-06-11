@@ -17,8 +17,7 @@ NUM {DIGITO}+
    Obs.: aqui também podem se utilizar expressões regulares.*/
 %%
 
-{NUM} { 
-        // (5) A varíavel global yylval é usada para passar o valor semántico associado à um token do analisador...
+{NUM} { // (5) A varíavel global yylval é usada para passar o valor semántico associado à um token do analisador...
         // ... léxico para o analisador sintático, por isso, neste caso o valor a ser passado deve ser o valor do...
         // ... texto lido convertido para um inteiro, visto que queremos fazer uma calculadora:
         yylval = atoi(yytext);
@@ -28,11 +27,27 @@ NUM {DIGITO}+
         return NUMBER;
       }
 
-[+()-/]   { 
-            // (7) Quando se retorna o conteúdo do endereço yytext, está se retornando o que foi lido sem nenhuma...
+[+()-/]   { // (7) Quando se retorna o conteúdo do endereço yytext, está se retornando o que foi lido sem nenhuma...
             // ... alteração:
             return *yytext;
           }
 
+"calcular" { // ()
+             return CALCULAR;
+           }
+
+[ \t]+ {
+        // (8) Quando há espaçamento em branco não é necessário fazer nada (não é token a ser reconhecido).
+        // Obs.: note que a expressão regular "[ \t]+" significa 1 ou mais espaçamentos.
+       }
+
+\n     {
+        // (9) Quando há "avanço de linha" não é necessário fazer nada (não é token a ser reconhecido).
+       }
+
+.      {
+        // (10) Qualquer outro caracter digitado é um erro:
+        yyerror("Caracter inválido.\n");
+       }
 
 %%
