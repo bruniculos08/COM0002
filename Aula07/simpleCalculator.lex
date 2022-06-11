@@ -1,11 +1,10 @@
 %{ 
-// (1) Colocar linhas entre "%{" e "%}" permite que se escreva código em C nestas linhas:	
+// (1) Colocar linhas entre "%colchetes" e "%colchetes" permite que se escreva código em C nestas linhas:	
 #include <stdio.h>
 #include <string.h>
 // (2) Deve-se declarar a função de erro (para quando um token não corresponde a nenhuma expressão regular):
-void yyerror(char *);
+void yyerror(char *s);
 %}
-
 %option noyywrap
 
 /* (3) Definições de conjuntos de símbolos com o auxílio de expressões regulares (isto não é algo obrigatório,...
@@ -32,22 +31,24 @@ NUM {DIGITO}+
             return *yytext;
           }
 
-"calcular" { // ()
+"calcular" { // (8) Utilizaremos este token como incial para a calculadora:
              return CALCULAR;
            }
 
 [ \t]+ {
-        // (8) Quando há espaçamento em branco não é necessário fazer nada (não é token a ser reconhecido).
+        // (9) Quando há espaçamento em branco não é necessário fazer nada (não é token a ser reconhecido).
         // Obs.: note que a expressão regular "[ \t]+" significa 1 ou mais espaçamentos.
        }
 
 \n     {
-        // (9) Quando há "avanço de linha" não é necessário fazer nada (não é token a ser reconhecido).
+        // (10) Quando há "avanço de linha" não é necessário fazer nada (não é token a ser reconhecido).
        }
 
 .      {
-        // (10) Qualquer outro caracter digitado é um erro:
+        // (11) Qualquer outro caracter digitado é um erro:
         yyerror("Caracter inválido.\n");
        }
 
 %%
+
+// (12) Como iremos utilizar um código bison também não é necessário colocar aqui uma função "main".
