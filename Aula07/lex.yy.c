@@ -285,13 +285,12 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 14
-#define YY_END_OF_BUFFER 15
-static yyconst short int yy_accept[26] =
+#define YY_NUM_RULES 7
+#define YY_END_OF_BUFFER 8
+static yyconst short int yy_accept[20] =
     {   0,
-        0,    0,   15,   13,    1,    4,    9,   10,    7,    5,
-        6,    8,    3,   13,   13,    0,    3,    0,    0,    2,
-        0,    0,   11,   12,    0
+        0,    0,    8,    6,    5,    1,    3,    2,    6,    5,
+        2,    0,    0,    0,    0,    0,    0,    4,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -300,15 +299,15 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
-        5,    6,    7,    1,    8,    9,   10,   11,   11,   11,
-       11,   11,   11,   11,   11,   11,   11,    1,    1,    1,
+        4,    4,    4,    4,    4,    4,    4,    5,    5,    5,
+        5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,   12,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    6,    1,    7,    1,
 
-        1,   13,    1,    1,   14,    1,    1,    1,    1,    1,
-       15,    1,    1,   16,   17,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    8,    1,    1,
+        1,    1,    1,    9,    1,    1,   10,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -326,42 +325,37 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst int yy_meta[18] =
+static yyconst int yy_meta[11] =
+    {   0,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1
+    } ;
+
+static yyconst short int yy_base[20] =
+    {   0,
+        0,    0,   22,   23,   19,   23,   23,   15,   13,   16,
+       12,    8,    8,    4,    5,    6,    2,   23,   23
+    } ;
+
+static yyconst short int yy_def[20] =
+    {   0,
+       19,    1,   19,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   19,   19,   19,   19,   19,   19,    0
+    } ;
+
+static yyconst short int yy_nxt[34] =
+    {   0,
+        4,    5,    6,    7,    8,    4,    9,    4,    4,    4,
+       18,   17,   16,   15,   14,   13,   11,   10,   12,   11,
+       10,   19,    3,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   19
+    } ;
+
+static yyconst short int yy_chk[34] =
     {   0,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1
-    } ;
-
-static yyconst short int yy_base[26] =
-    {   0,
-        0,    0,   30,   31,   31,   31,   31,   31,   31,   31,
-       31,   31,    9,   14,   16,   16,   10,   10,   11,   13,
-       11,    6,   31,   31,   31
-    } ;
-
-static yyconst short int yy_def[26] =
-    {   0,
-       25,    1,   25,   25,   25,   25,   25,   25,   25,   25,
-       25,   25,   25,   25,   25,   25,   25,   25,   25,   25,
-       25,   25,   25,   25,    0
-    } ;
-
-static yyconst short int yy_nxt[49] =
-    {   0,
-        4,    5,    6,    7,    8,    9,   10,   11,    4,   12,
-       13,    4,   14,    4,    4,    4,   15,   16,   16,   17,
-       17,   24,   23,   20,   22,   21,   20,   19,   18,   25,
-        3,   25,   25,   25,   25,   25,   25,   25,   25,   25,
-       25,   25,   25,   25,   25,   25,   25,   25
-    } ;
-
-static yyconst short int yy_chk[49] =
-    {   0,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,   13,   17,   13,
-       17,   22,   21,   20,   19,   18,   16,   15,   14,    3,
-       25,   25,   25,   25,   25,   25,   25,   25,   25,   25,
-       25,   25,   25,   25,   25,   25,   25,   25
+       17,   16,   15,   14,   13,   12,   11,   10,    9,    8,
+        5,    3,   19,   19,   19,   19,   19,   19,   19,   19,
+       19,   19,   19
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -375,16 +369,21 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "calc.lex"
+#line 1 "simpleCalculator.lex"
 #define INITIAL 0
-#line 4 "calc.lex"
+#line 3 "simpleCalculator.lex"
+// (1) Colocar linhas entre "%colchetes" e "%colchetes" permite que se escreva código em C nestas linhas:	
 #include <stdio.h>
-
+#include <string.h>
+// (2) Deve-se declarar a função de erro (para quando um token não corresponde a nenhuma expressão regular):
 #define YY_DECL int yylex()
 
-#include "calc.tab.h"
-// fazer converção de notação normal para polonesa
-#line 388 "lex.yy.c"
+#include "simpleCalculator.tab.h"
+/* (3) Definições de conjuntos de símbolos com o auxílio de expressões regulares (isto não é algo obrigatório,...
+   ... mas pode simplificar alguns itens da próxima etapa): */
+/* (4) Definição do que ocorre qunando se encontra cada token:
+   Obs.: aqui também podem se utilizar expressões regulares.*/
+#line 387 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -535,10 +534,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 14 "calc.lex"
+#line 19 "simpleCalculator.lex"
 
 
-#line 542 "lex.yy.c"
+#line 541 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -589,13 +588,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 26 )
+				if ( yy_current_state >= 20 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 31 );
+		while ( yy_base[yy_current_state] != 23 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -623,75 +622,66 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 16 "calc.lex"
-; // ignore todos os espaços em branco
+#line 21 "simpleCalculator.lex"
+{ // (10) Quando há "avanço de linha" não é necessário fazer nada (não é token a ser reconhecido):
+         return JUMP_LINE;
+       }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 17 "calc.lex"
-{yylval.fval = atof(yytext); return T_REAL;}
+#line 25 "simpleCalculator.lex"
+{ // (5) A varíavel global yylval é usada para passar o valor semántico associado à um token do analisador...
+        // ... léxico para o analisador sintático, por isso, neste caso o valor a ser passado deve ser o valor do...
+        // ... texto lido convertido para um inteiro, visto que queremos fazer uma calculadora:
+        yylval.ival = atoi(yytext);
+
+        // (6) As variáveis retornadas em blocos de código como este, em arquivos flex, podem, assim como quaisquer...
+        // ... outras variáveis serem declaradas no código bison (do analisador sintático):
+        return NUMBER;
+      }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "calc.lex"
-{yylval.ival = atoi(yytext); return T_INT;}
+#line 35 "simpleCalculator.lex"
+{ // (7) Quando se retorna o conteúdo do endereço yytext, está se retornando o que foi lido sem nenhuma...
+            // ... alteração:
+            if(*yytext == '+') return ADD;
+            else if(*yytext == '-') return SUB;
+            else if(*yytext == '*') return MULT;
+            else if(*yytext == '(') return P_LEFT;
+            else if(*yytext == ')') return P_RIGHT;
+            else return DIVIDE;
+          }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "calc.lex"
-{return T_NEWLINE;}
+#line 45 "simpleCalculator.lex"
+{ // (8) Utilizaremos este token como incial para a calculadora:
+             return CALCULAR;
+           }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 20 "calc.lex"
-{return T_PLUS;}
+#line 49 "simpleCalculator.lex"
+{
+         // (9) Quando há espaçamento em branco não é necessário fazer nada (não é token a ser reconhecido).
+         // Obs.: note que a expressão regular "[ \t]+" significa 1 ou mais espaçamentos.
+        }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 21 "calc.lex"
-{return T_MINUS;}
+#line 54 "simpleCalculator.lex"
+{
+        // (11) Qualquer outro caracter digitado é um erro:
+        yyerror("Caracter inválido.\n");
+       }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 22 "calc.lex"
-{return T_MULTIPLY;}
-	YY_BREAK
-case 8:
-YY_RULE_SETUP
-#line 23 "calc.lex"
-{return T_DIVIDE;}
-	YY_BREAK
-case 9:
-YY_RULE_SETUP
-#line 24 "calc.lex"
-{return T_LEFT;}
-	YY_BREAK
-case 10:
-YY_RULE_SETUP
-#line 25 "calc.lex"
-{return T_RIGHT;}
-	YY_BREAK
-case 11:
-YY_RULE_SETUP
-#line 26 "calc.lex"
-{return T_QUIT;}
-	YY_BREAK
-case 12:
-YY_RULE_SETUP
-#line 27 "calc.lex"
-{return T_QUIT;}
-	YY_BREAK
-case 13:
-YY_RULE_SETUP
-#line 28 "calc.lex"
-{printf("Caracter misterioso... %s\n", yytext);}
-	YY_BREAK
-case 14:
-YY_RULE_SETUP
-#line 30 "calc.lex"
+#line 59 "simpleCalculator.lex"
 ECHO;
 	YY_BREAK
-#line 695 "lex.yy.c"
+#line 685 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -983,7 +973,7 @@ static yy_state_type yy_get_previous_state()
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 26 )
+			if ( yy_current_state >= 20 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -1018,11 +1008,11 @@ yy_state_type yy_current_state;
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 26 )
+		if ( yy_current_state >= 20 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 25);
+	yy_is_jam = (yy_current_state == 19);
 
 	return yy_is_jam ? 0 : yy_current_state;
 	}
@@ -1577,4 +1567,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 30 "calc.lex"
+#line 59 "simpleCalculator.lex"
+
+
+// (12) Como iremos utilizar um código bison também não é necessário colocar aqui uma função "main".
