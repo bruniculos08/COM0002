@@ -16,6 +16,8 @@ void yyerror(const char* s);
 	float fval;
 }
 
+%token END 0 "end of file"
+
 %token PROGRAM_TOKEN 
 %token TRUE_TOKEN FALSE_TOKEN
 %token LETTER_TOKEN
@@ -64,7 +66,8 @@ condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando
 corpo: declaracao comando_composto
   	 ;
 
-declaracao: declaracao_de_variavel
+declaracao: 
+		  |	declaracao_de_variavel
 		  | declaracao_de_funcoes
 		  | declaracao_de_procedimento
   		  ;
@@ -80,7 +83,8 @@ declaracao_de_procedimento: PROCEDURE_TOKEN id PLEFT_TOKEN lista_de_parametros T
 declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
   		  			  ;
 
-declaracoes: declaracao DOTCOMMA_TOKEN
+declaracoes: 
+		   | declaracao DOTCOMMA_TOKEN
 		   | declaracoes declaracao DOTCOMMA_TOKEN
 		   | vazio
 		   ;
@@ -122,7 +126,8 @@ iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 letra: LETTER_TOKEN
 	 ;
 
-lista_de_comandos: comando DOTCOMMA_TOKEN 
+lista_de_comandos: 
+			     | comando DOTCOMMA_TOKEN 
 				 | lista_de_comandos comando DOTCOMMA_TOKEN
 				 | vazio
 				 ;
@@ -173,7 +178,8 @@ parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
 		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
 		  ;
 
-programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo {printf("Programa válido");}
+programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo END {printf("\nPrograma valido\n");}
+		| PROGRAM_TOKEN id DOTCOMMA_TOKEN END {printf("\nPrograma valido\n");}
 		;
 
 seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
@@ -202,7 +208,7 @@ vazio:
 %%
 
 int main() {
-	tableMain();
+	//tableMain();
 	yyin = stdin;
 
 	do {
@@ -213,6 +219,6 @@ int main() {
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Erro de análise (sintática): %s\n", s);
+	fprintf(stderr, "Erro de analise (sintatica): %s\n", s);
 	exit(1);
 }

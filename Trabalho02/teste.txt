@@ -1,1 +1,1 @@
-program a1 ; var a1 : integer begin end
+program a1 ; begin end

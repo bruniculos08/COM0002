@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "Trabalho02.tab.h"
+#define yyterminate() return END;
 
 int num_lines = 0;
 int num_columns = 0;
@@ -194,35 +195,3 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 		    }
 %%
-
-
-int argc;
-char **argv;
-void tableMain()
-{
-	++argv, --argc;
-	if ( argc > 0 )
-		yyin = fopen( argv[0], "r" );
-	else
-		yyin = stdin;
-
-	yylex();
-
-	// Imprimir tabela aqui
-	table *aux;
-	aux = (table *)malloc(sizeof(table));
-	aux = fila->first;
-    
-	FILE *filePointer;
-    filePointer = fopen("resultado.txt", "w+");
-    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
-	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
-		aux = aux->next;
-	}
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	return;
-}

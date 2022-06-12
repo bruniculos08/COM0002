@@ -39,6 +39,7 @@
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
+     END = 0,
      PROGRAM_TOKEN = 258,
      TRUE_TOKEN = 259,
      FALSE_TOKEN = 260,
@@ -100,7 +101,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 104 "Trabalho02.tab.h"
+#line 105 "Trabalho02.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

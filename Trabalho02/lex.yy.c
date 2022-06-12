@@ -438,6 +438,7 @@ char *yytext;
 #include <string.h>
 #include <stdlib.h>
 #include "Trabalho02.tab.h"
+#define yyterminate() return END;
 
 int num_lines = 0;
 int num_columns = 0;
@@ -500,7 +501,7 @@ void setType(char *string){
 }
 
 /*Definições*/
-#line 504 "lex.yy.c"
+#line 505 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -651,10 +652,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 85 "Trabalho02.lex"
+#line 86 "Trabalho02.lex"
 
 
-#line 658 "lex.yy.c"
+#line 659 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -739,7 +740,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 87 "Trabalho02.lex"
+#line 88 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setType("keyWord");
@@ -748,7 +749,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 93 "Trabalho02.lex"
+#line 94 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("boolit");
@@ -758,7 +759,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 100 "Trabalho02.lex"
+#line 101 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("letter");
@@ -767,7 +768,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 106 "Trabalho02.lex"
+#line 107 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("opAd");
@@ -778,7 +779,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 114 "Trabalho02.lex"
+#line 115 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("opMul");
@@ -789,7 +790,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 122 "Trabalho02.lex"
+#line 123 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("opRel");
@@ -803,7 +804,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 133 "Trabalho02.lex"
+#line 134 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("outro");
@@ -813,7 +814,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 140 "Trabalho02.lex"
+#line 141 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setType("tipo");
@@ -824,7 +825,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 148 "Trabalho02.lex"
+#line 149 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setType("empty");
@@ -833,7 +834,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 154 "Trabalho02.lex"
+#line 155 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("intlit");
@@ -842,7 +843,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 160 "Trabalho02.lex"
+#line 161 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setType("keyWord");
@@ -870,31 +871,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 185 "Trabalho02.lex"
+#line 186 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 189 "Trabalho02.lex"
+#line 190 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 193 "Trabalho02.lex"
+#line 194 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 196 "Trabalho02.lex"
+#line 197 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 898 "lex.yy.c"
+#line 899 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1780,37 +1781,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 196 "Trabalho02.lex"
-
-
-
-int argc;
-char **argv;
-void tableMain()
-{
-	++argv, --argc;
-	if ( argc > 0 )
-		yyin = fopen( argv[0], "r" );
-	else
-		yyin = stdin;
-
-	yylex();
-
-	// Imprimir tabela aqui
-	table *aux;
-	aux = (table *)malloc(sizeof(table));
-	aux = fila->first;
-    
-	FILE *filePointer;
-    filePointer = fopen("resultado.txt", "w+");
-    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
-	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
-		aux = aux->next;
-	}
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	return;
-}
+#line 197 "Trabalho02.lex"
