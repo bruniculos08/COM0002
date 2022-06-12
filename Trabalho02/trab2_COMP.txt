@@ -138,9 +138,7 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 ({DIGITO}+"."{DIGITO}*)|({DIGITO}*"."{DIGITO}+)      {
             					//printf("Um valor real: %s (%g)", yytext, atof( yytext ));
-								addToken(yytext);
-								setType("floatlit");
-								return INT_TOKEN;
+								return REAL_TOKEN;
             				}
 
 
@@ -194,6 +192,10 @@ KEY-WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 								setType("ID");
 								return ID_TOKEN;
 							}
+
+{LETRA} {
+			return LETRA_TOKEN
+		}
 
 [ \t]+  {
 			num_columns++;

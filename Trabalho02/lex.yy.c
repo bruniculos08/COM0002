@@ -285,12 +285,19 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 6
-#define YY_END_OF_BUFFER 7
-static yyconst short int yy_accept[12] =
+#define YY_NUM_RULES 15
+#define YY_END_OF_BUFFER 16
+static yyconst short int yy_accept[89] =
     {   0,
-        0,    0,    7,    5,    4,    1,    3,    2,    4,    2,
-        0
+        9,    9,   16,   14,   12,   13,    7,   11,    5,    4,
+       10,   11,    6,    6,    6,    3,    3,    3,    3,    3,
+        3,    3,    3,    3,    3,    3,    3,    3,   14,   12,
+       11,    6,    0,    0,    0,    0,    0,    0,    0,    0,
+        0,    4,    0,    0,    0,    0,    0,    0,    7,    5,
+        0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+        0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+        8,    2,    0,    0,    0,    0,    0,    0,    0,    0,
+        0,    0,    0,    0,    0,    1,    0,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -298,24 +305,24 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1,    1,    1,    1,    2,    3,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    2,    1,    1,    1,    1,    1,    1,    1,    4,
-        4,    4,    4,    4,    4,    4,    4,    5,    5,    5,
-        5,    5,    5,    5,    5,    5,    5,    1,    1,    1,
+        1,    2,    4,    1,    5,    6,    7,    8,    9,   10,
+       11,   12,   13,   14,   15,   16,   17,   18,   18,   18,
+       18,   18,   18,   18,   18,   18,   18,   19,   20,   21,
+       22,   23,   24,   25,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+       26,    1,   27,    1,    1,    1,   28,   29,   30,   31,
 
+       32,   33,   34,   35,   36,   37,   37,   38,   39,   40,
+       41,   42,   37,   43,   44,   45,   46,   47,   48,   37,
+       49,   37,   50,    1,   51,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,   52,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   53,    1,    1,    1,    1,    1,    1,
 
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -325,33 +332,88 @@ static yyconst int yy_ec[256] =
         1,    1,    1,    1,    1
     } ;
 
-static yyconst int yy_meta[6] =
+static yyconst int yy_meta[54] =
     {   0,
-        1,    2,    1,    1,    3
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1
     } ;
 
-static yyconst short int yy_base[14] =
+static yyconst short int yy_base[89] =
     {   0,
-        0,    0,    8,    9,    0,    9,    9,    0,    0,    0,
-        9,    5,    3
+        0,    0,  130,  131,  127,  131,  131,  131,  131,  131,
+      131,  106,   32,  131,  105,   16,   25,  131,   85,   20,
+       33,   29,   30,   82,   92,   29,   95,   87,   69,  118,
+      131,  131,   88,   75,   83,   75,   71,   83,   75,   72,
+       66,  131,   69,   81,   76,   61,   63,   69,  131,  131,
+       76,   67,   64,   69,   56,   69,   66,   37,   59,   56,
+       63,   56,   44,   52,   59,   58,   44,   54,   55,   43,
+      131,  131,   53,   56,   47,   50,   50,   52,   38,   36,
+       33,   29,   35,   30,   25,  131,   33,  131
     } ;
 
-static yyconst short int yy_def[14] =
+static yyconst short int yy_def[89] =
     {   0,
-       11,    1,   11,   11,   12,   11,   11,   13,   12,   13,
-        0,   11,   11
+       88,    1,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,    0
     } ;
 
-static yyconst short int yy_nxt[15] =
+static yyconst short int yy_nxt[185] =
     {   0,
-        4,    5,    6,    7,    8,   10,    9,   11,    3,   11,
-       11,   11,   11,   11
+        4,    5,    6,    7,    7,    7,    7,    7,    7,    8,
+        8,    9,   10,    8,   10,    7,    9,   11,   12,    8,
+       13,   14,   15,    7,    7,    8,    8,   16,   17,   18,
+       19,   20,   21,   18,   18,   22,   18,   18,   18,   18,
+       23,   24,   25,   18,   26,   18,   27,   28,   18,    7,
+        7,    4,   29,   32,   32,   33,   35,   37,   34,   38,
+       39,   31,   31,   45,   31,   36,   69,   87,   41,   31,
+       70,   46,   42,   86,   85,   71,   84,   71,   40,   83,
+       82,   81,   80,   79,   31,   78,   77,   76,   75,   72,
+       74,   31,   31,   73,   72,   31,   71,   68,   67,   66,
+
+       31,   65,   64,   63,   62,   31,   61,   60,   59,   58,
+       57,   56,   55,   31,   54,   53,   52,   51,   50,   30,
+       49,   48,   47,   44,   43,   31,   32,   31,   30,   88,
+        3,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88
     } ;
 
-static yyconst short int yy_chk[15] =
+static yyconst short int yy_chk[185] =
     {   0,
-        1,    1,    1,    1,    1,   13,   12,    3,   11,   11,
-       11,   11,   11,   11
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+        1,    1,    1,   13,   13,   16,   17,   20,   16,   20,
+       21,   22,   23,   26,   87,   17,   58,   85,   22,   84,
+       58,   26,   23,   83,   82,   81,   80,   79,   21,   78,
+       77,   76,   75,   74,   73,   70,   69,   68,   67,   66,
+       65,   64,   63,   62,   61,   60,   59,   57,   56,   55,
+
+       54,   53,   52,   51,   48,   47,   46,   45,   44,   43,
+       41,   40,   39,   38,   37,   36,   35,   34,   33,   30,
+       29,   28,   27,   25,   24,   19,   15,   12,    5,    3,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88,   88,   88,   88,   88,   88,   88,
+       88,   88,   88,   88
     } ;
 
 static yy_state_type yy_last_accepting_state;
@@ -365,21 +427,80 @@ static char *yy_last_accepting_cpos;
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
-#line 1 "simpleCalculator.lex"
+#line 1 "Trabalho02.lex"
 #define INITIAL 0
-#line 3 "simpleCalculator.lex"
-// (1) Colocar linhas entre "%colchetes" e "%colchetes" permite que se escreva código em C nestas linhas:	
+/* Linguagem: Pascal-like */
+/* Abaixo, indicado pelos limitadores "%{" e "%}", as includes necessárias... */
+/* Para não ter que declarar a variável yywrap */
+#line 6 "Trabalho02.lex"
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
-// (2) Deve-se declarar a função de erro (para quando um token não corresponde a nenhuma expressão regular):
-#define YY_DECL int yylex()
+#include <stdlib.h>
+#include "Trabalho02.tab.h"
 
-#include "simpleCalculator.tab.h"
-/* (3) Definições de conjuntos de símbolos com o auxílio de expressões regulares (isto não é algo obrigatório,...
-   ... mas pode simplificar alguns itens da próxima etapa): */
-/* (4) Definição do que ocorre qunando se encontra cada token:
-   Obs.: aqui também podem se utilizar expressões regulares.*/
-#line 383 "lex.yy.c"
+int num_lines = 0;
+int num_columns = 0;
+
+typedef struct Table table;
+struct Table {
+    char *token;
+	char *type;
+    int lenght;
+    int line;
+    int column;
+	table *next;
+};
+
+typedef struct HeadTable headTable;
+struct HeadTable {
+	table *first;
+	table *last;
+};
+
+
+headTable *fila = NULL;
+int numberOfTokens = 0;
+
+// Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
+
+void addToken(char *string){
+    numberOfTokens++;
+    if(fila == NULL){
+		fila = (headTable *)malloc(sizeof(headTable));
+		fila->first = (table *)malloc(sizeof(table));
+		fila->first->token = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(fila->first->token, string);
+		fila->first->lenght = strlen(string);
+		fila->first->line = num_lines;
+		fila->first->column = num_columns;
+		fila->first->next = NULL;
+		fila->last = fila->first;
+	}
+	else{
+		table *newToken;
+		newToken = (table *)malloc(sizeof(table));
+		newToken->token = (char *)malloc(sizeof(char)*strlen(string));
+		strcpy(newToken->token, string);
+    	newToken->lenght = strlen(string);
+		newToken->line = num_lines;
+		newToken->column = num_columns;
+		newToken->type = NULL; 
+		newToken->next = NULL;
+		fila->last->next = newToken;
+		fila->last = newToken;
+	}
+	num_columns += strlen(string);
+	//printf("\n");
+}
+
+void setType(char *string){
+	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(fila->last->type, string);
+}
+
+/*Definições*/
+#line 504 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -530,10 +651,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 19 "simpleCalculator.lex"
+#line 85 "Trabalho02.lex"
 
 
-#line 537 "lex.yy.c"
+#line 658 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -584,13 +705,13 @@ yy_match:
 			while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 				{
 				yy_current_state = (int) yy_def[yy_current_state];
-				if ( yy_current_state >= 12 )
+				if ( yy_current_state >= 89 )
 					yy_c = yy_meta[(unsigned int) yy_c];
 				}
 			yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 			++yy_cp;
 			}
-		while ( yy_base[yy_current_state] != 9 );
+		while ( yy_base[yy_current_state] != 131 );
 
 yy_find_action:
 		yy_act = yy_accept[yy_current_state];
@@ -618,59 +739,162 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 21 "simpleCalculator.lex"
-{ // (10) Quando há "avanço de linha" não é necessário fazer nada (não é token a ser reconhecido):
-         return JUMP_LINE;
-       }
+#line 87 "Trabalho02.lex"
+{	
+			addToken(yytext);
+			setType("keyWord");
+			return PROGRAM_TOKEN;
+		  }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 25 "simpleCalculator.lex"
-{ // (5) A varíavel global yylval é usada para passar o valor semántico associado à um token do analisador...
-        // ... léxico para o analisador sintático, por isso, neste caso o valor a ser passado deve ser o valor do...
-        // ... texto lido convertido para um inteiro, visto que queremos fazer uma calculadora:
-        yylval.ival = atoi(yytext);
-
-        // (6) As variáveis retornadas em blocos de código como este, em arquivos flex, podem, assim como quaisquer...
-        // ... outras variáveis serem declaradas no código bison (do analisador sintático):
-        return NUMBER;
-      }
+#line 93 "Trabalho02.lex"
+{
+			addToken(yytext);
+			setType("boolit");
+			if(strcmp(yytext, "true") == 0) return TRUE_TOKEN;
+			else return FALSE_TOKEN;
+		  }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 35 "simpleCalculator.lex"
-{ // (7) Quando se retorna o conteúdo do endereço yytext, está se retornando o que foi lido sem nenhuma...
-            // ... alteração:
-            if(*yytext == '+') return ADD;
-            else if(*yytext == '-') return SUB;
-            else if(*yytext == '*') return MULT;
-            else if(*yytext == '(') return P_LEFT;
-            else if(*yytext == ')') return P_RIGHT;
-            else return DIVIDE;
-          }
+#line 100 "Trabalho02.lex"
+{
+			addToken(yytext);
+			setType("letter");
+			return LETTER_TOKEN;
+		}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 45 "simpleCalculator.lex"
+#line 106 "Trabalho02.lex"
 {
-         // (9) Quando há espaçamento em branco não é necessário fazer nada (não é token a ser reconhecido).
-         // Obs.: note que a expressão regular "[ \t]+" significa 1 ou mais espaçamentos.
-        }
+			addToken(yytext);
+			setType("opAd");
+			if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
+			else if(strcmp(yytext, "-") == 0) return SUB_TOKEN;
+			else return OR_TOKEN;
+		}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 50 "simpleCalculator.lex"
+#line 114 "Trabalho02.lex"
 {
-        // (11) Qualquer outro caracter digitado é um erro:
-        yyerror("Caracter inválido.\n");
-       }
+				addToken(yytext);
+				setType("opMul");
+				if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
+				else if(strcmp(yytext, "/") == 0) return DIVIDE_TOKEN;
+				else return AND_TOKEN;
+			}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 55 "simpleCalculator.lex"
+#line 122 "Trabalho02.lex"
+{
+				addToken(yytext);
+				setType("opRel");
+				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
+				else if(strcmp(yytext, ">") == 0) return BIGGER_TOKEN;
+				else if(strcmp(yytext, "<=") == 0) return SMALLER_EQUAL_TOKEN;
+				else if(strcmp(yytext, ">=") == 0) return BIGGER_EQUAL_TOKEN;
+				else if(strcmp(yytext, "=") == 0) return EQUAL_TOKEN;
+				else return DIFF_TOKEN;
+			}
+	YY_BREAK
+case 7:
+YY_RULE_SETUP
+#line 133 "Trabalho02.lex"
+{
+				addToken(yytext);
+				setType("outro");
+				if(strcmp(yytext, ".") == 0) return DOT_TOKEN;
+				return OUTROS_TOKEN;
+			}
+	YY_BREAK
+case 8:
+YY_RULE_SETUP
+#line 140 "Trabalho02.lex"
+{	
+			addToken(yytext);
+			setType("tipo");
+			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
+			else if(strcmp(yytext, "real") == 0) return REAL_TOKEN;
+			else return BOOLEAN_TOKEN;
+		}
+	YY_BREAK
+case 9:
+YY_RULE_SETUP
+#line 148 "Trabalho02.lex"
+{	
+				addToken(yytext);
+				setType("empty");
+				return VAZIO_TOKEN;
+			}
+	YY_BREAK
+case 10:
+YY_RULE_SETUP
+#line 154 "Trabalho02.lex"
+{
+				addToken(yytext);
+				setType("intlit");
+            	return INT_TOKEN;
+           }
+	YY_BREAK
+case 11:
+YY_RULE_SETUP
+#line 160 "Trabalho02.lex"
+{	
+				addToken(yytext);
+				setType("keyWord");
+				if(strcmp(yytext, "if") == 0) return IF_TOKEN;
+				else if(strcmp(yytext, "else") == 0) return ELSE_TOKEN;
+				else if(strcmp(yytext, "then") == 0) return THEN_TOKEN;
+				else if(strcmp(yytext, "begin") == 0) return BEGIN_TOKEN;
+				else if(strcmp(yytext, "end") == 0) return END_TOKEN;
+				else if(strcmp(yytext, "function") == 0) return FUNCTION_TOKEN;
+				else if(strcmp(yytext, ";") == 0) return DOTCOMMA_TOKEN;
+				else if(strcmp(yytext, ":") == 0) return TWODOTS_TOKEN;
+				else if(strcmp(yytext, "while") == 0) return WHILE_TOKEN;
+				else if(strcmp(yytext, "do") == 0) return DO_TOKEN;
+				else if(strcmp(yytext, ",") == 0) return COMMA_TOKEN;
+				else if(strcmp(yytext, "array") == 0) return ARRAY_TOKEN;
+				else if(strcmp(yytext, "[") == 0) return BLEFT_TOKEN;
+				else if(strcmp(yytext, "]") == 0) return BRIGHT_TOKEN;
+				else if(strcmp(yytext, "var") == 0) return VAR_TOKEN;
+				else if(strcmp(yytext, "procedure") == 0) return PROCEDURE_TOKEN;
+				else if(strcmp(yytext, "of") == 0) return OF_TOKEN;
+				else if(strcmp(yytext, "(") == 0) return PLEFT_TOKEN;
+				else if(strcmp(yytext, ")") == 0) return PRIGHT_TOKEN;
+				else return TWODOTS_EQUAL_TOKEN;
+            }
+	YY_BREAK
+case 12:
+YY_RULE_SETUP
+#line 185 "Trabalho02.lex"
+{
+			num_columns++;
+		}	
+	YY_BREAK
+case 13:
+YY_RULE_SETUP
+#line 189 "Trabalho02.lex"
+{
+			++num_lines; num_columns = 0;
+		}
+	YY_BREAK
+case 14:
+YY_RULE_SETUP
+#line 193 "Trabalho02.lex"
+{
+
+		    }
+	YY_BREAK
+case 15:
+YY_RULE_SETUP
+#line 196 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 674 "lex.yy.c"
+#line 898 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -962,7 +1186,7 @@ static yy_state_type yy_get_previous_state()
 		while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 			{
 			yy_current_state = (int) yy_def[yy_current_state];
-			if ( yy_current_state >= 12 )
+			if ( yy_current_state >= 89 )
 				yy_c = yy_meta[(unsigned int) yy_c];
 			}
 		yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
@@ -997,11 +1221,11 @@ yy_state_type yy_current_state;
 	while ( yy_chk[yy_base[yy_current_state] + yy_c] != yy_current_state )
 		{
 		yy_current_state = (int) yy_def[yy_current_state];
-		if ( yy_current_state >= 12 )
+		if ( yy_current_state >= 89 )
 			yy_c = yy_meta[(unsigned int) yy_c];
 		}
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
-	yy_is_jam = (yy_current_state == 11);
+	yy_is_jam = (yy_current_state == 88);
 
 	return yy_is_jam ? 0 : yy_current_state;
 	}
@@ -1556,7 +1780,37 @@ int main()
 	return 0;
 	}
 #endif
-#line 55 "simpleCalculator.lex"
+#line 196 "Trabalho02.lex"
 
 
-// (12) Como iremos utilizar um código bison também não é necessário colocar aqui uma função "main".
+
+int argc;
+char **argv;
+void tableMain()
+{
+	++argv, --argc;
+	if ( argc > 0 )
+		yyin = fopen( argv[0], "r" );
+	else
+		yyin = stdin;
+
+	yylex();
+
+	// Imprimir tabela aqui
+	table *aux;
+	aux = (table *)malloc(sizeof(table));
+	aux = fila->first;
+    
+	FILE *filePointer;
+    filePointer = fopen("resultado.txt", "w+");
+    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	for(int i = 0; i < numberOfTokens; i++){
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		aux = aux->next;
+	}
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	return;
+}

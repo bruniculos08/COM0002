@@ -7,6 +7,7 @@ extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 
+void tableMain();
 void yyerror(const char* s);
 %}
 
@@ -15,65 +16,192 @@ void yyerror(const char* s);
 	float fval;
 }
 
-/* Declaração dos tokens... */
-
-%token<ival> T_INT
-%token<fval> T_REAL
-%token T_PLUS T_MINUS T_MULTIPLY T_DIVIDE T_LEFT T_RIGHT
-%token T_NEWLINE T_QUIT
-%left T_PLUS T_MINUS
-%left T_MULTIPLY T_DIVIDE
-
-//fazer a declaração dos tokens aqui (returns)
-%token OP_AD OP_DIV OP_REL FUNCTION_TOKEN PLEFT_TOKEN )_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN VAR_TOKEN VAZIO_TOKEN
+%token PROGRAM_TOKEN 
+%token TRUE_TOKEN FALSE_TOKEN
+%token LETTER_TOKEN
+%token ADD_TOKEN SUB_TOKEN OR_TOKEN
+%token MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
+%token SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
+%token OUTROS_TOKEN DOT_TOKEN
+%token INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
+%token VAZIO_TOKEN
+%token<ival> INT_TOKEN
+%token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN
 
 %start programa
 
 %%
 
-programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo {}
+atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao
+		  ;
+
+bool_lit: TRUE_TOKEN
+		| FALSE_TOKEN
 		;
+
+chamada_de_funcao: id PLEFT_TOKEN lista_de_expressoes PRIGHT_TOKEN
+				 | id PLEFT_TOKEN vazio PRIGHT_TOKEN
+				 ;
+
+chamada_de_procedimento: id PLEFT_TOKEN lista_de_expressoes PRIGHT_TOKEN
+				 	   | id PLEFT_TOKEN vazio PRIGHT_TOKEN
+					   ;
+
+comando: atribuicao
+	   | condicional
+	   | iterativo
+	   | chamada_de_procedimento
+	   | comando_composto
+	   ;
+
+comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
+				;
+
+condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando 
+		   | IF_TOKEN expressao THEN_TOKEN comando vazio
+		   ;
+
+corpo: declaracao comando_composto
+  	 ;
+
+declaracao: declaracao_de_variavel
+		  | declaracao_de_funcoes
+		  | declaracao_de_procedimento
+  		  ;
+
+declaracao_de_funcoes: FUNCTION_TOKEN id PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 | FUNCTION_TOKEN id PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 ;
+
+declaracao_de_procedimento: PROCEDURE_TOKEN id PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 	  | PROCEDURE_TOKEN id PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 	  ;
+
+declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
+  		  			  ;
+
+declaracoes: declaracao DOTCOMMA_TOKEN
+		   | declaracoes declaracao DOTCOMMA_TOKEN
+		   | vazio
+
+digito: INT_TOKEN digito
+	  | INT_TOKEN
+	  ;
+
+expressao: expressao_simples
+		 | expressao_simples op_rel expressao_simples
+		 ;
+
+expressao_simples: expressao_simples op_ad termo
+				 | termo
+				 ;
+
+fator: variavel
+	 | literal
+	 | PLEFT_TOKEN expressao PRIGHT_TOKEN
+	 | chamada_de_funcao
+	 ;
+
+float_lit: int_lit DOT_TOKEN int_lit
+		 | int_lit DOT_TOKEN
+		 | DOT_TOKEN int_lit
+		 ;
 
 id: letra
   | id letra 
   | id digito
   ;
 
-corpo: declaracao comando-composto
-  	;
+int_lit: digito
+	   | int_lit digito
 
-declaracao: declaracao-de-variavel
-		  | declaracao-de-funcoes
-		  | declaracao-de-procedimento
-  		  ;
+iterativo: WHILE_TOKEN expressao DO_TOKEN comando
+		 ;
+	
+letra: LETTER_TOKEN
+	 ;
 
-declaracao-de-funcoes: FUNCTION_TOKEN id (_TOKEN lista-de-parametros TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
-  		  			 | FUNCTION_TOKEN id (_TOKEN VAZIO_TOKEN TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
-  		  			 ;
+lista_de_comandos: comando DOTCOMMA_TOKEN 
+				 | lista_de_comandos comando DOTCOMMA_TOKEN
+				 | vazio
+				 ;
 
-declaracao-de-procedimento: PROCEDURE_TOKEN id (_TOKEN lista-de-parametros TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
-  		  			 	  | PROCEDURE_TOKEN id (_TOKEN VAZIO_TOKEN TWODOTS_TOKEN tipo simples DOTCOMMA_TOKEN corpo
-  		  			 	  ;
+lista_de_expressoes: expressao
+				   | lista_de_expressoes COMMA_TOKEN expressao
+				   ;
 
-declaracao-de-variavel: VAR_TOKEN lista-de-ids TWODOTS_TOKEN tipo
-  		  			  ;
+lista_de_ids: id lista_de_ids COMMA_TOKEN id
+			| id COMMA_TOKEN id
+			;
 
-declaracoes: declaracao DOTCOMMA_TOKEN
-		   | declaracoes declaracao DOTCOMMA_TOKEN
-		   | VAZIO_TOKEN
+lista_de_parametros: parametros
+				   | lista_de_parametros DOTCOMMA_TOKEN parametros
+				   ;
 
-opad: OP_AD { printf("\nOP-AD detectado\n";)}
+literal: bool_lit
+	   | int_lit
+	   | float_lit
+	   ;
+
+literals: literals literal
+		| literal
+	   	;
+
+op_ad: ADD_TOKEN 
+	 | SUB_TOKEN
+	 | OR_TOKEN
+	 ;
+
+op_mul: MULT_TOKEN
+	  | DIVIDE_TOKEN
+	  | AND_TOKEN
+	  ;
+
+op_rel: SMALLER_TOKEN
+	  | BIGGER_TOKEN
+	  | SMALLER_EQUAL_TOKEN
+	  | BIGGER_EQUAL_TOKEN
+	  | EQUAL_TOKEN
+	  | DIFF_TOKEN
+	  ;
+
+outros: OUTROS_TOKEN
+	  ;
+
+parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
+		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
+		  ;
+
+programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo
+		;
+
+seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
+	   | BLEFT_TOKEN expressao BRIGHT_TOKEN
+	   | vazio
+
+termo: termo op_mul fator
+	 | fator 
+	 ;
+
+tipo: tipo_agregado
+	| tipo_simples
 	;
 
-opmul: OP_MUL { printf("\nOP-MUL detectado\n";)}
-	;
+tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literals BRIGHT_TOKEN OF_TOKEN tipo
+			 ;
 
-oprel: OP_REL { printf("\nOP-REL detectado\n";)}
-	;
+tipo_simples: INTEGER_TOKEN | REAL_TOKEN | BOOLEAN_TOKEN
+		    ;
+
+variavel: id seletor
+
+vazio: 
+	 ;
 
 %%
 
 int main() {
+	tableMain();
 	yyin = stdin;
 
 	do {
