@@ -25,12 +25,7 @@ void yyerror(const char* s);
 %left T_MULTIPLY T_DIVIDE
 
 //fazer a declaração dos tokens aqui (returns)
-%token OP_AD
-%token OP_DIV
-%token OP_REL
-
-%type<ival> expr
-%type<fval> mixed_expr
+%token OP_AD OP_DIV OP_REL FUNCTION_TOKEN PLEFT_TOKEN )_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN VAR_TOKEN VAZIO_TOKEN
 
 %start programa
 
@@ -74,41 +69,6 @@ opmul: OP_MUL { printf("\nOP-MUL detectado\n";)}
 	;
 
 oprel: OP_REL { printf("\nOP-REL detectado\n";)}
-	;
-
-
-calculation:	/* Aqui temos a representação do epsilon na gramática... */
-	| calculation line
-	;
-
-line: T_NEWLINE
-	| mixed_expr T_NEWLINE					{ printf("\tResultado: %f\n", $1);}
-	| expr T_NEWLINE							{ printf("\tResultado: %i\n", $1); }
-	| T_QUIT T_NEWLINE						{ printf("Até mais...\n"); exit(0); }
-	;
-
-mixed_expr: T_REAL							{ $$ = $1; }
-	| T_PLUS mixed_expr mixed_expr 			{ $$ = $2 + $3; }
-	| T_MINUS mixed_expr mixed_expr			{ $$ = $2 - $3; }
-	| T_MULTIPLY mixed_expr mixed_expr		{ $$ = $2 * $3; }
-	| T_DIVIDE mixed_expr mixed_expr		{ $$ = $2 / $3; }
-	| T_LEFT mixed_expr T_RIGHT				{ $$ = $2; }
-	| T_PLUS expr mixed_expr				{ $$ = $2 + $3; }
-	| T_MINUS expr mixed_expr				{ $$ = $2 - $3; }
-	| T_MULTIPLY expr mixed_expr			{ $$ = $2 * $3; }
-	| T_DIVIDE expr mixed_expr				{ $$ = $2 / $3; }
-	| T_PLUS mixed_expr expr				{ $$ = $2 + $3; }
-	| T_MINUS mixed_expr expr				{ $$ = $2 - $3; }
-	| T_MULTIPLY mixed_expr expr			{ $$ = $2 * $3; }
-	| T_DIVIDE mixed_expr expr				{ $$ = $2 / $3; }
-	| T_DIVIDE expr expr					{ $$ = $2 / (float)$3; }
-	;
-
-expr: T_INT									{ $$ = $1; }
-	| T_PLUS expr expr						{ $$ = $2 + $3; }
-	| T_MINUS expr expr						{ $$ = $2 - $3; }
-	| T_MULTIPLY expr expr					{ $$ = $2 * $3; }
-	| T_LEFT expr T_RIGHT					{ $$ = $2; }
 	;
 
 %%
