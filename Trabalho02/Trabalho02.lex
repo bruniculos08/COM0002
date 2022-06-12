@@ -62,7 +62,6 @@ void addToken(char *string){
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
-	//printf("\n");
 }
 
 void setType(char *string){
@@ -81,7 +80,7 @@ OP_REL "<"|">"|"<="|">="|"="|"<>"
 OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"|"?"|"."|"'"|"{"|"}"
 TIPO "integer"|"real"|"boolean"
 VAZIO ""
-LETRA[a-z]
+LETRA[a-zA-Z]
 KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="
 %%
 
@@ -195,3 +194,29 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 		    }
 %%
+
+void tableMain(){
+	table *aux;
+	aux = (table *)malloc(sizeof(table));
+	aux = fila->first;
+
+	FILE *filePointer;
+    filePointer = fopen("resultado.txt", "w+");
+    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|                               Tabela de simbolos                              |\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
+	for(int i = 0; i < numberOfTokens; i++){
+		printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		aux = aux->next;
+	}
+	printf("---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	printf("# total de linhas = %d\n", num_lines);
+	return;
+}

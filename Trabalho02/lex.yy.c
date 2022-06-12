@@ -308,14 +308,14 @@ static yyconst int yy_ec[256] =
         1,    2,    4,    1,    5,    6,    7,    8,    9,   10,
        11,   12,   13,   14,   15,   16,   17,   18,   18,   18,
        18,   18,   18,   18,   18,   18,   18,   19,   20,   21,
-       22,   23,   24,   25,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-       26,    1,   27,    1,    1,    1,   28,   29,   30,   31,
+       22,   23,   24,   25,   26,   26,   26,   26,   26,   26,
+       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
+       26,   26,   26,   26,   26,   26,   26,   26,   26,   26,
+       27,    1,   28,    1,    1,    1,   29,   30,   31,   32,
 
-       32,   33,   34,   35,   36,   37,   37,   38,   39,   40,
-       41,   42,   37,   43,   44,   45,   46,   47,   48,   37,
-       49,   37,   50,    1,   51,    1,    1,    1,    1,    1,
+       33,   34,   35,   36,   37,   26,   26,   38,   39,   40,
+       41,   42,   26,   43,   44,   45,   46,   47,   48,   26,
+       49,   26,   50,    1,   51,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
@@ -345,14 +345,14 @@ static yyconst int yy_meta[54] =
 static yyconst short int yy_base[89] =
     {   0,
         0,    0,  130,  131,  127,  131,  131,  131,  131,  131,
-      131,  106,   32,  131,  105,   16,   25,  131,   85,   20,
-       33,   29,   30,   82,   92,   29,   95,   87,   69,  118,
-      131,  131,   88,   75,   83,   75,   71,   83,   75,   72,
-       66,  131,   69,   81,   76,   61,   63,   69,  131,  131,
-       76,   67,   64,   69,   56,   69,   66,   37,   59,   56,
-       63,   56,   44,   52,   59,   58,   44,   54,   55,   43,
-      131,  131,   53,   56,   47,   50,   50,   52,   38,   36,
-       33,   29,   35,   30,   25,  131,   33,  131
+      131,  106,   32,  131,  105,  131,   16,   24,   85,   20,
+       32,   28,   29,   82,   91,   28,   94,   86,   69,  118,
+      131,  131,   87,   75,   82,   75,   71,   82,   75,   72,
+       66,  131,   69,   80,   75,   61,   63,   68,  131,  131,
+       75,   66,   64,   68,   56,   68,   65,   35,   59,   56,
+       62,   56,   44,   52,   58,   57,   44,   53,   54,   43,
+      131,  131,   52,   55,   46,   49,   49,   51,   39,   36,
+       33,   29,   35,   33,   26,  131,   34,  131
     } ;
 
 static yyconst short int yy_def[89] =
@@ -372,12 +372,12 @@ static yyconst short int yy_nxt[185] =
     {   0,
         4,    5,    6,    7,    7,    7,    7,    7,    7,    8,
         8,    9,   10,    8,   10,    7,    9,   11,   12,    8,
-       13,   14,   15,    7,    7,    8,    8,   16,   17,   18,
-       19,   20,   21,   18,   18,   22,   18,   18,   18,   18,
-       23,   24,   25,   18,   26,   18,   27,   28,   18,    7,
+       13,   14,   15,    7,    7,   16,    8,    8,   17,   18,
+       16,   19,   20,   21,   16,   16,   22,   16,   16,   16,
+       23,   24,   25,   16,   26,   16,   27,   28,   16,    7,
         7,    4,   29,   32,   32,   33,   35,   37,   34,   38,
-       39,   31,   31,   45,   31,   36,   69,   87,   41,   31,
-       70,   46,   42,   86,   85,   71,   84,   71,   40,   83,
+       39,   31,   31,   45,   36,   69,   31,   41,   87,   70,
+       46,   42,   31,   86,   85,   71,   84,   40,   71,   83,
        82,   81,   80,   79,   31,   78,   77,   76,   75,   72,
        74,   31,   31,   73,   72,   31,   71,   68,   67,   66,
 
@@ -399,9 +399,9 @@ static yyconst short int yy_chk[185] =
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
         1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-        1,    1,    1,   13,   13,   16,   17,   20,   16,   20,
-       21,   22,   23,   26,   87,   17,   58,   85,   22,   84,
-       58,   26,   23,   83,   82,   81,   80,   79,   21,   78,
+        1,    1,    1,   13,   13,   17,   18,   20,   17,   20,
+       21,   22,   23,   26,   18,   58,   87,   22,   85,   58,
+       26,   23,   84,   83,   82,   81,   80,   21,   79,   78,
        77,   76,   75,   74,   73,   70,   69,   68,   67,   66,
        65,   64,   63,   62,   61,   60,   59,   57,   56,   55,
 
@@ -492,7 +492,6 @@ void addToken(char *string){
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
-	//printf("\n");
 }
 
 void setType(char *string){
@@ -501,7 +500,7 @@ void setType(char *string){
 }
 
 /*Definições*/
-#line 505 "lex.yy.c"
+#line 504 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -652,10 +651,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 86 "Trabalho02.lex"
+#line 85 "Trabalho02.lex"
 
 
-#line 659 "lex.yy.c"
+#line 658 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -740,7 +739,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 88 "Trabalho02.lex"
+#line 87 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setType("keyWord");
@@ -749,7 +748,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 94 "Trabalho02.lex"
+#line 93 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("boolit");
@@ -759,7 +758,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 101 "Trabalho02.lex"
+#line 100 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("letter");
@@ -768,7 +767,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 107 "Trabalho02.lex"
+#line 106 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setType("opAd");
@@ -779,7 +778,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 115 "Trabalho02.lex"
+#line 114 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("opMul");
@@ -790,7 +789,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 123 "Trabalho02.lex"
+#line 122 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("opRel");
@@ -804,7 +803,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 134 "Trabalho02.lex"
+#line 133 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("outro");
@@ -814,7 +813,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 141 "Trabalho02.lex"
+#line 140 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setType("tipo");
@@ -825,7 +824,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 149 "Trabalho02.lex"
+#line 148 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setType("empty");
@@ -834,7 +833,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 155 "Trabalho02.lex"
+#line 154 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setType("intlit");
@@ -843,7 +842,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 161 "Trabalho02.lex"
+#line 160 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setType("keyWord");
@@ -871,31 +870,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 186 "Trabalho02.lex"
+#line 185 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 190 "Trabalho02.lex"
+#line 189 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 194 "Trabalho02.lex"
+#line 193 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 197 "Trabalho02.lex"
+#line 196 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 899 "lex.yy.c"
+#line 898 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1781,4 +1780,31 @@ int main()
 	return 0;
 	}
 #endif
-#line 197 "Trabalho02.lex"
+#line 196 "Trabalho02.lex"
+
+
+void tableMain(){
+	table *aux;
+	aux = (table *)malloc(sizeof(table));
+	aux = fila->first;
+
+	FILE *filePointer;
+    filePointer = fopen("resultado.txt", "w+");
+    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|                               Tabela de simbolos                              |\n");
+	printf("---------------------------------------------------------------------------------\n");
+	printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
+	for(int i = 0; i < numberOfTokens; i++){
+		printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		aux = aux->next;
+	}
+	printf("---------------------------------------------------------------------------------\n");
+	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
+	printf("# total de linhas = %d\n", num_lines);
+	return;
+}

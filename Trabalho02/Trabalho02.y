@@ -1,23 +1,21 @@
 %{
-
 #include <stdio.h>
 #include <stdlib.h>
 
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
-
+// (1) declaração da função que monta tabela do arquivo .lex (por enquanto ela não está funcionando):
 void tableMain();
+// (2) declaração da função de erro:
 void yyerror(const char* s);
 %}
 
-%union {
-	int ival;
-	float fval;
-}
+"(3) Este é um token especial que representa o EOF (end of file):"
+%token END 
 
-%token END 0 "end of file"
-
+"(5) Os tokens estão declarados em linhas diferentes por motivo de organização (cada linha corresponde ao retorno de...
+... uma mesma expressao regular) para caso haja necessidade de alterações:"
 %token PROGRAM_TOKEN 
 %token TRUE_TOKEN FALSE_TOKEN
 %token LETTER_TOKEN
@@ -27,7 +25,11 @@ void yyerror(const char* s);
 %token OUTROS_TOKEN DOT_TOKEN
 %token INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
 %token VAZIO_TOKEN
-%token<ival> INT_TOKEN
+
+"(4) Este token é utilizado para qualquer número, formando quaisquer outro:"
+%token INT_TOKEN 
+"Obs.: Note que INT_TOKEN é diferente de INTEGER_TOKEN."
+
 %token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN
 
 %start programa
@@ -178,8 +180,12 @@ parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
 		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
 		  ;
 
-programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo END {printf("\nPrograma valido\n");}
-		| PROGRAM_TOKEN id DOTCOMMA_TOKEN END {printf("\nPrograma valido\n");}
+programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo END { 
+													  // (6) Se os comandos desse bloco forem executados então...
+													  // ... a sentença (programa) pode ser gerada pela gramática (o...
+													  // ... programa está sintáticamente correto).
+													  printf("\nPrograma valido\n");
+													}
 		;
 
 seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
@@ -208,12 +214,15 @@ vazio:
 %%
 
 int main() {
-	//tableMain();
+	// (7) A variável yyin recebe a entrada do terminal (stdin):
 	yyin = stdin;
 
+	// (8) Enquanto não se chega no final do arquivo de entrada (yyin) se executa a função de analise...
+	// ... sintatica (yyparse):
 	do {
 		yyparse();
 	} while(!feof(yyin));
+
 
 	return 0;
 }
