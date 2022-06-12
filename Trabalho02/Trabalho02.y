@@ -83,6 +83,7 @@ declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
 declaracoes: declaracao DOTCOMMA_TOKEN
 		   | declaracoes declaracao DOTCOMMA_TOKEN
 		   | vazio
+		   ;
 
 digito: INT_TOKEN digito
 	  | INT_TOKEN
@@ -172,7 +173,7 @@ parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
 		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
 		  ;
 
-programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo
+programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo {printf("Programa válido");}
 		;
 
 seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
