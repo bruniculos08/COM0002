@@ -6,16 +6,23 @@ extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 
+
+// (1) As funções e variáveis declaradas no arquivo .lex devem ser declaradas no arquivo .y com o uso de "extern",...
+// ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
+// ... declaradas duas vezes (se foram declaradas no código .y) 
 extern void tableMain();
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
+// Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 typedef struct Table table;
 typedef struct HeadTable headTable;
 extern headTable *fila;
 
 
 void yyerror(const char* s);
+
+// (2) O token END é um token especial que representa o EOF (end of file):
 %}
 
 %token END 0 "end of file"

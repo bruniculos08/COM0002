@@ -77,10 +77,15 @@ extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 
+
+// (1) As funções e variáveis declaradas no arquivo .lex devem ser declaradas no arquivo .y com o uso de "extern",...
+// ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
+// ... declaradas duas vezes (se foram declaradas no código .y) 
 extern void tableMain();
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
+// Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 typedef struct Table table;
 typedef struct HeadTable headTable;
 extern headTable *fila;
@@ -88,9 +93,11 @@ extern headTable *fila;
 
 void yyerror(const char* s);
 
+// (2) O token END é um token especial que representa o EOF (end of file):
+
 
 /* Line 189 of yacc.c  */
-#line 94 "Trabalho02.tab.c"
+#line 101 "Trabalho02.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -178,7 +185,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 182 "Trabalho02.tab.c"
+#line 189 "Trabalho02.tab.c"
 
 #ifdef short
 # undef short
@@ -500,15 +507,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    43,    43,    46,    47,    50,    51,    54,    55,    58,
-      59,    60,    61,    62,    65,    68,    69,    72,    75,    76,
-      77,    78,    81,    82,    85,    86,    89,    98,    99,   102,
-     103,   106,   107,   110,   111,   112,   113,   116,   117,   118,
-     121,   122,   123,   126,   127,   129,   132,   135,   136,   137,
-     138,   141,   142,   145,   146,   149,   150,   153,   154,   155,
-     158,   159,   162,   163,   164,   167,   168,   169,   172,   173,
-     174,   175,   176,   177,   183,   184,   187,   195,   196,   197,
-     199,   200,   203,   204,   207,   210,   210,   210,   213,   215
+       0,    50,    50,    53,    54,    57,    58,    61,    62,    65,
+      66,    67,    68,    69,    72,    75,    76,    79,    82,    83,
+      84,    85,    88,    89,    92,    93,    96,   105,   106,   109,
+     110,   113,   114,   117,   118,   119,   120,   123,   124,   125,
+     128,   129,   130,   133,   134,   136,   139,   142,   143,   144,
+     145,   148,   149,   152,   153,   156,   157,   160,   161,   162,
+     165,   166,   169,   170,   171,   174,   175,   176,   179,   180,
+     181,   182,   183,   184,   190,   191,   194,   202,   203,   204,
+     206,   207,   210,   211,   214,   217,   217,   217,   220,   222
 };
 #endif
 
@@ -1534,7 +1541,7 @@ yyreduce:
         case 76:
 
 /* Line 1455 of yacc.c  */
-#line 187 "Trabalho02.y"
+#line 194 "Trabalho02.y"
     { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
@@ -1546,7 +1553,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1550 "Trabalho02.tab.c"
+#line 1557 "Trabalho02.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1758,7 +1765,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 218 "Trabalho02.y"
+#line 225 "Trabalho02.y"
 
 
 int main() {
