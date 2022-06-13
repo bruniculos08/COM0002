@@ -76,14 +76,21 @@
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
-// (1) declaração da função que monta tabela do arquivo .lex (por enquanto ela não está funcionando):
-void tableMain();
-// (2) declaração da função de erro:
+
+extern void tableMain();
+extern int num_lines;
+extern int num_columns;
+extern int numberOfTokens;
+typedef struct Table table;
+typedef struct HeadTable headTable;
+extern headTable *fila;
+
+
 void yyerror(const char* s);
 
 
 /* Line 189 of yacc.c  */
-#line 87 "Trabalho02.tab.c"
+#line 94 "Trabalho02.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -171,7 +178,7 @@ typedef int YYSTYPE;
 
 
 /* Line 264 of yacc.c  */
-#line 175 "Trabalho02.tab.c"
+#line 182 "Trabalho02.tab.c"
 
 #ifdef short
 # undef short
@@ -493,15 +500,15 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    36,    36,    39,    40,    43,    44,    47,    48,    51,
-      52,    53,    54,    55,    58,    61,    62,    65,    68,    69,
-      70,    71,    74,    75,    78,    79,    82,    91,    92,    95,
-      96,    99,   100,   103,   104,   105,   106,   109,   110,   111,
-     114,   115,   116,   119,   120,   122,   125,   128,   129,   130,
-     131,   134,   135,   138,   139,   142,   143,   146,   147,   148,
-     151,   152,   155,   156,   157,   160,   161,   162,   165,   166,
-     167,   168,   169,   170,   176,   177,   180,   183,   184,   185,
-     187,   188,   191,   192,   195,   198,   198,   198,   201,   203
+       0,    43,    43,    46,    47,    50,    51,    54,    55,    58,
+      59,    60,    61,    62,    65,    68,    69,    72,    75,    76,
+      77,    78,    81,    82,    85,    86,    89,    98,    99,   102,
+     103,   106,   107,   110,   111,   112,   113,   116,   117,   118,
+     121,   122,   123,   126,   127,   129,   132,   135,   136,   137,
+     138,   141,   142,   145,   146,   149,   150,   153,   154,   155,
+     158,   159,   162,   163,   164,   167,   168,   169,   172,   173,
+     174,   175,   176,   177,   183,   184,   187,   195,   196,   197,
+     199,   200,   203,   204,   207,   210,   210,   210,   213,   215
 };
 #endif
 
@@ -510,22 +517,19 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"(3) Este é um token especial que representa o EOF (end of file).\"",
-  "error", "$undefined", "PROGRAM_TOKEN", "TRUE_TOKEN", "FALSE_TOKEN",
-  "LETTER_TOKEN", "ADD_TOKEN", "SUB_TOKEN", "OR_TOKEN", "MULT_TOKEN",
-  "DIVIDE_TOKEN", "AND_TOKEN", "SMALLER_TOKEN", "BIGGER_TOKEN",
-  "SMALLER_EQUAL_TOKEN", "BIGGER_EQUAL_TOKEN", "EQUAL_TOKEN", "DIFF_TOKEN",
-  "OUTROS_TOKEN", "DOT_TOKEN", "INTEGER_TOKEN", "REAL_TOKEN",
-  "BOOLEAN_TOKEN",
-  "\"(4) Este token é utilizado para qualquer número, formando quaisquer outro.\"",
-  "\"Obs.: Note que INT_TOKEN é diferente de INTEGER_TOKEN.\"",
-  "IF_TOKEN", "ELSE_TOKEN", "THEN_TOKEN", "BEGIN_TOKEN", "END_TOKEN",
-  "FUNCTION_TOKEN", "DOTCOMMA_TOKEN", "TWODOTS_TOKEN", "WHILE_TOKEN",
-  "DO_TOKEN", "COMMA_TOKEN", "ARRAY_TOKEN", "BLEFT_TOKEN", "BRIGHT_TOKEN",
-  "VAR_TOKEN", "PROCEDURE_TOKEN", "OF_TOKEN", "PLEFT_TOKEN",
-  "PRIGHT_TOKEN", "TWODOTS_EQUAL_TOKEN", "$accept", "atribuicao",
-  "bool_lit", "chamada_de_funcao", "chamada_de_procedimento", "comando",
-  "comando_composto", "condicional", "corpo", "declaracao",
+  "\"end of file\"", "error", "$undefined", "PROGRAM_TOKEN", "TRUE_TOKEN",
+  "FALSE_TOKEN", "LETTER_TOKEN", "ADD_TOKEN", "SUB_TOKEN", "OR_TOKEN",
+  "MULT_TOKEN", "DIVIDE_TOKEN", "AND_TOKEN", "SMALLER_TOKEN",
+  "BIGGER_TOKEN", "SMALLER_EQUAL_TOKEN", "BIGGER_EQUAL_TOKEN",
+  "EQUAL_TOKEN", "DIFF_TOKEN", "OUTROS_TOKEN", "DOT_TOKEN",
+  "INTEGER_TOKEN", "REAL_TOKEN", "BOOLEAN_TOKEN", "VAZIO_TOKEN",
+  "INT_TOKEN", "IF_TOKEN", "ELSE_TOKEN", "THEN_TOKEN", "BEGIN_TOKEN",
+  "END_TOKEN", "FUNCTION_TOKEN", "DOTCOMMA_TOKEN", "TWODOTS_TOKEN",
+  "WHILE_TOKEN", "DO_TOKEN", "COMMA_TOKEN", "ARRAY_TOKEN", "BLEFT_TOKEN",
+  "BRIGHT_TOKEN", "VAR_TOKEN", "PROCEDURE_TOKEN", "OF_TOKEN",
+  "PLEFT_TOKEN", "PRIGHT_TOKEN", "TWODOTS_EQUAL_TOKEN", "$accept",
+  "atribuicao", "bool_lit", "chamada_de_funcao", "chamada_de_procedimento",
+  "comando", "comando_composto", "condicional", "corpo", "declaracao",
   "declaracao_de_funcoes", "declaracao_de_procedimento",
   "declaracao_de_variavel", "digito", "expressao", "expressao_simples",
   "fator", "float_lit", "id", "int_lit", "iterativo", "letra",
@@ -1530,14 +1534,19 @@ yyreduce:
         case 76:
 
 /* Line 1455 of yacc.c  */
-#line 180 "Trabalho02.y"
-    {printf("\nPrograma valido\n");;}
+#line 187 "Trabalho02.y"
+    { 
+													  // (6) Se os comandos desse bloco forem executados então...
+													  // ... a sentença (programa) pode ser gerada pela gramática (o...
+													  // ... programa está sintáticamente correto).
+													  printf("\nPrograma valido\n");
+													;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1541 "Trabalho02.tab.c"
+#line 1550 "Trabalho02.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1749,15 +1758,20 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 206 "Trabalho02.y"
+#line 218 "Trabalho02.y"
 
 
 int main() {
+	
+	// (7) A variável yyin recebe a entrada do terminal (stdin):
 	yyin = stdin;
 
+	// (8) Enquanto não se chega no final do arquivo de entrada (yyin) se executa a função de analise...
+	// ... sintatica (yyparse):
 	do {
 		yyparse();
 	} while(!feof(yyin));
+	tableMain();
 
 
 	return 0;

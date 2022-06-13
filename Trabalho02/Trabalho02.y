@@ -5,30 +5,34 @@
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
-// (1) declaração da função que monta tabela do arquivo .lex (por enquanto ela não está funcionando):
-void tableMain();
-// (2) declaração da função de erro:
+
+extern void tableMain();
+extern int num_lines;
+extern int num_columns;
+extern int numberOfTokens;
+typedef struct Table table;
+typedef struct HeadTable headTable;
+extern headTable *fila;
+
+
 void yyerror(const char* s);
 %}
 
-"(3) Este é um token especial que representa o EOF (end of file):"
-%token END 
+%token END 0 "end of file"
 
-"(5) Os tokens estão declarados em linhas diferentes por motivo de organização (cada linha corresponde ao retorno de...
-... uma mesma expressao regular) para caso haja necessidade de alterações:"
 %token PROGRAM_TOKEN 
-%token TRUE_TOKEN FALSE_TOKEN
+%token TRUE_TOKEN FALSE_TOKEN 
 %token LETTER_TOKEN
 %token ADD_TOKEN SUB_TOKEN OR_TOKEN
 %token MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %token SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
 %token OUTROS_TOKEN DOT_TOKEN
 %token INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
-%token VAZIO_TOKEN
+%token VAZIO_TOKEN 
 
-"(4) Este token é utilizado para qualquer número, formando quaisquer outro:"
+
 %token INT_TOKEN 
-"Obs.: Note que INT_TOKEN é diferente de INTEGER_TOKEN."
+
 
 %token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN
 
@@ -214,6 +218,7 @@ vazio:
 %%
 
 int main() {
+	
 	// (7) A variável yyin recebe a entrada do terminal (stdin):
 	yyin = stdin;
 
@@ -222,6 +227,7 @@ int main() {
 	do {
 		yyparse();
 	} while(!feof(yyin));
+	tableMain();
 
 
 	return 0;

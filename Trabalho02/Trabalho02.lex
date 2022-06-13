@@ -10,6 +10,8 @@
 #include "Trabalho02.tab.h"
 #define yyterminate() return END;
 
+void tableMain();
+
 int num_lines = 0;
 int num_columns = 0;
 
@@ -70,7 +72,6 @@ void setType(char *string){
 }
 
 %}
-/*Definições*/
 
 DIGITO  ([0-9])
 BOOL_IT "true"|"false"
@@ -196,6 +197,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 %%
 
 void tableMain(){
+	
 	table *aux;
 	aux = (table *)malloc(sizeof(table));
 	aux = fila->first;
@@ -206,17 +208,17 @@ void tableMain(){
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
-	printf("---------------------------------------------------------------------------------\n");
-	printf("|                               Tabela de simbolos                              |\n");
-	printf("---------------------------------------------------------------------------------\n");
-	printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
+	//printf("---------------------------------------------------------------------------------\n");
+	//printf("|                               Tabela de simbolos                              |\n");
+	//printf("---------------------------------------------------------------------------------\n");
+	//printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		//printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
-	printf("---------------------------------------------------------------------------------\n");
+	//printf("---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	printf("# total de linhas = %d\n", num_lines);
-	return;
+	printf("# total de linhas = %d\n", num_lines+1);
+	//return;
 }

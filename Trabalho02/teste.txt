@@ -1,1 +1,1 @@
-program A1aaaaB1 ; begin end
+program a1 ; begin end
