@@ -22,11 +22,6 @@ extern headTable *fila;
 
 void yyerror(const char* s);
 
-void setType(char *string){
-	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->type, string);
-}
-
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}
 
@@ -59,6 +54,10 @@ bool_lit: TRUE_TOKEN
 		| FALSE_TOKEN
 		;
 
+chamada_de_funcao: id PLEFT_TOKEN lista_de_expressoes PRIGHT_TOKEN
+				 | id PLEFT_TOKEN vazio PRIGHT_TOKEN
+				 ;
+
 chamada_de_procedimento: id PLEFT_TOKEN lista_de_expressoes PRIGHT_TOKEN
 				 	   | id PLEFT_TOKEN vazio PRIGHT_TOKEN
 					   ;
@@ -68,8 +67,6 @@ comando: atribuicao
 	   | iterativo
 	   | chamada_de_procedimento
 	   | comando_composto
-	   | comando_for
-	   | comando_while
 	   ;
 
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
@@ -84,8 +81,13 @@ corpo: declaracao comando_composto
 
 declaracao: 
 		  |	declaracao_de_variavel
+		  | declaracao_de_funcoes
 		  | declaracao_de_procedimento
   		  ;
+
+declaracao_de_funcoes: FUNCTION_TOKEN id PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 | FUNCTION_TOKEN id PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 ;
 
 declaracao_de_procedimento: PROCEDURE_TOKEN id PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
   		  			 	  | PROCEDURE_TOKEN id PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
@@ -115,6 +117,7 @@ expressao_simples: expressao_simples op_ad termo
 fator: variavel
 	 | literal
 	 | PLEFT_TOKEN expressao PRIGHT_TOKEN
+	 | chamada_de_funcao
 	 ;
 
 float_lit: int_lit DOT_TOKEN int_lit

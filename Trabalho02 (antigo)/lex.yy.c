@@ -448,7 +448,7 @@ int num_columns = 0;
 typedef struct Table table;
 struct Table {
     char *token;
-	char *about;
+	char *type;
     int lenght;
     int line;
     int column;
@@ -488,7 +488,7 @@ void addToken(char *string){
     	newToken->lenght = strlen(string);
 		newToken->line = num_lines;
 		newToken->column = num_columns;
-		newToken->about = NULL; 
+		newToken->type = NULL; 
 		newToken->next = NULL;
 		fila->last->next = newToken;
 		fila->last = newToken;
@@ -497,8 +497,8 @@ void addToken(char *string){
 }
 
 void setType(char *string){
-	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->about, string);
+	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(fila->last->type, string);
 }
 
 #line 505 "lex.yy.c"
@@ -1795,14 +1795,14 @@ void tableMain(){
     fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
 	//printf("---------------------------------------------------------------------------------\n");
 	//printf("|                               Tabela de simbolos                              |\n");
 	//printf("---------------------------------------------------------------------------------\n");
 	//printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
 		//printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
 	//printf("---------------------------------------------------------------------------------\n");

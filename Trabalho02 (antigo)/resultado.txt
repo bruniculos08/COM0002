@@ -1,7 +1,7 @@
 ---------------------------------------------------------------------------------
 |                               Tabela de simbolos                              |
 ---------------------------------------------------------------------------------
-|	Token	|	Sobre		|	Tamanho	|	Linha	|	Coluna		|
+|	Token	|	Tipo		|	Tamanho	|	Linha	|	Coluna		|
 |	program	|	keyWord		|	7	|	0	|	0		|
 |	B	|	letter		|	1	|	0	|	8		|
 |	r	|	letter		|	1	|	0	|	9		|

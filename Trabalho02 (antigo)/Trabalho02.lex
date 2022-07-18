@@ -18,7 +18,6 @@ int num_columns = 0;
 typedef struct Table table;
 struct Table {
     char *token;
-	char *about;
 	char *type;
     int lenght;
     int line;
@@ -59,7 +58,6 @@ void addToken(char *string){
     	newToken->lenght = strlen(string);
 		newToken->line = num_lines;
 		newToken->column = num_columns;
-		newToken->about = NULL;
 		newToken->type = NULL; 
 		newToken->next = NULL;
 		fila->last->next = newToken;
@@ -68,11 +66,10 @@ void addToken(char *string){
 	num_columns += strlen(string);
 }
 
-void setAbout(char *string){
-	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->about, string);
+void setType(char *string){
+	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(fila->last->type, string);
 }
-
 
 %}
 
@@ -96,20 +93,20 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {BOOL_IT} {
 			addToken(yytext);
-			setAbout("boolit");
+			setType("boolit");
 			if(strcmp(yytext, "true") == 0) return TRUE_TOKEN;
 			else return FALSE_TOKEN;
 		  }
 
 {LETRA} {
 			addToken(yytext);
-			setAbout("letter");
+			setType("letter");
 			return LETTER_TOKEN;
 		}
 
 {OP_AD} {
 			addToken(yytext);
-			setAbout("opAd");
+			setType("opAd");
 			if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
 			else if(strcmp(yytext, "-") == 0) return SUB_TOKEN;
 			else return OR_TOKEN;
@@ -117,7 +114,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {OP_MUL} 	{
 				addToken(yytext);
-				setAbout("opMul");
+				setType("opMul");
 				if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
 				else if(strcmp(yytext, "/") == 0) return DIVIDE_TOKEN;
 				else return AND_TOKEN;
@@ -125,7 +122,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {OP_REL} 	{
 				addToken(yytext);
-				setAbout("opRel");
+				setType("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
 				else if(strcmp(yytext, ">") == 0) return BIGGER_TOKEN;
 				else if(strcmp(yytext, "<=") == 0) return SMALLER_EQUAL_TOKEN;
@@ -136,14 +133,14 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {OUTROS} 	{
 				addToken(yytext);
-				setAbout("outro");
+				setType("outro");
 				if(strcmp(yytext, ".") == 0) return DOT_TOKEN;
 				return OUTROS_TOKEN;
 			}
 
 {TIPO} 	{	
 			addToken(yytext);
-			setAbout("tipo");
+			setType("tipo");
 			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
 			else if(strcmp(yytext, "real") == 0) return REAL_TOKEN;
 			else return BOOLEAN_TOKEN;
@@ -151,7 +148,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {VAZIO} 	{	
 				addToken(yytext);
-				setAbout("empty");
+				setType("empty");
 				return VAZIO_TOKEN;
 			}
 
@@ -163,7 +160,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {KEY_WORD}  {	
 				addToken(yytext);
-				setAbout("keyWord");
+				setType("keyWord");
 				if(strcmp(yytext, "if") == 0) return IF_TOKEN;
 				else if(strcmp(yytext, "else") == 0) return ELSE_TOKEN;
 				else if(strcmp(yytext, "then") == 0) return THEN_TOKEN;
@@ -210,11 +207,18 @@ void tableMain(){
     fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	fprintf(filePointer, "|\tToken\t|\tTipo\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	//printf("---------------------------------------------------------------------------------\n");
+	//printf("|                               Tabela de simbolos                              |\n");
+	//printf("---------------------------------------------------------------------------------\n");
+	//printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column);
+		//printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
+	//printf("---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	printf("# total de linhas = %d\n", num_lines+1);
+	//return;
 }
