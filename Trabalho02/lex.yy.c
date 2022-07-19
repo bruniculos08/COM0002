@@ -449,6 +449,7 @@ typedef struct Table table;
 struct Table {
     char *token;
 	char *about;
+	char *type;
     int lenght;
     int line;
     int column;
@@ -488,7 +489,8 @@ void addToken(char *string){
     	newToken->lenght = strlen(string);
 		newToken->line = num_lines;
 		newToken->column = num_columns;
-		newToken->about = NULL; 
+		newToken->about = NULL;
+		newToken->type = NULL; 
 		newToken->next = NULL;
 		fila->last->next = newToken;
 		fila->last = newToken;
@@ -496,12 +498,11 @@ void addToken(char *string){
 	num_columns += strlen(string);
 }
 
-void setType(char *string){
+void setAbout(char *string){
 	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->about, string);
 }
-
-#line 505 "lex.yy.c"
+#line 506 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -652,10 +653,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 86 "Trabalho02.lex"
+#line 87 "Trabalho02.lex"
 
 
-#line 659 "lex.yy.c"
+#line 660 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -740,38 +741,38 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 88 "Trabalho02.lex"
+#line 89 "Trabalho02.lex"
 {	
 			addToken(yytext);
-			setType("keyWord");
+			setAbout("keyWord");
 			return PROGRAM_TOKEN;
 		  }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 94 "Trabalho02.lex"
+#line 95 "Trabalho02.lex"
 {
 			addToken(yytext);
-			setType("boolit");
+			setAbout("boolit");
 			if(strcmp(yytext, "true") == 0) return TRUE_TOKEN;
 			else return FALSE_TOKEN;
 		  }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 101 "Trabalho02.lex"
+#line 102 "Trabalho02.lex"
 {
 			addToken(yytext);
-			setType("letter");
+			setAbout("letter");
 			return LETTER_TOKEN;
 		}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 107 "Trabalho02.lex"
+#line 108 "Trabalho02.lex"
 {
 			addToken(yytext);
-			setType("opAd");
+			setAbout("opAd");
 			if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
 			else if(strcmp(yytext, "-") == 0) return SUB_TOKEN;
 			else return OR_TOKEN;
@@ -779,10 +780,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 115 "Trabalho02.lex"
+#line 116 "Trabalho02.lex"
 {
 				addToken(yytext);
-				setType("opMul");
+				setAbout("opMul");
 				if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
 				else if(strcmp(yytext, "/") == 0) return DIVIDE_TOKEN;
 				else return AND_TOKEN;
@@ -790,10 +791,10 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 123 "Trabalho02.lex"
+#line 124 "Trabalho02.lex"
 {
 				addToken(yytext);
-				setType("opRel");
+				setAbout("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
 				else if(strcmp(yytext, ">") == 0) return BIGGER_TOKEN;
 				else if(strcmp(yytext, "<=") == 0) return SMALLER_EQUAL_TOKEN;
@@ -804,20 +805,20 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 134 "Trabalho02.lex"
+#line 135 "Trabalho02.lex"
 {
 				addToken(yytext);
-				setType("outro");
+				setAbout("outro");
 				if(strcmp(yytext, ".") == 0) return DOT_TOKEN;
 				return OUTROS_TOKEN;
 			}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 141 "Trabalho02.lex"
+#line 142 "Trabalho02.lex"
 {	
 			addToken(yytext);
-			setType("tipo");
+			setAbout("tipo");
 			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
 			else if(strcmp(yytext, "real") == 0) return REAL_TOKEN;
 			else return BOOLEAN_TOKEN;
@@ -825,28 +826,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 149 "Trabalho02.lex"
+#line 150 "Trabalho02.lex"
 {	
 				addToken(yytext);
-				setType("empty");
+				setAbout("empty");
 				return VAZIO_TOKEN;
 			}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 155 "Trabalho02.lex"
+#line 156 "Trabalho02.lex"
 {
 				addToken(yytext);
-				setType("intlit");
+				setAbout("intlit");
             	return INT_TOKEN;
            }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 161 "Trabalho02.lex"
+#line 162 "Trabalho02.lex"
 {	
 				addToken(yytext);
-				setType("keyWord");
+				setAbout("keyWord");
 				if(strcmp(yytext, "if") == 0) return IF_TOKEN;
 				else if(strcmp(yytext, "else") == 0) return ELSE_TOKEN;
 				else if(strcmp(yytext, "then") == 0) return THEN_TOKEN;
@@ -871,31 +872,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 186 "Trabalho02.lex"
+#line 187 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 190 "Trabalho02.lex"
+#line 191 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 194 "Trabalho02.lex"
+#line 195 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 197 "Trabalho02.lex"
+#line 198 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 899 "lex.yy.c"
+#line 900 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1781,7 +1782,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 197 "Trabalho02.lex"
+#line 198 "Trabalho02.lex"
 
 
 void tableMain(){
@@ -1796,17 +1797,10 @@ void tableMain(){
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
-	//printf("---------------------------------------------------------------------------------\n");
-	//printf("|                               Tabela de simbolos                              |\n");
-	//printf("---------------------------------------------------------------------------------\n");
-	//printf("|\tToken\t|\tTipo\t|\tTamanho\t|\tLinha\t|\tColuna\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		//printf("|\t%s\t\t|\t%s\t\t|\t\t%i\t|\t%i\t|\t%i\t|\n", aux->token, aux->type, aux->lenght, aux->line, aux->column);
 		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column);
 		aux = aux->next;
 	}
-	//printf("---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	printf("# total de linhas = %d\n", num_lines+1);
-	//return;
 }

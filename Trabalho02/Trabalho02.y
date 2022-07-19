@@ -59,8 +59,7 @@ bool_lit: TRUE_TOKEN
 		| FALSE_TOKEN
 		;
 
-chamada_de_procedimento: id PLEFT_TOKEN lista_de_expressoes PRIGHT_TOKEN
-				 	   | id PLEFT_TOKEN vazio PRIGHT_TOKEN
+chamada_de_procedimento: id PLEFT_TOKEN vazio PRIGHT_TOKEN
 					   ;
 
 comando: atribuicao
@@ -141,10 +140,6 @@ lista_de_comandos:
 				 | lista_de_comandos comando DOTCOMMA_TOKEN
 				 | vazio
 				 ;
-
-lista_de_expressoes: expressao
-				   | lista_de_expressoes COMMA_TOKEN expressao
-				   ;
 
 lista_de_ids: id lista_de_ids COMMA_TOKEN id
 			| id COMMA_TOKEN id

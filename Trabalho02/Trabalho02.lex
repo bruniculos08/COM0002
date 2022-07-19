@@ -72,8 +72,6 @@ void setAbout(char *string){
 	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->about, string);
 }
-
-
 %}
 
 DIGITO  ([0-9])
@@ -90,7 +88,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 "program" {	
 			addToken(yytext);
-			setType("keyWord");
+			setAbout("keyWord");
 			return PROGRAM_TOKEN;
 		  }
 
@@ -157,7 +155,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {DIGITO}  {
 				addToken(yytext);
-				setType("intlit");
+				setAbout("intlit");
             	return INT_TOKEN;
            }
 
