@@ -83,7 +83,7 @@ OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"|"?"|"."|"'"|"{"|"}"
 TIPO "integer"|"real"|"boolean"
 VAZIO ""
 LETRA[a-zA-Z]
-KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="
+KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="|"to"|"for"
 %%
 
 "program" {	
@@ -181,6 +181,8 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				else if(strcmp(yytext, "of") == 0) return OF_TOKEN;
 				else if(strcmp(yytext, "(") == 0) return PLEFT_TOKEN;
 				else if(strcmp(yytext, ")") == 0) return PRIGHT_TOKEN;
+				else if(strcmp(yytext, "to") == 0) return TO_TOKEN;
+				else if(strcmp(yytext, "for") == 0) return FOR_TOKEN;
 				else return TWODOTS_EQUAL_TOKEN;
             }
 

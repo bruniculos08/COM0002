@@ -82,7 +82,9 @@
      OF_TOKEN = 297,
      PLEFT_TOKEN = 298,
      PRIGHT_TOKEN = 299,
-     TWODOTS_EQUAL_TOKEN = 300
+     TWODOTS_EQUAL_TOKEN = 300,
+     TO_TOKEN = 301,
+     FOR_TOKEN = 302
    };
 #endif
 

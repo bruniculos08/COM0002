@@ -1,5 +1,7 @@
 %{
+#include <math.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 
 extern int yylex();
@@ -11,13 +13,14 @@ extern FILE* yyin;
 // ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
 // ... declaradas duas vezes (se foram declaradas no código .y) 
 extern void tableMain();
+extern void setType();
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
-typedef struct Table table;
-typedef struct HeadTable headTable;
-extern headTable *fila;
+extern struct Table table;
+extern struct HeadTable headTable;
+//extern struct headTable *fila;
 
 
 void yyerror(const char* s);
@@ -46,7 +49,9 @@ void setType(char *string){
 %token INT_TOKEN 
 
 
-%token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN
+%token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN 
+
+%token TO_TOKEN FOR_TOKEN 
 
 %start programa
 
@@ -73,6 +78,12 @@ comando: atribuicao
 
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 				;
+			
+			
+comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN digito TWODOTS_TOKEN
+		   ;
+				
+comando_while: WHILE_TOKEN id op_rel id TWODOTS_TOKEN
 
 condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando 
 		   | IF_TOKEN expressao THEN_TOKEN comando vazio
@@ -190,10 +201,11 @@ programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo END {
 													  printf("\nPrograma valido\n");
 													}
 		;
-
-seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
+				
+seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN 
 	   | BLEFT_TOKEN expressao BRIGHT_TOKEN
 	   | vazio
+	   ;
 
 termo: termo op_mul fator
 	 | fator 
@@ -210,6 +222,7 @@ tipo_simples: INTEGER_TOKEN | REAL_TOKEN | BOOLEAN_TOKEN
 		    ;
 
 variavel: id seletor
+		;
 
 vazio: 
 	 ;
