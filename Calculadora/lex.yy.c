@@ -285,12 +285,12 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 	*yy_cp = '\0'; \
 	yy_c_buf_p = yy_cp;
 
-#define YY_NUM_RULES 7
-#define YY_END_OF_BUFFER 8
+#define YY_NUM_RULES 8
+#define YY_END_OF_BUFFER 9
 static yyconst short int yy_accept[22] =
     {   0,
-        0,    0,    8,    6,    4,    5,    1,    6,    6,    4,
-        0,    1,    0,    0,    1,    0,    0,    0,    2,    3,
+        0,    0,    9,    7,    5,    6,    1,    7,    7,    5,
+        0,    1,    0,    0,    2,    0,    0,    0,    3,    4,
         0
     } ;
 
@@ -388,6 +388,7 @@ char *yytext;
 
 #include "calculadora.tab.h"
 #define yyterminate() return END;
+#define YY_DECL int yylex()
 
 void tableMain();
 
@@ -397,7 +398,7 @@ int num_tokens = 0;
 
 // Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
 
-#line 401 "lex.yy.c"
+#line 402 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -548,10 +549,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 28 "calculadora.lex"
+#line 29 "calculadora.lex"
 
 
-#line 555 "lex.yy.c"
+#line 556 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -636,41 +637,45 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 30 "calculadora.lex"
+#line 31 "calculadora.lex"
 { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 32 "calculadora.lex"
-{ num_tokens++; num_columns += strlen(yytext); return T_TRUE; }
+#line 33 "calculadora.lex"
+{ num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 34 "calculadora.lex"
-{ num_tokens++; num_columns += strlen(yytext); return T_FALSE; }
+#line 35 "calculadora.lex"
+{ num_tokens++; num_columns += strlen(yytext); return T_TRUE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 36 "calculadora.lex"
-{ num_columns++; //return T_JUMP; 
-        }	
+#line 37 "calculadora.lex"
+{ num_tokens++; num_columns += strlen(yytext); return T_FALSE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 39 "calculadora.lex"
-{ ++num_lines; num_columns = 0; }
+{ num_columns++; }	
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 41 "calculadora.lex"
-{}
+{ ++num_lines; num_columns = 0; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 42 "calculadora.lex"
+#line 43 "calculadora.lex"
+{}
+	YY_BREAK
+case 8:
+YY_RULE_SETUP
+#line 44 "calculadora.lex"
 ECHO;
 	YY_BREAK
-#line 674 "lex.yy.c"
+#line 679 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1556,5 +1561,5 @@ int main()
 	return 0;
 	}
 #endif
-#line 42 "calculadora.lex"
+#line 44 "calculadora.lex"
 

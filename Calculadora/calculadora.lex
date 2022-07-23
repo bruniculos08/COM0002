@@ -10,6 +10,7 @@
 
 #include "calculadora.tab.h"
 #define yyterminate() return END;
+#define YY_DECL int yylex()
 
 void tableMain();
 
@@ -27,14 +28,15 @@ FALSE "false"
 
 %%
 
-{DIGITO}+|{DIGITO}+"."{DIGITO}+ { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
+{DIGITO}+ { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
+
+{DIGITO}+"."{DIGITO}+ { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
 
 {TRUE} { num_tokens++; num_columns += strlen(yytext); return T_TRUE; }
 
 {FALSE} { num_tokens++; num_columns += strlen(yytext); return T_FALSE; }
 
-[ \t]+  { num_columns++; //return T_JUMP; 
-        }	
+[ \t]+  { num_columns++; }	
 
 \n { ++num_lines; num_columns = 0; }
 
