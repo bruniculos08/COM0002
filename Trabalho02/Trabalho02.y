@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern int getLocation(char *string);
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -22,11 +23,10 @@ extern struct Table table;
 extern struct HeadTable headTable;
 extern struct headTable *fila;
 
-
 void generateHeader();
+void generateFooter();
 void yyerror(const char* s);
 FILE *f;
-int numberOfID = 0;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}
@@ -44,7 +44,7 @@ int numberOfID = 0;
 %token VAZIO_TOKEN 
 
 
-%token INT_TOKEN 
+%token INT_TOKEN FLOAT_TOKEN
 
 
 %token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN 
@@ -62,13 +62,9 @@ bool_lit: TRUE_TOKEN
 		| FALSE_TOKEN
 		;
 
-chamada_de_procedimento: ID_TOKEN PLEFT_TOKEN vazio PRIGHT_TOKEN
-					   ;
-
 comando: atribuicao
 	   | condicional
 	   | iterativo
-	   | chamada_de_procedimento
 	   | comando_composto
 	   | comando_for
 	   | comando_while
@@ -87,18 +83,12 @@ condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando
 		   | IF_TOKEN expressao THEN_TOKEN comando vazio
 		   ;
 
-corpo: 
-	 | declaracao comando_composto
+corpo: declaracao comando_composto
   	 ;
 
 declaracao: 
 		  |	declaracao_de_variavel
-		  | declaracao_de_procedimento
   		  ;
-
-declaracao_de_procedimento: PROCEDURE_TOKEN ID_TOKEN PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
-  		  			 	  | PROCEDURE_TOKEN ID_TOKEN PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
-  		  			 	  ;
 
 declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
   		  			  ;
@@ -122,11 +112,6 @@ fator: variavel
 	 | PLEFT_TOKEN expressao PRIGHT_TOKEN
 	 ;
 
-float_lit: INT_TOKEN DOT_TOKEN INT_TOKEN
-		 | INT_TOKEN DOT_TOKEN
-		 | DOT_TOKEN INT_TOKEN
-		 ;
-
 iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 		 ;
 
@@ -140,13 +125,10 @@ lista_de_ids: ID_TOKEN lista_de_ids COMMA_TOKEN ID_TOKEN
 			| ID_TOKEN COMMA_TOKEN ID_TOKEN
 			;
 
-lista_de_parametros: parametros
-				   | lista_de_parametros DOTCOMMA_TOKEN parametros
-				   ;
 
 literal: bool_lit
 	   | INT_TOKEN
-	   | float_lit
+	   | FLOAT_TOKEN
 	   ;
 
 literals: literals literal
@@ -174,16 +156,12 @@ op_rel: SMALLER_TOKEN
 outros: OUTROS_TOKEN
 	  ;
 
-parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
-		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
-		  ;
-
-programa: PROGRAM_TOKEN ID_TOKEN DOTCOMMA_TOKEN corpo END { 
-													  generateHeader();
+programa: PROGRAM_TOKEN { generateHeader(); } ID_TOKEN DOTCOMMA_TOKEN corpo END { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
 													  // ... programa está sintáticamente correto).
 													  printf("\nPrograma valido\n");
+													  generateFooter();
 													}
 		;
 				
@@ -238,14 +216,29 @@ void yyerror(const char* s) {
 void generateHeader(){
 	f = fopen("output.j", "w+");
 	fprintf(f, ".class public output/Verb\n.super java/lang/Object\n");
-	fprintf(f, ".method public <init>()V");
-	fprintf(f, "	aload_0");
+	fprintf(f, ".method public <init>()V\n");
+	fprintf(f, "	aload_0\n");
 	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
-	fprintf(f, ".limit locals 100\n.limit stack 100\n");
+}
+
+void generateFooter(){
+	f = fopen("output.j", "a");
+	fprintf(f, "	return\n");
+	fprintf(f, ".end method");
+}
+
+void generateMainHeader(){
+	f = fopen("output.j", "a");
+	fprintf(f, "	return\n");
+	fprintf(f, ".end method\n");
+}
+
+void generateMainFooter(){
+
 }
 
 void atributeVariable(char *id, int value){
-	f = fopen("output.j", "w");
+	f = fopen("output.j", "a");
 	fprintf(f, ".bipush %i\n", value);
-	fprintf(f, ".istore %i", numberOfID);
+	fprintf(f, ".istore %i", getLocation(id));
 }

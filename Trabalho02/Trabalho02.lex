@@ -23,6 +23,8 @@ struct Table {
     int lenght;
     int line;
     int column;
+	int stackLocation;
+	//table *before;
 	table *next;
 };
 
@@ -35,33 +37,57 @@ struct HeadTable {
 headTable *fila = NULL;
 int numberOfTokens = 0;
 
+void setLocation(char *string, int stackLocation){
+	table *auxTable = fila->first;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token,string) == 0) auxTable->stackLocation = stackLocation;
+	}
+}
+
+int getLocation(char *string){
+	table *auxTable = fila->first;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token,string) == 0) return auxTable->stackLocation;
+	}
+	return -1;
+}
+
+char *getLastID(){
+
+}
+
+
 // Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
 
+table *createTable(char *string){
+	numberOfTokens++;
+	table *newToken;
+	newToken = (table *)malloc(sizeof(table));
+	newToken->token = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(newToken->token, string);
+	newToken->lenght = strlen(string);
+	newToken->line = num_lines;
+	newToken->column = num_columns;
+	newToken->stackLocation = -1;
+	newToken->about = NULL;
+	newToken->type = NULL;
+	//newToken->before = NULL; 
+	newToken->next = NULL;
+}
+
+headTable *createHeadTable(char *string){
+	fila = (headTable *)malloc(sizeof(headTable));
+	fila->first = createTable(string);
+	fila->last = fila->first;
+}
+
 void addToken(char *string){
-    numberOfTokens++;
-    if(fila == NULL){
-		fila = (headTable *)malloc(sizeof(headTable));
-		fila->first = (table *)malloc(sizeof(table));
-		fila->first->token = (char *)malloc(sizeof(char)*strlen(string));
-		strcpy(fila->first->token, string);
-		fila->first->lenght = strlen(string);
-		fila->first->line = num_lines;
-		fila->first->column = num_columns;
-		fila->first->next = NULL;
-		fila->last = fila->first;
-	}
+    if(fila == NULL) fila = createHeadTable(string);
 	else{
 		table *newToken;
-		newToken = (table *)malloc(sizeof(table));
-		newToken->token = (char *)malloc(sizeof(char)*strlen(string));
-		strcpy(newToken->token, string);
-    	newToken->lenght = strlen(string);
-		newToken->line = num_lines;
-		newToken->column = num_columns;
-		newToken->about = NULL;
-		newToken->type = NULL; 
-		newToken->next = NULL;
+		newToken = createTable(string);
 		fila->last->next = newToken;
+		//newToken->before = fila->last;
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
@@ -77,7 +103,7 @@ void setType(char *string){
 	strcpy(fila->last->type, string);
 }
 
-void findToken(){
+void findIDStackLocation(char *string){
 
 }
 
@@ -107,12 +133,6 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			if(strcmp(yytext, "true") == 0) return TRUE_TOKEN;
 			else return FALSE_TOKEN;
 		  }
-
-{LETRA}+({DIGITO}|{LETRA})* {
-			addToken(yytext);
-			setAbout("ID");
-			return ID_TOKEN;
-		}
 
 {OP_AD} {
 			addToken(yytext);
@@ -164,7 +184,13 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 {DIGITO}+  {
 				addToken(yytext);
-				setAbout("intlit");
+				setAbout("int");
+            	return INT_TOKEN;
+           }
+
+({DIGITO}+"."{DIGITO}*)|({DIGITO}*"."{DIGITO}+)   {
+				addToken(yytext);
+				setAbout("float");
             	return INT_TOKEN;
            }
 
@@ -195,6 +221,12 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				else return TWODOTS_EQUAL_TOKEN;
             }
 
+{LETRA}+({DIGITO}|{LETRA})* {
+			addToken(yytext);
+			setAbout("ID");
+			return ID_TOKEN;
+		}
+
 [ \t]+  {
 			num_columns++;
 		}	
@@ -209,7 +241,6 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 %%
 
 void tableMain(){
-	
 	table *aux;
 	aux = (table *)malloc(sizeof(table));
 	aux = fila->first;
