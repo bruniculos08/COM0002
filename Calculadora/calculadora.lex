@@ -23,22 +23,22 @@ int num_tokens = 0;
 %}
 
 DIGITO  ([0-9])
-TRUE "true"
-FALSE "false"
+NUM {DIGITO}+
 
 %%
+\n { ++num_lines; num_columns = 0; return T_JUMP;}
 
-{DIGITO}+ { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
+{NUM} { yylval.ival = atoi(yytext); num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
 
-{DIGITO}+"."{DIGITO}+ { num_tokens++; num_columns += strlen(yytext); return T_NUMBER; }
+[+] { num_tokens++; num_columns += strlen(yytext); return T_SUM; }
 
-{TRUE} { num_tokens++; num_columns += strlen(yytext); return T_TRUE; }
+[-] { num_tokens++; num_columns += strlen(yytext); return T_SUB; }
 
-{FALSE} { num_tokens++; num_columns += strlen(yytext); return T_FALSE; }
+[*] { num_tokens++; num_columns += strlen(yytext); return T_MUL; }
+
+[/] { num_tokens++; num_columns += strlen(yytext); return T_DIV; }
 
 [ \t]+  { num_columns++; }	
-
-\n { ++num_lines; num_columns = 0; }
 
 . {}
 %%

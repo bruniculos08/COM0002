@@ -43,7 +43,11 @@
      T_NUMBER = 258,
      T_JUMP = 259,
      T_TRUE = 260,
-     T_FALSE = 261
+     T_FALSE = 261,
+     T_SUM = 262,
+     T_SUB = 263,
+     T_MUL = 264,
+     T_DIV = 265
    };
 #endif
 
@@ -62,7 +66,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 66 "calculadora.tab.h"
+#line 70 "calculadora.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

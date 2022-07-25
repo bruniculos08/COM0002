@@ -30,29 +30,29 @@ int and_OP(int x, int y);
 }
 
 %token END 0 "end of file"
-%token T_NUMBER T_JUMP T_TRUE T_FALSE 
+%token T_NUMBER T_JUMP T_TRUE T_FALSE T_SUM T_SUB T_MUL T_DIV
 
-%type<ival> expressao soma_sub mult_div T_NUMBER
+%type<ival> expressao mul_div T_NUMBER
 
 %start algebra
 
 %%
 
-algebra: expressao END 	    { printf("Resultado = %f ", $1); }
+algebra: 
+	   | expressao END { printf("Resultado = %i\n", $1); }
+	   | expressao { printf("Resultado = %i\n", $1); } T_JUMP algebra END
 	   ;
 
-expressao: soma_sub { $$ = $1; } // (1) Essa regra é inútil porém estou usando pela organização.
+expressao: expressao T_SUM mul_div  {$$ = $1 + $3;}
+		 | expressao T_SUB mul_div	{$$ = $1 - $3;}
+		 | mul_div 					{$$ = $1;}
 		 ;
 
-soma_sub: soma_sub "+" mult_div { $$ = $1 + $3; }
-		| soma_sub "-" mult_div { $$ = $1 - $3; }
-		| mult_div {$$ = $1}
-		;
+mul_div: mul_div T_MUL T_NUMBER {$$ = $1 * $3;}
+	   | mul_div T_DIV T_NUMBER	{$$ = $1 / $3;}
+	   | T_NUMBER				{$$ = $1;}
+	   ;
 
-mult_div: mult_div "*" T_NUMBER { $$ = $1 * $3; }
-		| mult_div "/" T_NUMBER { $$ = $1 / $3; }
-		| T_NUMBER				{ $$ = $1; }
-		;
 %%
 
 int main() {

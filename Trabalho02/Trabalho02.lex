@@ -32,7 +32,6 @@ struct HeadTable {
 	table *last;
 };
 
-
 headTable *fila = NULL;
 int numberOfTokens = 0;
 
@@ -72,6 +71,16 @@ void setAbout(char *string){
 	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->about, string);
 }
+
+void setType(char *string){
+	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
+	strcpy(fila->last->type, string);
+}
+
+void findToken(){
+
+}
+
 %}
 
 DIGITO  ([0-9])
@@ -99,10 +108,10 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			else return FALSE_TOKEN;
 		  }
 
-{LETRA} {
+{LETRA}+[{LETRA}{DIGITO}]+ {
 			addToken(yytext);
-			setAbout("letter");
-			return LETTER_TOKEN;
+			setAbout("ID");
+			return ID_TOKEN;
 		}
 
 {OP_AD} {
@@ -153,7 +162,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				return VAZIO_TOKEN;
 			}
 
-{DIGITO}  {
+{DIGITO}+  {
 				addToken(yytext);
 				setAbout("intlit");
             	return INT_TOKEN;

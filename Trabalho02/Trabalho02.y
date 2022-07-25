@@ -20,15 +20,13 @@ extern int numberOfTokens;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 extern struct Table table;
 extern struct HeadTable headTable;
-//extern struct headTable *fila;
+extern struct headTable *fila;
 
 
+void generateHeader();
 void yyerror(const char* s);
-
-void setType(char *string){
-	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->type, string);
-}
+FILE *f;
+int numberOfID = 0;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}
@@ -37,7 +35,7 @@ void setType(char *string){
 
 %token PROGRAM_TOKEN 
 %token TRUE_TOKEN FALSE_TOKEN 
-%token LETTER_TOKEN
+%token ID_TOKEN
 %token ADD_TOKEN SUB_TOKEN OR_TOKEN
 %token MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %token SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
@@ -80,10 +78,10 @@ comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 				;
 			
 			
-comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN digito TWODOTS_TOKEN
+comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN INT_TOKEN TWODOTS_TOKEN
 		   ;
 				
-comando_while: WHILE_TOKEN id op_rel id TWODOTS_TOKEN
+comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 
 condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando 
 		   | IF_TOKEN expressao THEN_TOKEN comando vazio
@@ -97,8 +95,8 @@ declaracao:
 		  | declaracao_de_procedimento
   		  ;
 
-declaracao_de_procedimento: PROCEDURE_TOKEN id PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
-  		  			 	  | PROCEDURE_TOKEN id PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+declaracao_de_procedimento: PROCEDURE_TOKEN ID_TOKEN PLEFT_TOKEN lista_de_parametros TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
+  		  			 	  | PROCEDURE_TOKEN ID_TOKEN PLEFT_TOKEN vazio TWODOTS_TOKEN tipo_simples DOTCOMMA_TOKEN corpo
   		  			 	  ;
 
 declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
@@ -109,10 +107,6 @@ declaracoes:
 		   | declaracoes declaracao DOTCOMMA_TOKEN
 		   | vazio
 		   ;
-
-digito: INT_TOKEN digito
-	  | INT_TOKEN
-	  ;
 
 expressao: expressao_simples
 		 | expressao_simples op_rel expressao_simples
@@ -127,18 +121,10 @@ fator: variavel
 	 | PLEFT_TOKEN expressao PRIGHT_TOKEN
 	 ;
 
-float_lit: int_lit DOT_TOKEN int_lit
-		 | int_lit DOT_TOKEN
-		 | DOT_TOKEN int_lit
+float_lit: INT_TOKEN DOT_TOKEN INT_TOKEN
+		 | INT_TOKEN DOT_TOKEN
+		 | DOT_TOKEN INT_TOKEN
 		 ;
-
-id: letra
-  | id letra 
-  | id digito
-  ;
-
-int_lit: digito
-	   | int_lit digito
 
 iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 		 ;
@@ -152,8 +138,8 @@ lista_de_comandos:
 				 | vazio
 				 ;
 
-lista_de_ids: id lista_de_ids COMMA_TOKEN id
-			| id COMMA_TOKEN id
+lista_de_ids: ID_TOKEN lista_de_ids COMMA_TOKEN ID_TOKEN
+			| ID_TOKEN COMMA_TOKEN ID_TOKEN
 			;
 
 lista_de_parametros: parametros
@@ -161,7 +147,7 @@ lista_de_parametros: parametros
 				   ;
 
 literal: bool_lit
-	   | int_lit
+	   | INT_TOKEN
 	   | float_lit
 	   ;
 
@@ -194,7 +180,8 @@ parametros: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo_simples
 		  | vazio lista_de_ids TWODOTS_TOKEN tipo_simples
 		  ;
 
-programa: PROGRAM_TOKEN id DOTCOMMA_TOKEN corpo END { 
+programa: PROGRAM_TOKEN ID_TOKEN DOTCOMMA_TOKEN corpo END { 
+													  generateHeader();
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
 													  // ... programa está sintáticamente correto).
@@ -221,7 +208,7 @@ tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literals BRIGHT_TOKEN OF_TOKEN tipo
 tipo_simples: INTEGER_TOKEN | REAL_TOKEN | BOOLEAN_TOKEN
 		    ;
 
-variavel: id seletor
+variavel: ID_TOKEN seletor
 		;
 
 vazio: 
@@ -248,4 +235,19 @@ int main() {
 void yyerror(const char* s) {
 	fprintf(stderr, "Erro de analise (sintatica): %s\n", s);
 	exit(1);
+}
+
+void generateHeader(){
+	f = fopen("output.j", "w+");
+	fprintf(f, ".class public output/Verb\n.super java/lang/Object\n");
+	fprintf(f, ".method public <init>()V");
+	fprintf(f, "	aload_0");
+	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
+	fprintf(f, ".limit locals 100\n.limit stack 100\n";
+}
+
+void atributeVariable(char *id, int value){
+	f = fopen("output.j", "w");
+	fprintf(f, ".bipush %i\n", value);
+	fprintf(f, ".istore %")
 }
