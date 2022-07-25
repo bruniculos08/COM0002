@@ -507,7 +507,11 @@ int getLocation(char *string){
 }
 
 char *getLastID(){
-
+	table *auxTable = fila->last;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->about, id) == 0) return auxTable->about;
+	}
+	return NULL;
 }
 
 
@@ -525,7 +529,7 @@ table *createTable(char *string){
 	newToken->stackLocation = -1;
 	newToken->about = NULL;
 	newToken->type = NULL;
-	//newToken->before = NULL; 
+	newToken->before = NULL; 
 	newToken->next = NULL;
 }
 
@@ -541,7 +545,7 @@ void addToken(char *string){
 		table *newToken;
 		newToken = createTable(string);
 		fila->last->next = newToken;
-		//newToken->before = fila->last;
+		newToken->before = fila->last;
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
@@ -561,7 +565,7 @@ void findIDStackLocation(char *string){
 
 }
 
-#line 565 "lex.yy.c"
+#line 569 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -712,10 +716,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 122 "Trabalho02.lex"
+#line 126 "Trabalho02.lex"
 
 
-#line 719 "lex.yy.c"
+#line 723 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -800,7 +804,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 124 "Trabalho02.lex"
+#line 128 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setAbout("keyWord");
@@ -809,7 +813,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 130 "Trabalho02.lex"
+#line 134 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setAbout("boolit");
@@ -819,7 +823,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 137 "Trabalho02.lex"
+#line 141 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setAbout("opAd");
@@ -830,7 +834,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 145 "Trabalho02.lex"
+#line 149 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("opMul");
@@ -841,7 +845,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 153 "Trabalho02.lex"
+#line 157 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("opRel");
@@ -855,7 +859,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 164 "Trabalho02.lex"
+#line 168 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("outro");
@@ -865,7 +869,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 171 "Trabalho02.lex"
+#line 175 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setAbout("tipo");
@@ -876,7 +880,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 179 "Trabalho02.lex"
+#line 183 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("empty");
@@ -885,7 +889,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 185 "Trabalho02.lex"
+#line 189 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("int");
@@ -894,7 +898,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 191 "Trabalho02.lex"
+#line 195 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("float");
@@ -903,7 +907,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 197 "Trabalho02.lex"
+#line 201 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("keyWord");
@@ -933,7 +937,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 224 "Trabalho02.lex"
+#line 228 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setAbout("ID");
@@ -942,31 +946,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 230 "Trabalho02.lex"
+#line 234 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 234 "Trabalho02.lex"
+#line 238 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 238 "Trabalho02.lex"
+#line 242 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 241 "Trabalho02.lex"
+#line 245 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 970 "lex.yy.c"
+#line 974 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1852,7 +1856,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 241 "Trabalho02.lex"
+#line 245 "Trabalho02.lex"
 
 
 void tableMain(){

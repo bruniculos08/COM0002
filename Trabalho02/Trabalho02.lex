@@ -53,7 +53,11 @@ int getLocation(char *string){
 }
 
 char *getLastID(){
-
+	table *auxTable = fila->last;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->about, id) == 0) return auxTable->about;
+	}
+	return NULL;
 }
 
 
@@ -71,7 +75,7 @@ table *createTable(char *string){
 	newToken->stackLocation = -1;
 	newToken->about = NULL;
 	newToken->type = NULL;
-	//newToken->before = NULL; 
+	newToken->before = NULL; 
 	newToken->next = NULL;
 }
 
@@ -87,7 +91,7 @@ void addToken(char *string){
 		table *newToken;
 		newToken = createTable(string);
 		fila->last->next = newToken;
-		//newToken->before = fila->last;
+		newToken->before = fila->last;
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
