@@ -62,7 +62,7 @@ bool_lit: TRUE_TOKEN
 		| FALSE_TOKEN
 		;
 
-chamada_de_procedimento: id PLEFT_TOKEN vazio PRIGHT_TOKEN
+chamada_de_procedimento: ID_TOKEN PLEFT_TOKEN vazio PRIGHT_TOKEN
 					   ;
 
 comando: atribuicao
@@ -87,7 +87,8 @@ condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando
 		   | IF_TOKEN expressao THEN_TOKEN comando vazio
 		   ;
 
-corpo: declaracao comando_composto
+corpo: 
+	 | declaracao comando_composto
   	 ;
 
 declaracao: 
@@ -128,9 +129,6 @@ float_lit: INT_TOKEN DOT_TOKEN INT_TOKEN
 
 iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 		 ;
-	
-letra: LETTER_TOKEN
-	 ;
 
 lista_de_comandos: 
 			     | comando DOTCOMMA_TOKEN 
@@ -243,11 +241,11 @@ void generateHeader(){
 	fprintf(f, ".method public <init>()V");
 	fprintf(f, "	aload_0");
 	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
-	fprintf(f, ".limit locals 100\n.limit stack 100\n";
+	fprintf(f, ".limit locals 100\n.limit stack 100\n");
 }
 
 void atributeVariable(char *id, int value){
 	f = fopen("output.j", "w");
 	fprintf(f, ".bipush %i\n", value);
-	fprintf(f, ".istore %")
+	fprintf(f, ".istore %i", numberOfID);
 }

@@ -108,7 +108,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			else return FALSE_TOKEN;
 		  }
 
-{LETRA}+[{LETRA}{DIGITO}]+ {
+{LETRA}+({DIGITO}|{LETRA})* {
 			addToken(yytext);
 			setAbout("ID");
 			return ID_TOKEN;

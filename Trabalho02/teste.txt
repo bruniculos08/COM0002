@@ -1,1 +1,1 @@
-program Bru1no1 ; begin end
+program B ; begin end
