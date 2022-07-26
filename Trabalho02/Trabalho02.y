@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "Compiler.h"
 
-extern int getLocation(char *string);
-extern void setLocation(char *string, int stackLocation);
-extern char *getLastID();
+
+
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -15,16 +15,13 @@ extern FILE* yyin;
 // (1) As funções e variáveis declaradas no arquivo .lex devem ser declaradas no arquivo .y com o uso de "extern",...
 // ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
 // ... declaradas duas vezes (se foram declaradas no código .y) 
-extern void tableMain();
-extern void setType();
+
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
 extern int numberOfUsedStackLocation;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
-extern struct Table table;
-extern struct HeadTable headTable;
-extern struct headTable *fila;
+
 
 void loadVariableValue(int stackLocal);
 void putNumberInStack(int value);
@@ -35,7 +32,7 @@ void generateFooter();
 void generateMainHeader();
 void generateMainFooter();
 void yyerror(const char* s);
-FILE *f;
+extern FILE *f;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}

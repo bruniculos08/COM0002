@@ -7,117 +7,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include "Compiler.h"
 #include "Trabalho02.tab.h"
 #define yyterminate() return END;
 
-void tableMain();
-
-int num_lines = 0;
-int num_columns = 0;
-
-typedef struct Table table;
-struct Table {
-    char *token;
-	char *about;
-	char *type;
-    int lenght;
-    int line;
-    int column;
-	int stackLocation;
-	table *before;
-	table *next;
-};
-
-typedef struct HeadTable headTable;
-struct HeadTable {
-	table *first;
-	table *last;
-};
-
-headTable *fila = NULL;
-int numberOfTokens = 0;
-int numberOfUsedStackLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedStackLocation + 1
-
-void setTypeID(char *id, char *type){
-	table *auxTable = fila->first;
-	while(auxTable != NULL) if(strcmp(auxTable->token, id) == 0) auxTable->type = type;
-}
-
-void setLocation(char *string, int stackLocation){
-	table *auxTable = fila->first;
-	while(auxTable != NULL){
-		if(strcmp(auxTable->token, string) == 0) auxTable->stackLocation = stackLocation;
-		auxTable = auxTable->next;
-	}
-	return;
-}
-
-int getLocation(char *string){
-	if(fila == NULL) return -1;
-	table *auxTable = fila->first;
-	while(auxTable != NULL){
-		if(strcmp(auxTable->token,string) == 0) return auxTable->stackLocation;
-		auxTable = auxTable->next;
-	}
-	return -1;
-}
-
-char *getLastID(){
-	table *auxTable = fila->last;
-	while(auxTable != NULL){
-		if(strcmp(auxTable->about, "id") == 0) return auxTable->token;
-		auxTable = auxTable->before;
-	}
-	return NULL;
-}
-
-
-// Para rodar no windows: gcc lex.yy.c -L"C:\GnuWin32\lib" -lfl -o nomeDoArquivo
-
-table *createTable(char *string){
-	numberOfTokens++;
-	table *newToken;
-	newToken = (table *)malloc(sizeof(table));
-	newToken->token = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(newToken->token, string);
-	newToken->lenght = strlen(string);
-	newToken->line = num_lines;
-	newToken->column = num_columns;
-	newToken->about = NULL;
-	newToken->type = NULL;
-	newToken->before = NULL; 
-	newToken->next = NULL;
-	newToken->stackLocation = -1;
-}
-
-headTable *createHeadTable(char *string){
-	fila = (headTable *)malloc(sizeof(headTable));
-	fila->first = createTable(string);
-	fila->last = fila->first;
-}
-
-void addToken(char *string){
-    if(fila == NULL) fila = createHeadTable(string);
-	else{
-		table *newToken;
-		newToken = createTable(string);
-		fila->last->next = newToken;
-		newToken->before = fila->last;
-		newToken->stackLocation = getLocation(string);
-		fila->last = newToken;
-	}
-	num_columns += strlen(string);
-}
-
-void setAbout(char *string){
-	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->about, string);
-}
-
-void setType(char *string){
-	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->type, string);
-}
+extern int num_columns;
+extern int num_lines;
 
 %}
 
@@ -256,22 +151,3 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 
 		    }
 %%
-
-void tableMain(){
-	table *aux;
-	aux = (table *)malloc(sizeof(table));
-	aux = fila->first;
-
-	FILE *filePointer;
-    filePointer = fopen("resultado.txt", "w+");
-    fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t|\tStackLocal\t\t|\n");
-	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column, aux->stackLocation);
-		aux = aux->next;
-	}
-	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	printf("# total de linhas = %d\n", num_lines+1);
-}
