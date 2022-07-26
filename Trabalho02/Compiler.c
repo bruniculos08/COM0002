@@ -6,7 +6,7 @@
 
 headTable *fila = NULL;
 int numberOfTokens = 0;
-int numberOfUsedStackLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedStackLocation + 1
+int numberOfUsedHeapLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedHeapLocation + 1
 int num_lines = 0;
 int num_columns = 0;
 FILE *f;
@@ -22,24 +22,24 @@ void setTypeID(char *id, char *type){
 	}
 }
 
-// (2) Def.: essa função recebe um id e uma localização da pilha de variáveis (do assembly code) e anota...
+// (2) Def.: essa função recebe um id e uma localização da heap de variáveis (do assembly code) e anota...
 // ... tal localização em no atributo stackLocation de toda ocorrência do ID na tabela de símbolos.
-void setLocation(char *id, int stackLocation){
+void setLocation(char *id, int heapLocation){
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token, id) == 0) auxTable->stackLocation = stackLocation;
+		if(strcmp(auxTable->token, id) == 0) auxTable->heapLocation = heapLocation;
 		auxTable = auxTable->next;
 	}
 	return;
 }
 
 // (3) Def.: essa função recebe um id e busca alguma ocorrência do mesmo na tabela de símbolos e então...
-// ... retorna o atributo stackLocation (localização na pilha de símbolos do assembly code) associado ao id.
+// ... retorna o atributo heapLocation (localização na heap de símbolos do assembly code) associado ao id.
 int getLocation(char *id){
 	if(fila == NULL) return -1;
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token, id) == 0) return auxTable->stackLocation;
+		if(strcmp(auxTable->token, id) == 0) return auxTable->heapLocation;
 		auxTable = auxTable->next;
 	}
 	return -1;
@@ -63,7 +63,7 @@ void addToken(char *string){
 		newToken = createTable(string);
 		fila->last->next = newToken;
 		newToken->before = fila->last;
-		newToken->stackLocation = getLocation(string);
+		newToken->heapLocation = getLocation(string);
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
@@ -88,7 +88,7 @@ void tableMain(){
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t|\tStackLocal\t\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column, aux->stackLocation);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column, aux->heapLocation);
 		aux = aux->next;
 	}
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
@@ -108,15 +108,17 @@ table *createTable(char *string){
 	newToken->type = NULL;
 	newToken->before = NULL; 
 	newToken->next = NULL;
-	newToken->stackLocation = -1;
+	newToken->heapLocation = -1;
 }
 
+// (9) Def.: cria um elemento na tabela de símbolos.
 headTable *createHeadTable(char *string){
 	fila = (headTable *)malloc(sizeof(headTable));
 	fila->first = createTable(string);
 	fila->last = fila->first;
 }
 
+// (10) Def.: criar o arquivo e gera o cabeçalho do código resultante da tradução dirigida por sintaxe
 void generateHeader(){
 	f = fopen("output.j", "w+");
 	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");
@@ -148,14 +150,14 @@ void generateMainHeader(){
 
 void atributeVariable(char *id){
 	f = fopen("output.j", "a");
-	int stackLocal = getLocation(id);
-	if(stackLocal == -1){
-		numberOfUsedStackLocation++;
-		stackLocal = numberOfUsedStackLocation;
+	int heapLocation = getLocation(id);
+	if(heapLocation == -1){
+		numberOfUsedHeapLocation++;
+		heapLocation = numberOfUsedHeapLocation;
 	}
-	fprintf(f, ".istore %i\n", stackLocal);
-	printf("Setting variable %s stackLocal as %i\n", id, stackLocal);
-	setLocation(id, stackLocal);
+	fprintf(f, ".istore %i\n", heapLocation);
+	printf("Setting variable %s stackLocal as %i\n", id, heapLocation);
+	setLocation(id, heapLocation);
 }
 
 void putNumberInStack(int value){
@@ -172,9 +174,9 @@ void putOpInStack(char op){
 	else fprintf(f, ".div\n");
 }
 
-void loadVariableValue(int stackLocal){
+void loadVariableValue(int heapLocation){
 	f = fopen("output.j", "a");
-	fprintf(f, ".iload %i\n", stackLocal);
+	fprintf(f, ".iload %i\n", heapLocation);
 }
 
 book *createBook(){

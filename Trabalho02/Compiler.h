@@ -3,6 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+
+int yylex(); 
+int yyparse();
+FILE* yyin;
+
 typedef struct Table table;
 struct Table {
     char *token;
@@ -11,7 +16,7 @@ struct Table {
     int lenght;
     int line;
     int column;
-	int stackLocation;
+	int heapLocation;
 	table *before;
 	table *next;
 };
