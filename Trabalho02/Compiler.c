@@ -168,3 +168,17 @@ void loadVariableValue(int stackLocal){
 	f = fopen("output.j", "a");
 	fprintf(f, ".iload %i\n", stackLocal);
 }
+
+createHeaderListOfStrings(){
+
+}
+
+createListOfStrings(char *newString){
+
+}
+
+void addToStringList(stringListHead *HeaderListOfStrings, char *newString){
+	stringList *auxListOfStrings = HeaderListOfStrings->first;
+	if(auxListOfStrings == NULL) auxListOfStrings = createListOfStrings(newString);
+	else while
+}

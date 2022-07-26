@@ -76,8 +76,6 @@
 #include <stdlib.h>
 #include "Compiler.h"
 
-
-
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -87,6 +85,7 @@ extern FILE* yyin;
 // ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
 // ... declaradas duas vezes (se foram declaradas no código .y) 
 
+extern FILE *f;
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
@@ -94,22 +93,12 @@ extern int numberOfUsedStackLocation;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 
 
-void loadVariableValue(int stackLocal);
-void putNumberInStack(int value);
-void putOpInStack(char op);
-void atributeVariable(char *id);
-void generateHeader();
-void generateFooter();
-void generateMainHeader();
-void generateMainFooter();
-void yyerror(const char* s);
-extern FILE *f;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 
 
 /* Line 189 of yacc.c  */
-#line 113 "Trabalho02.tab.c"
+#line 102 "Trabalho02.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -193,7 +182,7 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 40 "Trabalho02.y"
+#line 29 "Trabalho02.y"
 
 	int ival;
 	float fval;
@@ -203,7 +192,7 @@ typedef union YYSTYPE
 
 
 /* Line 214 of yacc.c  */
-#line 207 "Trabalho02.tab.c"
+#line 196 "Trabalho02.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -215,7 +204,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 219 "Trabalho02.tab.c"
+#line 208 "Trabalho02.tab.c"
 
 #ifdef short
 # undef short
@@ -522,12 +511,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    78,    78,    85,    86,    87,    88,    89,    90,    93,
-      97,   100,   102,   103,   106,   109,   112,   115,   116,   117,
-     120,   121,   124,   125,   128,   130,   131,   134,   137,   138,
-     139,   142,   143,   147,   150,   151,   152,   155,   156,   157,
-     160,   161,   162,   163,   164,   165,   171,   171,   185,   186,
-     189,   190,   193,   196,   196,   196,   199,   203
+       0,    67,    67,    74,    75,    76,    77,    78,    79,    82,
+      86,    89,    91,    92,    95,    98,   101,   104,   105,   106,
+     109,   110,   113,   114,   117,   119,   120,   123,   126,   127,
+     128,   131,   132,   136,   139,   140,   141,   144,   145,   146,
+     149,   150,   151,   152,   153,   154,   160,   160,   174,   175,
+     178,   179,   182,   185,   186,   187,   190,   194
 };
 #endif
 
@@ -1507,42 +1496,42 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 78 "Trabalho02.y"
+#line 67 "Trabalho02.y"
     { atributeVariable((yyvsp[(1) - (3)].sval)); ;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 120 "Trabalho02.y"
+#line 109 "Trabalho02.y"
     {;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 121 "Trabalho02.y"
+#line 110 "Trabalho02.y"
     {;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 124 "Trabalho02.y"
+#line 113 "Trabalho02.y"
     { putOpInStack((yyvsp[(2) - (3)].cval));;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 125 "Trabalho02.y"
+#line 114 "Trabalho02.y"
     { ;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 128 "Trabalho02.y"
+#line 117 "Trabalho02.y"
     { int stackLocation = getLocation((yyvsp[(1) - (1)].sval)); //printf("load variavel %s local %i\n", $1, stackLocation); 
 																				loadVariableValue(stackLocation); ;}
     break;
@@ -1550,56 +1539,56 @@ yyreduce:
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 130 "Trabalho02.y"
+#line 119 "Trabalho02.y"
     { ;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 131 "Trabalho02.y"
+#line 120 "Trabalho02.y"
     { ;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 147 "Trabalho02.y"
+#line 136 "Trabalho02.y"
     { printf("putting integer %i in stack\n", (yyvsp[(1) - (1)].ival)); putNumberInStack((yyvsp[(1) - (1)].ival)); ;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 150 "Trabalho02.y"
+#line 139 "Trabalho02.y"
     {(yyval.cval) = (yyvsp[(1) - (1)].cval);}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 151 "Trabalho02.y"
+#line 140 "Trabalho02.y"
     {(yyval.cval) = (yyvsp[(1) - (1)].cval);}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 152 "Trabalho02.y"
+#line 141 "Trabalho02.y"
     {(yyval.cval) = (yyvsp[(1) - (1)].cval);}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 171 "Trabalho02.y"
+#line 160 "Trabalho02.y"
     { generateHeader(); generateMainHeader();;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 171 "Trabalho02.y"
+#line 160 "Trabalho02.y"
     { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
@@ -1612,28 +1601,56 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 185 "Trabalho02.y"
+#line 174 "Trabalho02.y"
     { putOpInStack((yyvsp[(2) - (3)].cval)); ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 186 "Trabalho02.y"
+#line 175 "Trabalho02.y"
     { ;}
+    break;
+
+  case 51:
+
+/* Line 1455 of yacc.c  */
+#line 179 "Trabalho02.y"
+    { (yyval.sval) = (char *)malloc(sizeof(char)*strlen((yyvsp[(1) - (1)].sval))); strcpy((yyval.sval), (yyvsp[(1) - (1)].sval)); ;}
+    break;
+
+  case 53:
+
+/* Line 1455 of yacc.c  */
+#line 185 "Trabalho02.y"
+    { (yyval.sval) = (char *)malloc(sizeof(char)*strlen((yyvsp[(1) - (1)].sval))); strcpy((yyval.sval), (yyvsp[(1) - (1)].sval)); ;}
+    break;
+
+  case 54:
+
+/* Line 1455 of yacc.c  */
+#line 186 "Trabalho02.y"
+    { (yyval.sval) = (char *)malloc(sizeof(char)*strlen((yyvsp[(1) - (1)].sval))); strcpy((yyval.sval), (yyvsp[(1) - (1)].sval)); ;}
+    break;
+
+  case 55:
+
+/* Line 1455 of yacc.c  */
+#line 187 "Trabalho02.y"
+    { (yyval.sval) = (char *)malloc(sizeof(char)*strlen((yyvsp[(1) - (1)].sval))); strcpy((yyval.sval), (yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 56:
 
 /* Line 1455 of yacc.c  */
-#line 199 "Trabalho02.y"
+#line 190 "Trabalho02.y"
     { (yyval.sval) = (char *)malloc(sizeof(char)*strlen((yyvsp[(1) - (1)].sval))); strcpy((yyval.sval), (yyvsp[(1) - (1)].sval));;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1637 "Trabalho02.tab.c"
+#line 1654 "Trabalho02.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1845,7 +1862,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 206 "Trabalho02.y"
+#line 197 "Trabalho02.y"
 
 
 int main() {
@@ -1867,64 +1884,4 @@ int main() {
 void yyerror(const char* s) {
 	fprintf(stderr, "Erro de analise (sintatica): %s\n", s);
 	exit(1);
-}
-
-void generateHeader(){
-	f = fopen("output.j", "w+");
-	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");
-	fprintf(f, ".method public <init>()V\n");
-	fprintf(f, "	aload_0\n");
-	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
-	generateFooter();
-}
-
-void generateMainFooter(){
-	f = fopen("output.j", "a");
-	fprintf(f, "return\n");
-	fprintf(f, ".end method");
-}
-
-void generateFooter(){
-	f = fopen("output.j", "a");
-	fprintf(f, "return\n");
-	fprintf(f, ".end method\n\n");
-}
-
-void generateMainHeader(){
-	f = fopen("output.j", "a");
-	fprintf(f, ".method public static main([Ljava/lang/String;)V\n");
-	fprintf(f, ".limit locals 100\n");
-	fprintf(f, ".limit stack 100\n");
-
-}
-
-void atributeVariable(char *id){
-	f = fopen("output.j", "a");
-	int stackLocal = getLocation(id);
-	if(stackLocal == -1){
-		numberOfUsedStackLocation++;
-		stackLocal = numberOfUsedStackLocation;
-	}
-	fprintf(f, ".istore %i\n", stackLocal);
-	printf("Setting variable %s stackLocal as %i\n", id, stackLocal);
-	setLocation(id, stackLocal);
-}
-
-void putNumberInStack(int value){
-	f = fopen("output.j", "a");
-	printf(".bipush %i\n", value);
-	fprintf(f, ".bipush %i\n", value);
-}
-
-void putOpInStack(char op){
-	f = fopen("output.j", "a");
-	if(op == '+') fprintf(f, ".iadd\n");
-	else if(op == '-') fprintf(f, ".isub\n");
-	else if(op == '*') fprintf(f, ".imul\n");
-	else fprintf(f, ".div\n");
-}
-
-void loadVariableValue(int stackLocal){
-	f = fopen("output.j", "a");
-	fprintf(f, ".iload %i\n", stackLocal);
 }

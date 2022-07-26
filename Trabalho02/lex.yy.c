@@ -777,6 +777,7 @@ case 7:
 YY_RULE_SETUP
 #line 81 "Trabalho02.lex"
 {	
+			yylval.sval = yytext;
 			addToken(yytext);
 			setAbout("tipo");
 			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
@@ -786,7 +787,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 89 "Trabalho02.lex"
+#line 90 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("empty");
@@ -795,7 +796,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 95 "Trabalho02.lex"
+#line 96 "Trabalho02.lex"
 {
 				yylval.ival = atoi(yytext);
 				addToken(yytext);
@@ -805,8 +806,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 102 "Trabalho02.lex"
+#line 103 "Trabalho02.lex"
 {
+				yylval.fval = atof(yytext);
 				addToken(yytext);
 				setAbout("float");
             	return INT_TOKEN;
@@ -814,7 +816,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 108 "Trabalho02.lex"
+#line 110 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("keyWord");
@@ -844,7 +846,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 135 "Trabalho02.lex"
+#line 137 "Trabalho02.lex"
 {
 			yylval.sval = yytext;
 			addToken(yytext);
@@ -854,31 +856,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 142 "Trabalho02.lex"
+#line 144 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 146 "Trabalho02.lex"
+#line 148 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 150 "Trabalho02.lex"
+#line 152 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 153 "Trabalho02.lex"
+#line 155 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 882 "lex.yy.c"
+#line 884 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1764,4 +1766,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 153 "Trabalho02.lex"
+#line 155 "Trabalho02.lex"

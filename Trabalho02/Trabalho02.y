@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include "Compiler.h"
 
-
-
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -16,6 +14,7 @@ extern FILE* yyin;
 // ... caso contrário o linker (programa que une o código .lex com o código .y) irá entender que as variávais foram...
 // ... declaradas duas vezes (se foram declaradas no código .y) 
 
+extern FILE *f;
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
@@ -23,16 +22,6 @@ extern int numberOfUsedStackLocation;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 
 
-void loadVariableValue(int stackLocal);
-void putNumberInStack(int value);
-void putOpInStack(char op);
-void atributeVariable(char *id);
-void generateHeader();
-void generateFooter();
-void generateMainHeader();
-void generateMainFooter();
-void yyerror(const char* s);
-extern FILE *f;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}
@@ -69,7 +58,7 @@ extern FILE *f;
 %type<fval> FLOAT_TOKEN
 %type<ival> expressao_simples INT_TOKEN termo bool_lit
 %type<cval> op_rel op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
-%type<sval> variavel ID_TOKEN
+%type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
 
 %start programa
 
@@ -187,13 +176,15 @@ termo: termo op_mul fator 	{ putOpInStack($2); }
 	 ;
 
 tipo: tipo_agregado
-	| tipo_simples
+	| tipo_simples { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
 	;
 
 tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
 			 ;
 
-tipo_simples: INTEGER_TOKEN | REAL_TOKEN | BOOLEAN_TOKEN
+tipo_simples: INTEGER_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
+			| REAL_TOKEN 	{ $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
+			| BOOLEAN_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
 		    ;
 
 variavel: ID_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1);}
@@ -224,64 +215,4 @@ int main() {
 void yyerror(const char* s) {
 	fprintf(stderr, "Erro de analise (sintatica): %s\n", s);
 	exit(1);
-}
-
-void generateHeader(){
-	f = fopen("output.j", "w+");
-	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");
-	fprintf(f, ".method public <init>()V\n");
-	fprintf(f, "	aload_0\n");
-	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
-	generateFooter();
-}
-
-void generateMainFooter(){
-	f = fopen("output.j", "a");
-	fprintf(f, "return\n");
-	fprintf(f, ".end method");
-}
-
-void generateFooter(){
-	f = fopen("output.j", "a");
-	fprintf(f, "return\n");
-	fprintf(f, ".end method\n\n");
-}
-
-void generateMainHeader(){
-	f = fopen("output.j", "a");
-	fprintf(f, ".method public static main([Ljava/lang/String;)V\n");
-	fprintf(f, ".limit locals 100\n");
-	fprintf(f, ".limit stack 100\n");
-
-}
-
-void atributeVariable(char *id){
-	f = fopen("output.j", "a");
-	int stackLocal = getLocation(id);
-	if(stackLocal == -1){
-		numberOfUsedStackLocation++;
-		stackLocal = numberOfUsedStackLocation;
-	}
-	fprintf(f, ".istore %i\n", stackLocal);
-	printf("Setting variable %s stackLocal as %i\n", id, stackLocal);
-	setLocation(id, stackLocal);
-}
-
-void putNumberInStack(int value){
-	f = fopen("output.j", "a");
-	printf(".bipush %i\n", value);
-	fprintf(f, ".bipush %i\n", value);
-}
-
-void putOpInStack(char op){
-	f = fopen("output.j", "a");
-	if(op == '+') fprintf(f, ".iadd\n");
-	else if(op == '-') fprintf(f, ".isub\n");
-	else if(op == '*') fprintf(f, ".imul\n");
-	else fprintf(f, ".div\n");
-}
-
-void loadVariableValue(int stackLocal){
-	f = fopen("output.j", "a");
-	fprintf(f, ".iload %i\n", stackLocal);
 }

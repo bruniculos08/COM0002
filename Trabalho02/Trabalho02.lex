@@ -79,6 +79,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			}
 
 {TIPO} 	{	
+			yylval.sval = yytext;
 			addToken(yytext);
 			setAbout("tipo");
 			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
@@ -100,6 +101,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
            }
 
 ({DIGITO}+"."{DIGITO}*)|({DIGITO}*"."{DIGITO}+)   {
+				yylval.fval = atof(yytext);
 				addToken(yytext);
 				setAbout("float");
             	return INT_TOKEN;

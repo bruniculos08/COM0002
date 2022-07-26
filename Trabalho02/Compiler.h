@@ -1,6 +1,3 @@
-#ifndef COMPILER_H
-#define COMPILER_H
-
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
@@ -46,4 +43,17 @@ void generateMainHeader();
 void generateMainFooter();
 void yyerror(const char* s);
 
-#endif
+typedef struct StringListHead stringListHead;
+struct StringListHead{
+	stringList *first;
+	stringList *last;
+};
+
+typedef struct StringList stringList;
+struct StringList{
+	char *string;
+	stringList *next;
+};
+
+
+void addToStringList(stringListHead *HeaderListOfStrings, char *newString);
