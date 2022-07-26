@@ -43,17 +43,20 @@ void generateMainHeader();
 void generateMainFooter();
 void yyerror(const char* s);
 
-typedef struct StringListHead stringListHead;
-struct StringListHead{
-	stringList *first;
-	stringList *last;
-};
-
-typedef struct StringList stringList;
-struct StringList{
+typedef struct BookPage bookPage;
+struct BookPage{
 	char *string;
-	stringList *next;
+	bookPage *next;
 };
 
+typedef struct Book book;
+struct Book{
+	bookPage *first;
+	bookPage *last;
+};
 
-void addToStringList(stringListHead *HeaderListOfStrings, char *newString);
+void addString(book *lista, char *newString);
+void addStringsFrom(book *newBook, book *oldBook);
+void setBookType(book *listOfID, char *type);
+book *createBook();
+bookPage *createBookPage(char *newString);

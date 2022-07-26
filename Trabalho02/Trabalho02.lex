@@ -82,7 +82,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			yylval.sval = yytext;
 			addToken(yytext);
 			setAbout("tipo");
-			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
+			if(strcmp(yytext, "integer") == 0) return INTEGER_TOKEN;
 			else if(strcmp(yytext, "real") == 0) return REAL_TOKEN;
 			else return BOOLEAN_TOKEN;
 		}
@@ -104,7 +104,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				yylval.fval = atof(yytext);
 				addToken(yytext);
 				setAbout("float");
-            	return INT_TOKEN;
+            	return FLOAT_TOKEN;
            }
 
 {KEY_WORD}  {	

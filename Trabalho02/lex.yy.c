@@ -780,7 +780,7 @@ YY_RULE_SETUP
 			yylval.sval = yytext;
 			addToken(yytext);
 			setAbout("tipo");
-			if(strcmp(yytext, "integer") == 0) return INT_TOKEN;
+			if(strcmp(yytext, "integer") == 0) return INTEGER_TOKEN;
 			else if(strcmp(yytext, "real") == 0) return REAL_TOKEN;
 			else return BOOLEAN_TOKEN;
 		}
@@ -811,7 +811,7 @@ YY_RULE_SETUP
 				yylval.fval = atof(yytext);
 				addToken(yytext);
 				setAbout("float");
-            	return INT_TOKEN;
+            	return FLOAT_TOKEN;
            }
 	YY_BREAK
 case 11:

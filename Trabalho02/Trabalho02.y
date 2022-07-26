@@ -31,12 +31,9 @@ extern int numberOfUsedStackLocation;
 	float fval;
 	char cval;
 	char *sval;
+	book *bookval;
 }
-
-
-
 %token END 0 "end of file"
-
 %token PROGRAM_TOKEN 
 %token TRUE_TOKEN FALSE_TOKEN 
 %token ID_TOKEN
@@ -46,22 +43,18 @@ extern int numberOfUsedStackLocation;
 %token OUTROS_TOKEN DOT_TOKEN
 %token INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
 %token VAZIO_TOKEN 
-
-
 %token INT_TOKEN FLOAT_TOKEN
-
-
 %token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN 
-
 %token TO_TOKEN FOR_TOKEN 
 
 %type<fval> FLOAT_TOKEN
-%type<ival> expressao_simples INT_TOKEN termo bool_lit
-%type<cval> op_rel op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
+%type<ival> expressao_simples INT_TOKEN termo bool_lit TRUE_TOKEN FALSE_TOKEN
+%type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
+%type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
+%type<bookval> lista_de_ids
 
 %start programa
-
 %%
 
 atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { atributeVariable($1); }
@@ -98,7 +91,9 @@ corpo: declaracoes comando_composto
 declaracao: declaracao_de_variavel
   		  ;
 
-declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
+declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	// (7) Eis aqui a utilização da estrutura "Book":
+																	setBookType($2, $4);
+																  }
   		  			  ;
 
 declaracoes: declaracao DOTCOMMA_TOKEN
@@ -114,8 +109,7 @@ expressao_simples: expressao_simples op_ad termo { putOpInStack($2);}
 				 | termo { }
 				 ;
 
-fator: variavel { int stackLocation = getLocation($1); //printf("load variavel %s local %i\n", $1, stackLocation); 
-																				loadVariableValue(stackLocation); }
+fator: variavel { int stackLocation = getLocation($1); loadVariableValue(stackLocation); }
 	 | literal { }
 	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
@@ -128,22 +122,22 @@ lista_de_comandos: comando DOTCOMMA_TOKEN
 				 | vazio
 				 ;
 
-lista_de_ids: ID_TOKEN lista_de_ids COMMA_TOKEN ID_TOKEN
-			| ID_TOKEN COMMA_TOKEN ID_TOKEN
+lista_de_ids: lista_de_ids COMMA_TOKEN ID_TOKEN { $$ = createBook(); addStringsFrom($$, $1); addString($$, $3); }
+			| ID_TOKEN 							{ $$ = createBook(); addString($$, $1); }
 			;
 
 
-literal: INT_TOKEN { printf("putting integer %i in stack\n", $1); putNumberInStack($1); }
-	   ;	//| FLOAT_TOKEN { putNumberInStack($2); }  e bool_lit
+literal: INT_TOKEN { putNumberInStack($1); }
+	   ;	//| FLOAT_TOKEN e bool_lit
 
-op_ad: ADD_TOKEN {$$ = $1}
-	 | SUB_TOKEN {$$ = $1}
-	 | OR_TOKEN  {$$ = $1}
+op_ad: ADD_TOKEN { $$ = $1; }
+	 | SUB_TOKEN { $$ = $1; }
+	 | OR_TOKEN  { $$ = $1; }
 	 ;
 
-op_mul: MULT_TOKEN
-	  | DIVIDE_TOKEN
-	  | AND_TOKEN
+op_mul: MULT_TOKEN		{ $$ = $1; }
+	  | DIVIDE_TOKEN	{ $$ = $1; }
+	  | AND_TOKEN		{ $$ = $1; }
 	  ;
 
 op_rel: SMALLER_TOKEN
@@ -172,22 +166,21 @@ seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
 	   ;
 
 termo: termo op_mul fator 	{ putOpInStack($2); }
-	 | fator 				{ }
+	 | fator 				{ 					}
 	 ;
 
-tipo: tipo_agregado
-	| tipo_simples { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
-	;
+tipo: tipo_simples { $$ = strdup($1); }
+	;	//tipo_agregado
 
-tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
-			 ;
+//tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
+//			 ;
 
-tipo_simples: INTEGER_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
-			| REAL_TOKEN 	{ $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
-			| BOOLEAN_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1); }
+tipo_simples: INTEGER_TOKEN { $$ = strdup($1); }
+			| REAL_TOKEN 	{ $$ = strdup($1); }
+			| BOOLEAN_TOKEN { $$ = strdup($1); }
 		    ;
 
-variavel: ID_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1);}
+variavel: ID_TOKEN { $$ = strdup($1); }
 		; //ID_TOKEN seletor
 		
 

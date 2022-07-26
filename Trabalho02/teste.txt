@@ -1,1 +1,8 @@
-program Brun10o ; begin a := 1; b := 2; c := a + b * 2; b := c + b; end
+program Brun10o ; 
+var a, b : integer ;
+begin 
+a := 1; 
+b := 2; 
+c := a + b * 2; 
+b := c + b; 
+end

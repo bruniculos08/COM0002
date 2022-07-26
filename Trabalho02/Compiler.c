@@ -11,30 +11,41 @@ int num_lines = 0;
 int num_columns = 0;
 FILE *f;
 
+// (1) Def.: essa função recebe a string de um ID e a string de um tipo e percorre a tabela de símbolos...
+// ... de modo que quando acha um elemento da tabela com o atributo Token igual ao ID recebido, coloca...
+// ... o atributo de tipo de tal elemento igual ao tipo do recebido pela função. 
 void setTypeID(char *id, char *type){
 	table *auxTable = fila->first;
-	while(auxTable != NULL) if(strcmp(auxTable->token, id) == 0) auxTable->type = type;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token, id) == 0) auxTable->type = type;
+		auxTable = auxTable->next;
+	}
 }
 
-void setLocation(char *string, int stackLocation){
+// (2) Def.: essa função recebe um id e uma localização da pilha de variáveis (do assembly code) e anota...
+// ... tal localização em no atributo stackLocation de toda ocorrência do ID na tabela de símbolos.
+void setLocation(char *id, int stackLocation){
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token, string) == 0) auxTable->stackLocation = stackLocation;
+		if(strcmp(auxTable->token, id) == 0) auxTable->stackLocation = stackLocation;
 		auxTable = auxTable->next;
 	}
 	return;
 }
 
-int getLocation(char *string){
+// (3) Def.: essa função recebe um id e busca alguma ocorrência do mesmo na tabela de símbolos e então...
+// ... retorna o atributo stackLocation (localização na pilha de símbolos do assembly code) associado ao id.
+int getLocation(char *id){
 	if(fila == NULL) return -1;
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token,string) == 0) return auxTable->stackLocation;
+		if(strcmp(auxTable->token, id) == 0) return auxTable->stackLocation;
 		auxTable = auxTable->next;
 	}
 	return -1;
 }
 
+// (4) Def.: essa função retorna o último id registrado na tabela de símbolos.
 char *getLastID(){
 	table *auxTable = fila->last;
 	while(auxTable != NULL){
@@ -44,6 +55,7 @@ char *getLastID(){
 	return NULL;
 }
 
+// (5) Def.: recebe a string (yytext) de um token e então adiciona um registro desse token na tabela de símbolos.
 void addToken(char *string){
     if(fila == NULL) fila = createHeadTable(string);
 	else{
@@ -57,16 +69,13 @@ void addToken(char *string){
 	num_columns += strlen(string);
 }
 
+// (6) Def.: recebe uma descrição e atribui esta ao atributo "about" do último símbolo posto na tabela de símbolos.
 void setAbout(char *string){
 	fila->last->about = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->about, string);
 }
 
-void setType(char *string){
-	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(fila->last->type, string);
-}
-
+// (7) Def.: imprime a tabela de símbolos em um arquivo texto.
 void tableMain(){
 	table *aux;
 	aux = (table *)malloc(sizeof(table));
@@ -86,12 +95,12 @@ void tableMain(){
 	printf("# total de linhas = %d\n", num_lines+1);
 }
 
+// (8) Def.: cria uma cabeça de tabela de símbolos. 
 table *createTable(char *string){
 	numberOfTokens++;
 	table *newToken;
 	newToken = (table *)malloc(sizeof(table));
-	newToken->token = (char *)malloc(sizeof(char)*strlen(string));
-	strcpy(newToken->token, string);
+	newToken->token = strdup(string);
 	newToken->lenght = strlen(string);
 	newToken->line = num_lines;
 	newToken->column = num_columns;
@@ -107,7 +116,6 @@ headTable *createHeadTable(char *string){
 	fila->first = createTable(string);
 	fila->last = fila->first;
 }
-
 
 void generateHeader(){
 	f = fopen("output.j", "w+");
@@ -169,16 +177,49 @@ void loadVariableValue(int stackLocal){
 	fprintf(f, ".iload %i\n", stackLocal);
 }
 
-createHeaderListOfStrings(){
-
+book *createBook(){
+	book *newStringListHead;
+	newStringListHead = (book *)malloc(sizeof(book));
+	newStringListHead->first = NULL;
+	newStringListHead->last = NULL;
+	return newStringListHead;
 }
 
-createListOfStrings(char *newString){
-
+bookPage *createBookPage(char *newString){
+	bookPage *newStringList;
+	newStringList = (bookPage *)malloc(sizeof(bookPage));
+	newStringList->string = strdup(newString);
+	newStringList->next = NULL;
+	return newStringList;
 }
 
-void addToStringList(stringListHead *HeaderListOfStrings, char *newString){
-	stringList *auxListOfStrings = HeaderListOfStrings->first;
-	if(auxListOfStrings == NULL) auxListOfStrings = createListOfStrings(newString);
-	else while
+void addString(book *headerListOfStrings, char *newString){
+	if(headerListOfStrings->first == NULL){
+		headerListOfStrings->first = createBookPage(newString);
+		headerListOfStrings->last = headerListOfStrings->first;
+	}
+	else{
+		headerListOfStrings->last->next = createBookPage(newString);
+		headerListOfStrings->last = headerListOfStrings->last->next;
+	}
+}
+
+void addStringsFrom(book *newBook, book *oldBook){
+	bookPage *auxPage;
+	auxPage = oldBook->first;
+	while(auxPage != NULL){
+		addString(newBook, auxPage->string);
+		auxPage = auxPage->next;
+	}
+}
+
+void setBookType(book *listOfID, char *type){
+	bookPage *auxPage;
+	auxPage = listOfID->first;
+	while(auxPage != NULL){
+		printf("setting ID %s as type %s\n", auxPage->string, type);
+		setTypeID(auxPage->string, type);
+		auxPage = auxPage->next;
+	}
+	free(listOfID);
 }
