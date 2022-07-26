@@ -33,6 +33,7 @@ void atributeVariable(char *id);
 void generateHeader();
 void generateFooter();
 void generateMainHeader();
+void generateMainFooter();
 void yyerror(const char* s);
 FILE *f;
 
@@ -174,7 +175,7 @@ programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTC
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
 													  // ... programa está sintáticamente correto).
-													  generateFooter();
+													  generateMainFooter();
 													  printf("\nPrograma valido\n");
 													}
 		;
@@ -230,23 +231,23 @@ void yyerror(const char* s) {
 
 void generateHeader(){
 	f = fopen("output.j", "w+");
-	fprintf(f, ".source input_code.txt\n.class public test\n.super java/lang/Object\n");
+	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");
 	fprintf(f, ".method public <init>()V\n");
 	fprintf(f, "	aload_0\n");
 	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
 	generateFooter();
 }
 
+void generateMainFooter(){
+	f = fopen("output.j", "a");
+	fprintf(f, "return\n");
+	fprintf(f, ".end method");
+}
+
 void generateFooter(){
 	f = fopen("output.j", "a");
 	fprintf(f, "return\n");
 	fprintf(f, ".end method\n\n");
-}
-
-void generateMainFooter(){
-	f = fopen("output.j", "a");
-	fprintf(f, "return\n");
-	fprintf(f, ".end method\n");
 }
 
 void generateMainHeader(){

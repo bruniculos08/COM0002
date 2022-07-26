@@ -38,6 +38,11 @@ headTable *fila = NULL;
 int numberOfTokens = 0;
 int numberOfUsedStackLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedStackLocation + 1
 
+void setTypeID(char *id, char *type){
+	table *auxTable = fila->first;
+	while(auxTable != NULL) if(strcmp(auxTable->token, id) == 0) auxTable->type = type;
+}
+
 void setLocation(char *string, int stackLocation){
 	table *auxTable = fila->first;
 	while(auxTable != NULL){

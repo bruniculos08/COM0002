@@ -1,4 +1,4 @@
-.source input_code.txt
+.source teste.txt
 .class public test
 .super java/lang/Object
 .method public <init>()V
@@ -26,4 +26,3 @@ return
 .istore 2
 return
 .end method
-
