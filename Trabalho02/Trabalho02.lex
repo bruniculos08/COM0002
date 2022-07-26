@@ -24,7 +24,7 @@ struct Table {
     int line;
     int column;
 	int stackLocation;
-	//table *before;
+	table *before;
 	table *next;
 };
 
@@ -36,18 +36,23 @@ struct HeadTable {
 
 headTable *fila = NULL;
 int numberOfTokens = 0;
+int numberOfUsedStackLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedStackLocation + 1
 
 void setLocation(char *string, int stackLocation){
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token,string) == 0) auxTable->stackLocation = stackLocation;
+		if(strcmp(auxTable->token, string) == 0) auxTable->stackLocation = stackLocation;
+		auxTable = auxTable->next;
 	}
+	return;
 }
 
 int getLocation(char *string){
+	if(fila == NULL) return -1;
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
 		if(strcmp(auxTable->token,string) == 0) return auxTable->stackLocation;
+		auxTable = auxTable->next;
 	}
 	return -1;
 }
@@ -55,7 +60,8 @@ int getLocation(char *string){
 char *getLastID(){
 	table *auxTable = fila->last;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->about, id) == 0) return auxTable->about;
+		if(strcmp(auxTable->about, "id") == 0) return auxTable->token;
+		auxTable = auxTable->before;
 	}
 	return NULL;
 }
@@ -72,11 +78,11 @@ table *createTable(char *string){
 	newToken->lenght = strlen(string);
 	newToken->line = num_lines;
 	newToken->column = num_columns;
-	newToken->stackLocation = -1;
 	newToken->about = NULL;
 	newToken->type = NULL;
 	newToken->before = NULL; 
 	newToken->next = NULL;
+	newToken->stackLocation = -1;
 }
 
 headTable *createHeadTable(char *string){
@@ -92,6 +98,7 @@ void addToken(char *string){
 		newToken = createTable(string);
 		fila->last->next = newToken;
 		newToken->before = fila->last;
+		newToken->stackLocation = getLocation(string);
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
@@ -105,10 +112,6 @@ void setAbout(char *string){
 void setType(char *string){
 	fila->last->type = (char *)malloc(sizeof(char)*strlen(string));
 	strcpy(fila->last->type, string);
-}
-
-void findIDStackLocation(char *string){
-
 }
 
 %}
@@ -139,6 +142,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 		  }
 
 {OP_AD} {
+			yylval.cval = yytext[0];
 			addToken(yytext);
 			setAbout("opAd");
 			if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
@@ -147,6 +151,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 		}
 
 {OP_MUL} 	{
+				yylval.cval = yytext[0];
 				addToken(yytext);
 				setAbout("opMul");
 				if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
@@ -155,6 +160,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			}
 
 {OP_REL} 	{
+				yylval.sval = yytext;
 				addToken(yytext);
 				setAbout("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
@@ -187,6 +193,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			}
 
 {DIGITO}+  {
+				yylval.ival = atoi(yytext);
 				addToken(yytext);
 				setAbout("int");
             	return INT_TOKEN;
@@ -226,8 +233,9 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
+			yylval.sval = yytext;
 			addToken(yytext);
-			setAbout("ID");
+			setAbout("id");
 			return ID_TOKEN;
 		}
 
@@ -254,9 +262,9 @@ void tableMain(){
     fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t|\tStackLocal\t\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column, aux->stackLocation);
 		aux = aux->next;
 	}
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");

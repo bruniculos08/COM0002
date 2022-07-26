@@ -1,1 +1,1 @@
-program Brun10o ; begin end
+program Brun10o ; begin a := 1; b := 2; c := a + b * 2; b := c + b; end

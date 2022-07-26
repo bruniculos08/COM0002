@@ -5,6 +5,8 @@
 #include <stdlib.h>
 
 extern int getLocation(char *string);
+extern void setLocation(char *string, int stackLocation);
+extern char *getLastID();
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
@@ -18,18 +20,33 @@ extern void setType();
 extern int num_lines;
 extern int num_columns;
 extern int numberOfTokens;
+extern int numberOfUsedStackLocation;
 // Obs.: stucts devem ser declaradas normalmente (sem o uso de extern).
 extern struct Table table;
 extern struct HeadTable headTable;
 extern struct headTable *fila;
 
+void loadVariableValue(int stackLocal);
+void putNumberInStack(int value);
+void putOpInStack(char op);
+void atributeVariable(char *id);
 void generateHeader();
 void generateFooter();
+void generateMainHeader();
 void yyerror(const char* s);
 FILE *f;
 
 // (2) O token END é um token especial que representa o EOF (end of file):
 %}
+
+%union {
+	int ival;
+	float fval;
+	char cval;
+	char *sval;
+}
+
+
 
 %token END 0 "end of file"
 
@@ -51,11 +68,16 @@ FILE *f;
 
 %token TO_TOKEN FOR_TOKEN 
 
+%type<fval> FLOAT_TOKEN
+%type<ival> expressao_simples INT_TOKEN termo bool_lit
+%type<cval> op_rel op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
+%type<sval> variavel ID_TOKEN
+
 %start programa
 
 %%
 
-atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao
+atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { atributeVariable($1); }
 		  ;
 
 bool_lit: TRUE_TOKEN
@@ -83,40 +105,38 @@ condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando
 		   | IF_TOKEN expressao THEN_TOKEN comando vazio
 		   ;
 
-corpo: declaracao comando_composto
+corpo: declaracoes comando_composto
   	 ;
 
-declaracao: 
-		  |	declaracao_de_variavel
+declaracao: declaracao_de_variavel
   		  ;
 
 declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo
   		  			  ;
 
-declaracoes: 
-		   | declaracao DOTCOMMA_TOKEN
+declaracoes: declaracao DOTCOMMA_TOKEN
 		   | declaracoes declaracao DOTCOMMA_TOKEN
 		   | vazio
 		   ;
 
-expressao: expressao_simples
-		 | expressao_simples op_rel expressao_simples
+expressao: expressao_simples {}
+		 | expressao_simples op_rel expressao_simples {}
 		 ;
 
-expressao_simples: expressao_simples op_ad termo
-				 | termo
+expressao_simples: expressao_simples op_ad termo { putOpInStack($2);}
+				 | termo { }
 				 ;
 
-fator: variavel
-	 | literal
-	 | PLEFT_TOKEN expressao PRIGHT_TOKEN
+fator: variavel { int stackLocation = getLocation($1); //printf("load variavel %s local %i\n", $1, stackLocation); 
+																				loadVariableValue(stackLocation); }
+	 | literal { }
+	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
 
 iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 		 ;
 
-lista_de_comandos: 
-			     | comando DOTCOMMA_TOKEN 
+lista_de_comandos: comando DOTCOMMA_TOKEN 
 				 | lista_de_comandos comando DOTCOMMA_TOKEN
 				 | vazio
 				 ;
@@ -126,18 +146,12 @@ lista_de_ids: ID_TOKEN lista_de_ids COMMA_TOKEN ID_TOKEN
 			;
 
 
-literal: bool_lit
-	   | INT_TOKEN
-	   | FLOAT_TOKEN
-	   ;
+literal: INT_TOKEN { printf("putting integer %i in stack\n", $1); putNumberInStack($1); }
+	   ;	//| FLOAT_TOKEN { putNumberInStack($2); }  e bool_lit
 
-literals: literals literal
-		| literal
-	   	;
-
-op_ad: ADD_TOKEN 
-	 | SUB_TOKEN
-	 | OR_TOKEN
+op_ad: ADD_TOKEN {$$ = $1}
+	 | SUB_TOKEN {$$ = $1}
+	 | OR_TOKEN  {$$ = $1}
 	 ;
 
 op_mul: MULT_TOKEN
@@ -156,12 +170,12 @@ op_rel: SMALLER_TOKEN
 outros: OUTROS_TOKEN
 	  ;
 
-programa: PROGRAM_TOKEN { generateHeader(); } ID_TOKEN DOTCOMMA_TOKEN corpo END { 
+programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN corpo END { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
 													  // ... programa está sintáticamente correto).
-													  printf("\nPrograma valido\n");
 													  generateFooter();
+													  printf("\nPrograma valido\n");
 													}
 		;
 				
@@ -170,22 +184,23 @@ seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN
 	   | vazio
 	   ;
 
-termo: termo op_mul fator
-	 | fator 
+termo: termo op_mul fator 	{ putOpInStack($2); }
+	 | fator 				{ }
 	 ;
 
 tipo: tipo_agregado
 	| tipo_simples
 	;
 
-tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literals BRIGHT_TOKEN OF_TOKEN tipo
+tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
 			 ;
 
 tipo_simples: INTEGER_TOKEN | REAL_TOKEN | BOOLEAN_TOKEN
 		    ;
 
-variavel: ID_TOKEN seletor
-		;
+variavel: ID_TOKEN { $$ = (char *)malloc(sizeof(char)*strlen($1)); strcpy($$, $1);}
+		; //ID_TOKEN seletor
+		
 
 vazio: 
 	 ;
@@ -202,7 +217,7 @@ int main() {
 	do {
 		yyparse();
 	} while(!feof(yyin));
-	tableMain();
+	//tableMain();
 
 
 	return 0;
@@ -215,30 +230,60 @@ void yyerror(const char* s) {
 
 void generateHeader(){
 	f = fopen("output.j", "w+");
-	fprintf(f, ".class public output/Verb\n.super java/lang/Object\n");
+	fprintf(f, ".source input_code.txt\n.class public test\n.super java/lang/Object\n");
 	fprintf(f, ".method public <init>()V\n");
 	fprintf(f, "	aload_0\n");
 	fprintf(f, "	invokenonvirtual java/lang/Object/<init>()V\n");
+	generateFooter();
 }
 
 void generateFooter(){
 	f = fopen("output.j", "a");
-	fprintf(f, "	return\n");
-	fprintf(f, ".end method");
+	fprintf(f, "return\n");
+	fprintf(f, ".end method\n\n");
+}
+
+void generateMainFooter(){
+	f = fopen("output.j", "a");
+	fprintf(f, "return\n");
+	fprintf(f, ".end method\n");
 }
 
 void generateMainHeader(){
 	f = fopen("output.j", "a");
-	fprintf(f, "	return\n");
-	fprintf(f, ".end method\n");
-}
-
-void generateMainFooter(){
+	fprintf(f, ".method public static main([Ljava/lang/String;)V\n");
+	fprintf(f, ".limit locals 100\n");
+	fprintf(f, ".limit stack 100\n");
 
 }
 
-void atributeVariable(char *id, int value){
+void atributeVariable(char *id){
 	f = fopen("output.j", "a");
+	int stackLocal = getLocation(id);
+	if(stackLocal == -1){
+		numberOfUsedStackLocation++;
+		stackLocal = numberOfUsedStackLocation;
+	}
+	fprintf(f, ".istore %i\n", stackLocal);
+	printf("Setting variable %s stackLocal as %i\n", id, stackLocal);
+	setLocation(id, stackLocal);
+}
+
+void putNumberInStack(int value){
+	f = fopen("output.j", "a");
+	printf(".bipush %i\n", value);
 	fprintf(f, ".bipush %i\n", value);
-	fprintf(f, ".istore %i", getLocation(id));
+}
+
+void putOpInStack(char op){
+	f = fopen("output.j", "a");
+	if(op == '+') fprintf(f, ".iadd\n");
+	else if(op == '-') fprintf(f, ".isub\n");
+	else if(op == '*') fprintf(f, ".imul\n");
+	else fprintf(f, ".div\n");
+}
+
+void loadVariableValue(int stackLocal){
+	f = fopen("output.j", "a");
+	fprintf(f, ".iload %i\n", stackLocal);
 }

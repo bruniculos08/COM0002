@@ -478,7 +478,7 @@ struct Table {
     int line;
     int column;
 	int stackLocation;
-	//table *before;
+	table *before;
 	table *next;
 };
 
@@ -490,18 +490,23 @@ struct HeadTable {
 
 headTable *fila = NULL;
 int numberOfTokens = 0;
+int numberOfUsedStackLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedStackLocation + 1
 
 void setLocation(char *string, int stackLocation){
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token,string) == 0) auxTable->stackLocation = stackLocation;
+		if(strcmp(auxTable->token, string) == 0) auxTable->stackLocation = stackLocation;
+		auxTable = auxTable->next;
 	}
+	return;
 }
 
 int getLocation(char *string){
+	if(fila == NULL) return -1;
 	table *auxTable = fila->first;
 	while(auxTable != NULL){
 		if(strcmp(auxTable->token,string) == 0) return auxTable->stackLocation;
+		auxTable = auxTable->next;
 	}
 	return -1;
 }
@@ -509,7 +514,8 @@ int getLocation(char *string){
 char *getLastID(){
 	table *auxTable = fila->last;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->about, id) == 0) return auxTable->about;
+		if(strcmp(auxTable->about, "id") == 0) return auxTable->token;
+		auxTable = auxTable->before;
 	}
 	return NULL;
 }
@@ -526,11 +532,11 @@ table *createTable(char *string){
 	newToken->lenght = strlen(string);
 	newToken->line = num_lines;
 	newToken->column = num_columns;
-	newToken->stackLocation = -1;
 	newToken->about = NULL;
 	newToken->type = NULL;
 	newToken->before = NULL; 
 	newToken->next = NULL;
+	newToken->stackLocation = -1;
 }
 
 headTable *createHeadTable(char *string){
@@ -546,6 +552,7 @@ void addToken(char *string){
 		newToken = createTable(string);
 		fila->last->next = newToken;
 		newToken->before = fila->last;
+		newToken->stackLocation = getLocation(string);
 		fila->last = newToken;
 	}
 	num_columns += strlen(string);
@@ -561,11 +568,7 @@ void setType(char *string){
 	strcpy(fila->last->type, string);
 }
 
-void findIDStackLocation(char *string){
-
-}
-
-#line 569 "lex.yy.c"
+#line 572 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -716,10 +719,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 126 "Trabalho02.lex"
+#line 129 "Trabalho02.lex"
 
 
-#line 723 "lex.yy.c"
+#line 726 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -804,7 +807,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 128 "Trabalho02.lex"
+#line 131 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setAbout("keyWord");
@@ -813,7 +816,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 134 "Trabalho02.lex"
+#line 137 "Trabalho02.lex"
 {
 			addToken(yytext);
 			setAbout("boolit");
@@ -823,8 +826,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 141 "Trabalho02.lex"
+#line 144 "Trabalho02.lex"
 {
+			yylval.cval = yytext[0];
 			addToken(yytext);
 			setAbout("opAd");
 			if(strcmp(yytext, "+") == 0) return ADD_TOKEN;
@@ -834,8 +838,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 149 "Trabalho02.lex"
+#line 153 "Trabalho02.lex"
 {
+				yylval.cval = yytext[0];
 				addToken(yytext);
 				setAbout("opMul");
 				if(strcmp(yytext, "*") == 0) return MULT_TOKEN;
@@ -845,8 +850,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 157 "Trabalho02.lex"
+#line 162 "Trabalho02.lex"
 {
+				yylval.sval = yytext;
 				addToken(yytext);
 				setAbout("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
@@ -859,7 +865,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 168 "Trabalho02.lex"
+#line 174 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("outro");
@@ -869,7 +875,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 175 "Trabalho02.lex"
+#line 181 "Trabalho02.lex"
 {	
 			addToken(yytext);
 			setAbout("tipo");
@@ -880,7 +886,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 183 "Trabalho02.lex"
+#line 189 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("empty");
@@ -889,8 +895,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 189 "Trabalho02.lex"
+#line 195 "Trabalho02.lex"
 {
+				yylval.ival = atoi(yytext);
 				addToken(yytext);
 				setAbout("int");
             	return INT_TOKEN;
@@ -898,7 +905,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 195 "Trabalho02.lex"
+#line 202 "Trabalho02.lex"
 {
 				addToken(yytext);
 				setAbout("float");
@@ -907,7 +914,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 201 "Trabalho02.lex"
+#line 208 "Trabalho02.lex"
 {	
 				addToken(yytext);
 				setAbout("keyWord");
@@ -937,40 +944,41 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 228 "Trabalho02.lex"
+#line 235 "Trabalho02.lex"
 {
+			yylval.sval = yytext;
 			addToken(yytext);
-			setAbout("ID");
+			setAbout("id");
 			return ID_TOKEN;
 		}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 234 "Trabalho02.lex"
+#line 242 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 238 "Trabalho02.lex"
+#line 246 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 242 "Trabalho02.lex"
+#line 250 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 245 "Trabalho02.lex"
+#line 253 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 974 "lex.yy.c"
+#line 982 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1856,7 +1864,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 245 "Trabalho02.lex"
+#line 253 "Trabalho02.lex"
 
 
 void tableMain(){
@@ -1869,9 +1877,9 @@ void tableMain(){
     fprintf(filePointer, "---------------------------------------------------------------------------------\n");
 	fprintf(filePointer, "|                               Tabela de simbolos                              |\n");
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
-	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t\t|\n");
+	fprintf(filePointer, "|\tToken\t|\tSobre\t\t|\tTamanho\t|\tLinha\t|\tColuna\t|\tStackLocal\t\t|\n");
 	for(int i = 0; i < numberOfTokens; i++){
-		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column);
+		fprintf(filePointer, "|\t%s\t|\t%s\t\t|\t%i\t|\t%i\t|\t%i\t|\t%i\t\t|\n", aux->token, aux->about, aux->lenght, aux->line, aux->column, aux->stackLocation);
 		aux = aux->next;
 	}
 	fprintf(filePointer, "---------------------------------------------------------------------------------\n");
