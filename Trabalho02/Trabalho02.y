@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "Compiler.h"
 
+extern int count_label;
+
 %}
 
 %union {
@@ -33,7 +35,7 @@
 %type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit IF_TOKEN ELSE_TOKEN
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN literal expressao_simples fator termo
-%type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN IF_TOKEN ELSE_TOKEN
+%type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
 %type<bookval> lista_de_ids
 
 %start programa
@@ -75,16 +77,18 @@ comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 // - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
 // ... ou seja, após o if else é adicionado +2 ao contador de label.
 
-condicional: condicionalElse
-		   | IF_TOKEN condicao THEN_TOKEN comando
+condicional: IF_TOKEN condicao THEN_TOKEN { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 2; onlylabel($1); } lista_de_comandos { onlylabel($1 + 1); } comando_else
+		// | condicionalElse
 		   ;
 
-condicionalElse: IF_TOKEN condicao THEN_TOKEN comando ELSE_TOKEN comando 
-			   ;
+comando_else: ELSE_TOKEN lista_de_comandos
+			| lista_de_comandos
+			| vazio
+			;
+//condicionalElse: IF_TOKEN condicao { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 3;} THEN_TOKEN { onlylabel($1); } comando { onlylabel($1 + 1); } ELSE_TOKEN comando { onlylabel($1 + 2); }
+//			   ;
 
-condicao: variavel op_rel variavel
-		| variavel op_rel literal
-		| literal op_rel literal
+condicao: expressao_simples op_rel expressao_simples { putOpInStack('-'); ifStack($2); }
 		;
 
 corpo: declaracoes comando_composto
@@ -106,12 +110,12 @@ expressao: expressao_simples {}
 		 | expressao_simples op_rel expressao_simples {}
 		 ;
 
-expressao_simples: expressao_simples op_ad termo { putOpInStack($2) }
+expressao_simples: expressao_simples op_ad termo { putOpInStack($2); }
 				 | termo { }
 				 ;
 
-fator: variavel { int stackLocation = getLocation($1); loadVariableValue(stackLocation); }
-	 | literal {  }
+fator: variavel { loadVariableValue(getLocation($1)); }
+	 | literal 	
 	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
 
@@ -143,12 +147,12 @@ op_mul: MULT_TOKEN		{ $$ = $1; }
 	  | AND_TOKEN		{ $$ = $1; }
 	  ;
 
-op_rel: SMALLER_TOKEN
-	  | BIGGER_TOKEN
-	  | SMALLER_EQUAL_TOKEN
-	  | BIGGER_EQUAL_TOKEN
-	  | EQUAL_TOKEN
-	  | DIFF_TOKEN
+op_rel: SMALLER_TOKEN 		{ $$ = strdup($1); }	
+	  | BIGGER_TOKEN		{ $$ = strdup($1); }
+	  | SMALLER_EQUAL_TOKEN { $$ = strdup($1); }
+	  | BIGGER_EQUAL_TOKEN	{ $$ = strdup($1); }
+	  | EQUAL_TOKEN			{ $$ = strdup($1); }
+	  | DIFF_TOKEN			{ $$ = strdup($1); }
 	  ;
 
 programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN corpo END { 

@@ -752,7 +752,7 @@ case 5:
 YY_RULE_SETUP
 #line 62 "Trabalho02.lex"
 {
-				yylval.sval = yytext;
+				yylval.sval = strdup(yytext);
 				addToken(yytext);
 				setAbout("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
@@ -777,7 +777,7 @@ case 7:
 YY_RULE_SETUP
 #line 81 "Trabalho02.lex"
 {	
-			yylval.sval = yytext;
+			yylval.sval = strdup(yytext);
 			addToken(yytext);
 			setAbout("tipo");
 			if(strcmp(yytext, "integer") == 0) return INTEGER_TOKEN;
@@ -848,7 +848,7 @@ case 12:
 YY_RULE_SETUP
 #line 137 "Trabalho02.lex"
 {
-								yylval.sval = yytext;
+								yylval.sval = strdup(yytext);
 								if(simbolExists(yytext) == 1){ 
 									addToken(yytext);
 									setAbout("id");

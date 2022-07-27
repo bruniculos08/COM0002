@@ -60,7 +60,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			}
 
 {OP_REL} 	{
-				yylval.sval = yytext;
+				yylval.sval = strdup(yytext);
 				addToken(yytext);
 				setAbout("opRel");
 				if(strcmp(yytext, "<") == 0) return SMALLER_TOKEN;
@@ -79,7 +79,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			}
 
 {TIPO} 	{	
-			yylval.sval = yytext;
+			yylval.sval = strdup(yytext);
 			addToken(yytext);
 			setAbout("tipo");
 			if(strcmp(yytext, "integer") == 0) return INTEGER_TOKEN;
@@ -135,7 +135,7 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
-								yylval.sval = yytext;
+								yylval.sval = strdup(yytext);
 								if(simbolExists(yytext) == 1){ 
 									addToken(yytext);
 									setAbout("id");

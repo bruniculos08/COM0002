@@ -191,7 +191,7 @@ void atributeIntVariable(char *id){
 		numberOfUsedHeapLocation++;
 		heapLocation = numberOfUsedHeapLocation;
 	}
-	fprintf(f, ".istore %i\n", heapLocation);
+	fprintf(f, "istore %i\n", heapLocation);
 	printf("Setting variable %s stackLocal as %i\n", id, heapLocation);
 	setLocation(id, heapLocation);
 }
@@ -210,8 +210,8 @@ void atributeFloatVariable(char *id){
 
 void putIntInStack(int value){
 	f = fopen("output.j", "a");
-	printf(".bipush %i\n", value);
-	fprintf(f, ".bipush %i\n", value);
+	printf("bipush %i\n", value);
+	fprintf(f, "bipush %i\n", value);
 }
 
 void putFloatInStack(float value){
