@@ -74,3 +74,4 @@ void addStringsFrom(book *newBook, book *oldBook);
 void setBookType(book *listOfID, char *type);
 book *createBook();
 bookPage *createBookPage(char *newString);
+void writeCode(char *code);

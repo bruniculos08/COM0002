@@ -34,6 +34,12 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 			return PROGRAM_TOKEN;
 		  }
 
+"print"   {
+			addToken(yytext);
+			setAbout("keyWord");
+			return PRINT_TOKEN;
+		  }
+
 {BOOL_IT} {
 			addToken(yytext);
 			setAbout("boolit");

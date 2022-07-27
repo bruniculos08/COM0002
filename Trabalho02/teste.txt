@@ -1,9 +1,10 @@
 program Brun10o ;
 begin 
-a := 1; 
-b := 2;
+a := 3; 
+b := 1;
 c := 1;
-if a > b + 1 
-then a := b - 1;
+if a < b + 1 
+then a := a - 1;
 ;
+print(a);
 end

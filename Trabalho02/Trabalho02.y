@@ -18,7 +18,7 @@ extern int count_label;
 }
 
 %token END 0 "end of file"
-%token PROGRAM_TOKEN 
+%token PROGRAM_TOKEN PRINT_TOKEN
 %token TRUE_TOKEN FALSE_TOKEN 
 %token ID_TOKEN
 %token ADD_TOKEN SUB_TOKEN OR_TOKEN
@@ -62,6 +62,7 @@ comando: atribuicao
 	   | comando_composto
 	   | comando_for
 	   | comando_while
+	   | printar
 	   ;
 
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
@@ -164,6 +165,9 @@ programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTC
 													}
 		;
 				
+printar: PRINT_TOKEN PLEFT_TOKEN {writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;\n");} expressao_simples PRIGHT_TOKEN {writeCode("invokevirtual java/io/PrintStream/println(I)V\n");}
+	   ;
+
 /*
 seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN 
 	   | BLEFT_TOKEN expressao BRIGHT_TOKEN

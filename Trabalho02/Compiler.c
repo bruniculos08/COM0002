@@ -210,14 +210,14 @@ void atributeFloatVariable(char *id){
 
 void putIntInStack(int value){
 	f = fopen("output.j", "a");
-	printf("bipush %i\n", value);
-	fprintf(f, "bipush %i\n", value);
+	printf("ldc %i\n", value);
+	fprintf(f, "ldc %i\n", value);
 }
 
 void putFloatInStack(float value){
 	f = fopen("output.j", "a");
-	printf("bipush %f\n", value);
-	fprintf(f, "bipush %f\n", value);
+	printf("ldc %f\n", value);
+	fprintf(f, "ldc %f\n", value);
 }
 
 void putOpInStack(char op){
@@ -320,4 +320,9 @@ void labelGoToLabel(int label1, int label2){
 	f = fopen("output.j", "a");
 	fprintf(f, " L_%i\n", label1);
 	fprintf(f, "goto L_%i\n", label2);
+}
+
+void writeCode(char *code){
+	f = fopen("output.j", "a");
+	fprintf(f, "%s", code);
 }
