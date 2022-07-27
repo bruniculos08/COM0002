@@ -382,8 +382,8 @@ static yyconst short int yy_nxt[274] =
         8,    9,   10,    8,   10,   11,    9,   12,   13,    8,
        14,   15,   16,    7,    7,   17,    8,    8,   18,   19,
        17,   20,   21,   22,   17,   17,   23,   17,   17,   17,
-       24,   25,   26,   17,   27,   17,   28,   29,   17,    7,
-        7,    4,   30,   33,   37,   34,   36,   36,   37,   37,
+       24,   25,   26,   17,   27,   17,   28,   29,   17,    8,
+        8,    4,   30,   33,   37,   34,   36,   36,   37,   37,
        37,   37,   37,   37,   37,   37,   37,   33,   37,   34,
        37,   37,   46,   41,   37,   52,   39,   55,   43,   40,
        43,   42,   43,   44,   47,   45,   49,   50,   53,   48,
@@ -847,6 +847,8 @@ YY_RULE_SETUP
 				else if(strcmp(yytext, "array") == 0) return ARRAY_TOKEN;
 				else if(strcmp(yytext, "[") == 0) return BLEFT_TOKEN;
 				else if(strcmp(yytext, "]") == 0) return BRIGHT_TOKEN;
+				else if(strcmp(yytext, "{") == 0) return CBLEFT_TOKEN;
+				else if(strcmp(yytext, "}") == 0) return CBRIGHT_TOKEN;
 				else if(strcmp(yytext, "var") == 0) return VAR_TOKEN;
 				else if(strcmp(yytext, "procedure") == 0) return PROCEDURE_TOKEN;
 				else if(strcmp(yytext, "of") == 0) return OF_TOKEN;
@@ -859,7 +861,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 143 "Trabalho02.lex"
+#line 145 "Trabalho02.lex"
 {
 								yylval.sval = strdup(yytext);
 								if(simbolExists(yytext) == 1){ 
@@ -871,31 +873,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 152 "Trabalho02.lex"
+#line 154 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 156 "Trabalho02.lex"
+#line 158 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 160 "Trabalho02.lex"
+#line 162 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 163 "Trabalho02.lex"
+#line 165 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 899 "lex.yy.c"
+#line 901 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1781,4 +1783,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 163 "Trabalho02.lex"
+#line 165 "Trabalho02.lex"

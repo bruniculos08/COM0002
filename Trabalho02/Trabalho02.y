@@ -29,7 +29,7 @@ extern int count_label;
 %token VAZIO_TOKEN 
 %token INT_TOKEN FLOAT_TOKEN
 %token IF_TOKEN ELSE_TOKEN THEN_TOKEN BEGIN_TOKEN END_TOKEN FUNCTION_TOKEN DOTCOMMA_TOKEN TWODOTS_TOKEN WHILE_TOKEN DO_TOKEN COMMA_TOKEN ARRAY_TOKEN BLEFT_TOKEN BRIGHT_TOKEN VAR_TOKEN PROCEDURE_TOKEN OF_TOKEN PLEFT_TOKEN PRIGHT_TOKEN TWODOTS_EQUAL_TOKEN 
-%token TO_TOKEN FOR_TOKEN 
+%token TO_TOKEN FOR_TOKEN CBLEFT_TOKEN CBRIGHT_TOKEN
 
 %type<fval> FLOAT_TOKEN
 %type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit IF_TOKEN ELSE_TOKEN
@@ -78,11 +78,11 @@ comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 // - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
 // ... ou seja, após o if else é adicionado +2 ao contador de label.
 
-condicional: IF_TOKEN condicao THEN_TOKEN { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 2; onlylabel($1); } lista_de_comandos { onlylabel($1 + 1); } comando_else
+condicional: IF_TOKEN PLEFT_TOKEN condicao PRIGHT_TOKEN THEN_TOKEN CBLEFT_TOKEN { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 2; onlylabel($1); } lista_de_comandos CBRIGHT_TOKEN { onlylabel($1 + 1); } comando_else
 		// | condicionalElse
 		   ;
 
-comando_else: ELSE_TOKEN lista_de_comandos
+comando_else: ELSE_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN
 			| vazio
 			;
 //condicionalElse: IF_TOKEN condicao { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 3;} THEN_TOKEN { onlylabel($1); } comando { onlylabel($1 + 1); } ELSE_TOKEN comando { onlylabel($1 + 2); }

@@ -86,7 +86,9 @@
      PRIGHT_TOKEN = 301,
      TWODOTS_EQUAL_TOKEN = 302,
      TO_TOKEN = 303,
-     FOR_TOKEN = 304
+     FOR_TOKEN = 304,
+     CBLEFT_TOKEN = 305,
+     CBRIGHT_TOKEN = 306
    };
 #endif
 
@@ -108,7 +110,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 112 "Trabalho02.tab.h"
+#line 114 "Trabalho02.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

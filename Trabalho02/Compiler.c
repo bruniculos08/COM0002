@@ -225,7 +225,7 @@ void putOpInStack(char op){
 	if(op == '+') fprintf(f, "iadd\n");
 	else if(op == '-') fprintf(f, "isub\n");
 	else if(op == '*') fprintf(f, "imul\n");
-	else fprintf(f, "div\n");
+	else fprintf(f, "idiv\n");
 }
 
 void loadVariableValue(int heapLocation){

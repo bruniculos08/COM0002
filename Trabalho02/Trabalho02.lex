@@ -21,11 +21,11 @@ BOOL_IT "true"|"false"
 OP_AD "+"|"-"|"or"
 OP_MUL  "*"|"/"|"and"
 OP_REL "<"|">"|"<="|">="|"="|"<>"
-OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"|"?"|"."|"'"|"{"|"}"
+OUTROS "!"|"@"|"#"|"$"|"%"|"¨"|"&"|"?"|"."|"'"
 TIPO "integer"|"real"|"boolean"
 VAZIO ""
 LETRA[a-zA-Z]
-KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="|"to"|"for"
+KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"array"|"["|"]"|"var"|"procedure"|"of"|"("|")"|":="|"to"|"for"|"{"|"}"
 %%
 
 "program" {	
@@ -130,6 +130,8 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
 				else if(strcmp(yytext, "array") == 0) return ARRAY_TOKEN;
 				else if(strcmp(yytext, "[") == 0) return BLEFT_TOKEN;
 				else if(strcmp(yytext, "]") == 0) return BRIGHT_TOKEN;
+				else if(strcmp(yytext, "{") == 0) return CBLEFT_TOKEN;
+				else if(strcmp(yytext, "}") == 0) return CBRIGHT_TOKEN;
 				else if(strcmp(yytext, "var") == 0) return VAR_TOKEN;
 				else if(strcmp(yytext, "procedure") == 0) return PROCEDURE_TOKEN;
 				else if(strcmp(yytext, "of") == 0) return OF_TOKEN;
