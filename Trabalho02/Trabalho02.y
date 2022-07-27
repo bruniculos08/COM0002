@@ -97,8 +97,9 @@ corpo: declaracoes comando_composto
 declaracao: declaracao_de_variavel
   		  ;
 
-declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	/* (7) Eis aqui a utilização da estrutura "Book": setBookType($2, $4)*/;
-																  	/* Obs.: isso só sera útil quando houver tratamento de tipos.		*/ }
+declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	/* (7) Eis aqui a utilização da estrutura "Book": */
+																	setBookType($2, $4);
+																  	/* Obs.: isso só sera útil quando houver tratamento de tipos.*/ }
   		  			  ;
 
 declaracoes: declaracao DOTCOMMA_TOKEN
