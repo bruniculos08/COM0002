@@ -118,7 +118,32 @@ headTable *createHeadTable(char *string){
 	fila->last = fila->first;
 }
 
-// (10) Def.: criar o arquivo e gera o cabeçalho do código resultante da tradução dirigida por sintaxe
+int simbolExists(char *id){
+	if(fila == NULL || fila->first == NULL) return 1;
+	table *auxTable;
+	auxTable = fila->first;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token, id) == 0) return 0;
+		auxTable = auxTable->next; 
+	}
+	return 1;
+}
+
+int verifySimbolType(char *id, char *type){
+	if(fila == NULL || fila->first == NULL) return 1;
+	table *auxTable;
+	auxTable = fila->first;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token, id) == 0){
+			if(strcmp(auxTable->type, type) == 0) return 0;
+			else return 1;
+		}
+		auxTable = auxTable->next; 
+	}
+	return 1;
+}
+
+// (12) Def.: criar o arquivo e gera o cabeçalho do código resultante da tradução dirigida por sintaxe
 void generateHeader(){
 	f = fopen("output.j", "w+");
 	fprintf(f, ".source teste.txt\n.class public test\n.super java/lang/Object\n");

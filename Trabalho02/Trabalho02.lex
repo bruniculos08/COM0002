@@ -135,11 +135,13 @@ KEY_WORD "if"|"else"|"then"|"begin"|"end"|"function"|";"|":"|"while"|"do"|","|"a
             }
 
 {LETRA}+({DIGITO}|{LETRA})* {
-			yylval.sval = yytext;
-			addToken(yytext);
-			setAbout("id");
-			return ID_TOKEN;
-		}
+								yylval.sval = yytext;
+								if(simbolExists(yytext) == 1){ 
+									addToken(yytext);
+									setAbout("id");
+									}
+								return ID_TOKEN;
+							}
 
 [ \t]+  {
 			num_columns++;

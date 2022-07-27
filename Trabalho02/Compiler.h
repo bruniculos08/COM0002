@@ -34,6 +34,7 @@ void addToken(char *string);
 void setTypeID(char *id, char *type);
 void setLocation(char *string, int stackLocation);
 int getLocation(char *string);
+int simbolExists(char *id);
 char *getLastID();
 table *createTable(char *string);
 headTable *createHeadTable(char *string);

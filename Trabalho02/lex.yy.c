@@ -848,39 +848,41 @@ case 12:
 YY_RULE_SETUP
 #line 137 "Trabalho02.lex"
 {
-			yylval.sval = yytext;
-			addToken(yytext);
-			setAbout("id");
-			return ID_TOKEN;
-		}
+								yylval.sval = yytext;
+								if(simbolExists(yytext) == 1){ 
+									addToken(yytext);
+									setAbout("id");
+									}
+								return ID_TOKEN;
+							}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 144 "Trabalho02.lex"
+#line 146 "Trabalho02.lex"
 {
 			num_columns++;
 		}	
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 148 "Trabalho02.lex"
+#line 150 "Trabalho02.lex"
 {
 			++num_lines; num_columns = 0;
 		}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 152 "Trabalho02.lex"
+#line 154 "Trabalho02.lex"
 {
 
 		    }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 155 "Trabalho02.lex"
+#line 157 "Trabalho02.lex"
 ECHO;
 	YY_BREAK
-#line 884 "lex.yy.c"
+#line 886 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1766,4 +1768,4 @@ int main()
 	return 0;
 	}
 #endif
-#line 155 "Trabalho02.lex"
+#line 157 "Trabalho02.lex"
