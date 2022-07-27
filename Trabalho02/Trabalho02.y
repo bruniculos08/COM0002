@@ -30,7 +30,7 @@
 %token TO_TOKEN FOR_TOKEN 
 
 %type<fval> FLOAT_TOKEN
-%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit
+%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit IF_TOKEN ELSE_TOKEN
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN literal expressao_simples fator termo
 %type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN IF_TOKEN ELSE_TOKEN
@@ -75,12 +75,11 @@ comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 // - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
 // ... ou seja, após o if else é adicionado +2 ao contador de label.
 
-
 condicional: condicionalElse
 		   | IF_TOKEN condicao THEN_TOKEN comando
 		   ;
 
-condicionalElse: IF_TOKEN condicao THEN_TOKEN comando ELSE_TOKEN comando
+condicionalElse: IF_TOKEN condicao THEN_TOKEN comando ELSE_TOKEN comando 
 			   ;
 
 condicao: variavel op_rel variavel
