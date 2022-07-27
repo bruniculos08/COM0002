@@ -76,11 +76,17 @@ comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 // ... ou seja, após o if else é adicionado +2 ao contador de label.
 
 
-condicional: IF_TOKEN variavel op_rel variavel {/* Printar no arquivo a condição pra label if seguido do goto label else e label if */} THEN_TOKEN comando ELSE_TOKEN {/* Printar no arquivo label else */} comando 
-		   | IF_TOKEN variavel op_rel literal  { int stackLocation1 = getLocation($2); loadVariableValue(stackLocation1); putOpInStack('-'); ifStack($2);  } THEN_TOKEN comando ELSE_TOKEN comando 
-		   | IF_TOKEN variavel op_rel variavel THEN_TOKEN comando
-		   | IF_TOKEN variavel op_rel literal THEN_TOKEN comando
+condicional: condicionalElse
+		   | IF_TOKEN condicao THEN_TOKEN comando
 		   ;
+
+condicionalElse: IF_TOKEN condicao THEN_TOKEN comando ELSE_TOKEN comando
+			   ;
+
+condicao: variavel op_rel variavel
+		| variavel op_rel literal
+		| literal op_rel literal
+		;
 
 corpo: declaracoes comando_composto
   	 ;
@@ -101,8 +107,7 @@ expressao: expressao_simples {}
 		 | expressao_simples op_rel expressao_simples {}
 		 ;
 
-expressao_simples: expressao_simples op_ad termo { putOpInStack($2);
-												 }
+expressao_simples: expressao_simples op_ad termo { putOpInStack($2) }
 				 | termo { }
 				 ;
 
@@ -146,11 +151,6 @@ op_rel: SMALLER_TOKEN
 	  | EQUAL_TOKEN
 	  | DIFF_TOKEN
 	  ;
-
-/*
-outros: OUTROS_TOKEN
-	  ;
-*/
 
 programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN corpo END { 
 													  // (6) Se os comandos desse bloco forem executados então...
