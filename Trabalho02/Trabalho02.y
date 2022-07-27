@@ -56,13 +56,13 @@ bool_lit: TRUE_TOKEN 	{ $$ = 1;	}
 		| FALSE_TOKEN 	{ $$ = 0;	}
 		;
 
-comando: atribuicao
+comando: atribuicao DOTCOMMA_TOKEN
 	   | condicional
 	   | iterativo
 	   | comando_composto
 	   | comando_for
 	   | comando_while
-	   | printar
+	   | printar DOTCOMMA_TOKEN
 	   ;
 
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
@@ -122,8 +122,8 @@ fator: variavel { loadVariableValue(getLocation($1)); }
 iterativo: WHILE_TOKEN expressao DO_TOKEN comando
 		 ;
 
-lista_de_comandos: comando DOTCOMMA_TOKEN 
-				 | lista_de_comandos comando DOTCOMMA_TOKEN
+lista_de_comandos: comando 
+				 | lista_de_comandos comando
 				 | vazio
 				 ;
 
