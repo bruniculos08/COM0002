@@ -12,17 +12,9 @@ return
 .limit stack 100
 .bipush 1
 .istore 1
-.bipush 2
+.bipush 2.100000
 .istore 2
-.iload 1
-.iload 2
-.bipush 2
-.imul
-.iadd
-.istore 3
-.iload 3
-.iload 2
-.iadd
-.istore 2
+.bipush 1
+.fstore 3
 return
 .end method

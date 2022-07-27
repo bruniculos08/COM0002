@@ -40,15 +40,19 @@ table *createTable(char *string);
 headTable *createHeadTable(char *string);
 
 void loadVariableValue(int stackLocal);
-void putNumberInStack(int value);
+void putIntInStack(int value);
+void putFloatInStack(float value);
 void putOpInStack(char op);
-void atributeVariable(char *id);
+void atributeIntVariable(char *id);
+void atributeFloatVariable(char *id);
 void generateHeader();
 void generateFooter();
 void generateMainHeader();
 void generateMainFooter();
 void yyerror(const char* s);
-bool isInteger(double val);
+char *getSymbolType(char *id);
+char *numType(double val);
+void cmpVarNumberType(char *variableType, char *numberType);
 
 typedef struct BookPage bookPage;
 struct BookPage{

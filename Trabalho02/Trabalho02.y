@@ -13,10 +13,6 @@
 	char cval;
 	char *sval;
 	book *bookval;
-	union result_val{
-		float result_fval;
-		int   result_ival;	
-	};
 }
 
 %token END 0 "end of file"
@@ -34,18 +30,29 @@
 %token TO_TOKEN FOR_TOKEN 
 
 %type<fval> FLOAT_TOKEN
-%type<ival> INT_TOKEN termo bool_lit TRUE_TOKEN FALSE_TOKEN
+%type<ival> INT_TOKEN bool_lit TRUE_TOKEN FALSE_TOKEN
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
-%type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
+%type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN literal expressao_simples fator termo
 %type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
 %type<bookval> lista_de_ids
-%type<result_val> expressao_simples
 
 %start programa
 %%
 
-atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { 	char *type;
-																atributeVariable($1); }
+atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { 	
+																char *variableType;
+																variableType = getSymbolType($1);
+																if(strcmp(variableType, "float") == 0 && strcmp($3, "float") == 0) atributeFloatVariable($1);
+																if(strcmp(variableType, "integer") == 0 && strcmp($3, "integer") == 0) atributeFloatVariable($1);
+																if(strcmp(variableType, "integer") == 0 && strcmp($3, "float") == 0){
+																	floatToInt();
+																	atributeIntVariable($1);
+																}
+																else{
+																	intToFloat();
+																	atributeFloatVariable($1);
+																} 
+														   }
 		  ;
 
 bool_lit: TRUE_TOKEN
@@ -93,12 +100,17 @@ expressao: expressao_simples {}
 		 | expressao_simples op_rel expressao_simples {}
 		 ;
 
-expressao_simples: expressao_simples op_ad termo { putOpInStack($2);}
-				 | termo { }
+expressao_simples: expressao_simples op_ad termo { putOpInStack($2); 
+												   if($1 == "real" || $3 == "real" ){
+														$$ = strdup("real");
+												   }
+												   else $$ = strdup($1);
+												 }
+				 | termo { $$ = strdup($1); }
 				 ;
 
 fator: variavel { int stackLocation = getLocation($1); loadVariableValue(stackLocation); }
-	 | literal { }
+	 | literal {  }
 	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
 
@@ -115,8 +127,9 @@ lista_de_ids: lista_de_ids COMMA_TOKEN ID_TOKEN { $$ = createBook(); addStringsF
 			;
 
 
-literal: INT_TOKEN { putNumberInStack($1); }
-	   ;	//| FLOAT_TOKEN e bool_lit
+literal: INT_TOKEN { putIntInStack($1); $$ = strdup("integer"); }
+	   | FLOAT_TOKEN { putFloatInStack($1); $$ = strdup("real"); } //bool_lit
+	   ;
 
 op_ad: ADD_TOKEN { $$ = $1; }
 	 | SUB_TOKEN { $$ = $1; }

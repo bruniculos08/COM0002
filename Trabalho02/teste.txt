@@ -1,8 +1,8 @@
 program Brun10o ; 
 var a, b : integer ;
+var c : real ;
 begin 
 a := 1; 
-b := 2; 
-c := a + b * 2; 
-b := c + b; 
+b := 2.1;
+c := 1;
 end

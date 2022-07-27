@@ -126,14 +126,17 @@ int simbolExists(char *id){
 }
 
 char *getSymbolType(char *id){
-	if(fila == NULL || fila->first == NULL) return NULL;
+	if(fila == NULL || fila->first == NULL) return "noType";
 	table *auxTable;
 	auxTable = fila->first;
 	while(auxTable != NULL){
-		if(strcmp(auxTable->token, id) == 0) return auxTable->type;
+		if(strcmp(auxTable->token, id) == 0){
+			if(auxTable->type != NULL) return auxTable->type;
+			else return "noType";
+		}
 		auxTable = auxTable->next; 
 	}
-	return NULL;
+	return "noType";
 }
 
 int verifySymbolType(char *id, char *type){
@@ -180,7 +183,7 @@ void generateMainHeader(){
 
 }
 
-void atributeVariable(char *id){
+void atributeIntVariable(char *id){
 	f = fopen("output.j", "a");
 	int heapLocation = getLocation(id);
 	if(heapLocation == -1){
@@ -192,10 +195,28 @@ void atributeVariable(char *id){
 	setLocation(id, heapLocation);
 }
 
-void putNumberInStack(int value){
+void atributeFloatVariable(char *id){
+	f = fopen("output.j", "a");
+	int heapLocation = getLocation(id);
+	if(heapLocation == -1){
+		numberOfUsedHeapLocation++;
+		heapLocation = numberOfUsedHeapLocation;
+	}
+	fprintf(f, ".fstore %i\n", heapLocation);
+	printf("Setting variable %s stackLocal as %i\n", id, heapLocation);
+	setLocation(id, heapLocation);
+}
+
+void putIntInStack(int value){
 	f = fopen("output.j", "a");
 	printf(".bipush %i\n", value);
 	fprintf(f, ".bipush %i\n", value);
+}
+
+void putFloatInStack(float value){
+	f = fopen("output.j", "a");
+	printf(".bipush %f\n", value);
+	fprintf(f, ".bipush %f\n", value);
 }
 
 void putOpInStack(char op){
@@ -258,8 +279,23 @@ void setBookType(book *listOfID, char *type){
 	free(listOfID);
 }
 
-bool isInteger(double val)
-{
+char *numType(double val){
     int truncated = (int)val;
-    return (val == truncated);
+    if(val == truncated) return "integer";
+	else return "float";
+}
+
+void cmpVarNumberType(char *variableType, char *numberType){
+	if(strcmp(variableType, "real") == 0) return;
+	if(strcmp(variableType, numberType) != 0) printf("Warning: variavel de tipo %s atribuida a %s\n", variableType, numberType);
+}
+
+void intToFloat(){
+	f = fopen("output.j", "a");
+	fprintf(f, ".i2f\n");
+}
+
+void floatToInt(){
+	f = fopen("output.j", "a");
+	fprintf(f, ".f2i\n");
 }
