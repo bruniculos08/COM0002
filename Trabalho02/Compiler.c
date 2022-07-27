@@ -5,6 +5,7 @@ int numberOfTokens = 0;
 int numberOfUsedHeapLocation = 0; // (1) Ao armazenar nova variável na pilha armazene-a em numberOfUsedHeapLocation + 1
 int num_lines = 0;
 int num_columns = 0;
+int count_label = 0;
 FILE *f;
 
 // (1) Def.: essa função recebe a string de um ID e a string de um tipo e percorre a tabela de símbolos...
@@ -202,7 +203,7 @@ void atributeFloatVariable(char *id){
 		numberOfUsedHeapLocation++;
 		heapLocation = numberOfUsedHeapLocation;
 	}
-	fprintf(f, ".fstore %i\n", heapLocation);
+	fprintf(f, "fstore %i\n", heapLocation);
 	printf("Setting variable %s stackLocal as %i\n", id, heapLocation);
 	setLocation(id, heapLocation);
 }
@@ -215,21 +216,21 @@ void putIntInStack(int value){
 
 void putFloatInStack(float value){
 	f = fopen("output.j", "a");
-	printf(".bipush %f\n", value);
-	fprintf(f, ".bipush %f\n", value);
+	printf("bipush %f\n", value);
+	fprintf(f, "bipush %f\n", value);
 }
 
 void putOpInStack(char op){
 	f = fopen("output.j", "a");
-	if(op == '+') fprintf(f, ".iadd\n");
-	else if(op == '-') fprintf(f, ".isub\n");
-	else if(op == '*') fprintf(f, ".imul\n");
-	else fprintf(f, ".div\n");
+	if(op == '+') fprintf(f, "iadd\n");
+	else if(op == '-') fprintf(f, "isub\n");
+	else if(op == '*') fprintf(f, "imul\n");
+	else fprintf(f, "div\n");
 }
 
 void loadVariableValue(int heapLocation){
 	f = fopen("output.j", "a");
-	fprintf(f, ".iload %i\n", heapLocation);
+	fprintf(f, "iload %i\n", heapLocation);
 }
 
 book *createBook(){
@@ -292,10 +293,31 @@ void cmpVarNumberType(char *variableType, char *numberType){
 
 void intToFloat(){
 	f = fopen("output.j", "a");
-	fprintf(f, ".i2f\n");
+	fprintf(f, "i2f\n");
 }
 
 void floatToInt(){
 	f = fopen("output.j", "a");
-	fprintf(f, ".f2i\n");
+	fprintf(f, "f2i\n");
+}
+
+void ifStack(char *op){
+	f = fopen("output.j", "a");
+	if(strcmp(op, "=") == 0) fprintf(f, "ifeq");
+	else if(strcmp(op, ">") == 0) fprintf(f, "ifgt");
+	else if(strcmp(op, ">=") == 0) fprintf(f, "ifge");
+	else if(strcmp(op, "<") == 0) fprintf(f, "iflt");
+	else if(strcmp(op, "<=") == 0) fprintf(f, "ifle");
+	else fprintf(f, "ifne");
+}
+
+void onlylabel(int label){
+	f = fopen("output.j", "a");
+	fprintf(f, "L_%i:\n", label);
+}
+
+void labelGoToLabel(int label1, int label2){
+	f = fopen("output.j", "a");
+	fprintf(f, " L_%i\n", label1);
+	fprintf(f, "goto L_%i\n", label2);
 }

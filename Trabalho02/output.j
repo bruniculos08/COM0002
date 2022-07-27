@@ -12,9 +12,9 @@ return
 .limit stack 100
 .bipush 1
 .istore 1
-.bipush 2.100000
+.bipush 2
 .istore 2
 .bipush 1
-.fstore 3
+.istore 3
 return
 .end method

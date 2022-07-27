@@ -30,33 +30,28 @@
 %token TO_TOKEN FOR_TOKEN 
 
 %type<fval> FLOAT_TOKEN
-%type<ival> INT_TOKEN bool_lit TRUE_TOKEN FALSE_TOKEN
+%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN literal expressao_simples fator termo
-%type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
+%type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN IF_TOKEN ELSE_TOKEN
 %type<bookval> lista_de_ids
 
 %start programa
 %%
 
-atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { 	
-																char *variableType;
-																variableType = getSymbolType($1);
-																if(strcmp(variableType, "float") == 0 && strcmp($3, "float") == 0) atributeFloatVariable($1);
-																if(strcmp(variableType, "integer") == 0 && strcmp($3, "integer") == 0) atributeFloatVariable($1);
-																if(strcmp(variableType, "integer") == 0 && strcmp($3, "float") == 0){
-																	floatToInt();
-																	atributeIntVariable($1);
-																}
-																else{
-																	intToFloat();
-																	atributeFloatVariable($1);
-																} 
-														   }
+// TODO (1) Regras a serem recolocadas:
+//	bool_lit -> TRUE_TOKEN | FALSE_TOKEN
+//	literal -> FLOAT_TOKEN | bool_lit
+//	tipo -> tipo_agregado
+//	tipo_agregado -> ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
+// 	variavel -> ID_TOKEN seletor 
+
+
+atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { atributeIntVariable($1); }
 		  ;
 
-bool_lit: TRUE_TOKEN
-		| FALSE_TOKEN
+bool_lit: TRUE_TOKEN 	{ $$ = 1;	}
+		| FALSE_TOKEN 	{ $$ = 0;	}
 		;
 
 comando: atribuicao
@@ -76,8 +71,15 @@ comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN INT_TOKEN TWODOTS_TOKEN
 				
 comando_while: WHILE_TOKEN ID_TOKEN op_rel ID_TOKEN TWODOTS_TOKEN
 
-condicional: IF_TOKEN expressao THEN_TOKEN comando ELSE_TOKEN comando 
-		   | IF_TOKEN expressao THEN_TOKEN comando vazio
+// Ideia para funcionamento do if else:
+// - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
+// ... ou seja, após o if else é adicionado +2 ao contador de label.
+
+
+condicional: IF_TOKEN variavel op_rel variavel {/* Printar no arquivo a condição pra label if seguido do goto label else e label if */} THEN_TOKEN comando ELSE_TOKEN {/* Printar no arquivo label else */} comando 
+		   | IF_TOKEN variavel op_rel literal  { int stackLocation1 = getLocation($2); loadVariableValue(stackLocation1); putOpInStack('-'); ifStack($2);  } THEN_TOKEN comando ELSE_TOKEN comando 
+		   | IF_TOKEN variavel op_rel variavel THEN_TOKEN comando
+		   | IF_TOKEN variavel op_rel literal THEN_TOKEN comando
 		   ;
 
 corpo: declaracoes comando_composto
@@ -86,9 +88,8 @@ corpo: declaracoes comando_composto
 declaracao: declaracao_de_variavel
   		  ;
 
-declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	// (7) Eis aqui a utilização da estrutura "Book":
-																	setBookType($2, $4);
-																  }
+declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	/* (7) Eis aqui a utilização da estrutura "Book": setBookType($2, $4)*/;
+																  	/* Obs.: isso só sera útil quando houver tratamento de tipos.		*/ }
   		  			  ;
 
 declaracoes: declaracao DOTCOMMA_TOKEN
@@ -100,13 +101,9 @@ expressao: expressao_simples {}
 		 | expressao_simples op_rel expressao_simples {}
 		 ;
 
-expressao_simples: expressao_simples op_ad termo { putOpInStack($2); 
-												   if($1 == "real" || $3 == "real" ){
-														$$ = strdup("real");
-												   }
-												   else $$ = strdup($1);
+expressao_simples: expressao_simples op_ad termo { putOpInStack($2);
 												 }
-				 | termo { $$ = strdup($1); }
+				 | termo { }
 				 ;
 
 fator: variavel { int stackLocation = getLocation($1); loadVariableValue(stackLocation); }
@@ -122,13 +119,14 @@ lista_de_comandos: comando DOTCOMMA_TOKEN
 				 | vazio
 				 ;
 
-lista_de_ids: lista_de_ids COMMA_TOKEN ID_TOKEN { $$ = createBook(); addStringsFrom($$, $1); addString($$, $3); }
-			| ID_TOKEN 							{ $$ = createBook(); addString($$, $1); }
+lista_de_ids: lista_de_ids COMMA_TOKEN ID_TOKEN { }
+			| ID_TOKEN 							{ }
 			;
 
 
-literal: INT_TOKEN { putIntInStack($1); $$ = strdup("integer"); }
-	   | FLOAT_TOKEN { putFloatInStack($1); $$ = strdup("real"); } //bool_lit
+literal: INT_TOKEN 	 { putIntInStack($1); 	   }
+	   | FLOAT_TOKEN { putIntInStack((int)$1); }
+	   | bool_lit 	 { putIntInStack((int)$1); }
 	   ;
 
 op_ad: ADD_TOKEN { $$ = $1; }
@@ -149,8 +147,10 @@ op_rel: SMALLER_TOKEN
 	  | DIFF_TOKEN
 	  ;
 
+/*
 outros: OUTROS_TOKEN
 	  ;
+*/
 
 programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN corpo END { 
 													  // (6) Se os comandos desse bloco forem executados então...
@@ -161,30 +161,28 @@ programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTC
 													}
 		;
 				
+/*
 seletor: seletor BLEFT_TOKEN expressao BRIGHT_TOKEN 
 	   | BLEFT_TOKEN expressao BRIGHT_TOKEN
 	   | vazio
 	   ;
+*/
 
 termo: termo op_mul fator 	{ putOpInStack($2); }
 	 | fator 				{ 					}
 	 ;
 
 tipo: tipo_simples { $$ = strdup($1); }
-	;	//tipo_agregado
-
-//tipo_agregado: ARRAY_TOKEN BLEFT_TOKEN literal BRIGHT_TOKEN OF_TOKEN tipo
-//			 ;
+	;	
 
 tipo_simples: INTEGER_TOKEN { $$ = strdup($1); }
-			| REAL_TOKEN 	{ $$ = strdup($1); }
-			| BOOLEAN_TOKEN { $$ = strdup($1); }
+			| REAL_TOKEN 	{ $$ = strdup($1); /*Obs: converter qualquer número para int enquanto não podemos tratar diferente tipos. */}
+			| BOOLEAN_TOKEN { $$ = strdup($1); /*Obs: converter qualquer número para int enquanto não podemos tratar diferente tipos. */}
 		    ;
 
 variavel: ID_TOKEN { $$ = strdup($1); }
-		; //ID_TOKEN seletor
+		; 
 		
-
 vazio: 
 	 ;
 

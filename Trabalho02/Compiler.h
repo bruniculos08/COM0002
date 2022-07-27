@@ -66,6 +66,9 @@ struct Book{
 	bookPage *last;
 };
 
+void ifStack(char *op);
+void onlylabel(int label);
+void labelGoToLabel(int label1, int label2);
 void addString(book *lista, char *newString);
 void addStringsFrom(book *newBook, book *oldBook);
 void setBookType(book *listOfID, char *type);

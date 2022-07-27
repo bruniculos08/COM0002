@@ -1,8 +1,6 @@
-program Brun10o ; 
-var a, b : integer ;
-var c : real ;
+program Brun10o ;
 begin 
 a := 1; 
-b := 2.1;
+b := 2;
 c := 1;
 end
