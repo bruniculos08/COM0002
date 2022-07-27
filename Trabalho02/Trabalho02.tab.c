@@ -170,11 +170,15 @@ typedef union YYSTYPE
 	char cval;
 	char *sval;
 	book *bookval;
+	union result_val{
+		float result_fval;
+		int   result_ival;	
+	};
 
 
 
 /* Line 214 of yacc.c  */
-#line 178 "Trabalho02.tab.c"
+#line 182 "Trabalho02.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -186,7 +190,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 190 "Trabalho02.tab.c"
+#line 194 "Trabalho02.tab.c"
 
 #ifdef short
 # undef short
@@ -492,12 +496,12 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    42,    42,    49,    50,    51,    52,    53,    54,    57,
-      61,    64,    66,    67,    70,    73,    76,    81,    82,    83,
-      86,    87,    90,    91,    94,    95,    96,    99,   102,   103,
-     104,   107,   108,   112,   115,   116,   117,   120,   121,   122,
-     125,   126,   127,   128,   129,   130,   136,   136,   150,   151,
-     154,   160,   161,   162,   165,   169
+       0,    47,    47,    55,    56,    57,    58,    59,    60,    63,
+      67,    70,    72,    73,    76,    79,    82,    87,    88,    89,
+      92,    93,    96,    97,   100,   101,   102,   105,   108,   109,
+     110,   113,   114,   118,   121,   122,   123,   126,   127,   128,
+     131,   132,   133,   134,   135,   136,   142,   142,   156,   157,
+     160,   166,   167,   168,   171,   175
 };
 #endif
 
@@ -1472,14 +1476,15 @@ yyreduce:
         case 2:
 
 /* Line 1455 of yacc.c  */
-#line 42 "Trabalho02.y"
-    { atributeVariable((yyvsp[(1) - (3)].sval)); ;}
+#line 47 "Trabalho02.y"
+    { 	char *type;
+																atributeVariable((yyvsp[(1) - (3)].sval)); ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 76 "Trabalho02.y"
+#line 82 "Trabalho02.y"
     {	// (7) Eis aqui a utilização da estrutura "Book":
 																	setBookType((yyvsp[(2) - (4)].bookval), (yyvsp[(4) - (4)].sval));
 																  ;}
@@ -1488,126 +1493,126 @@ yyreduce:
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 86 "Trabalho02.y"
+#line 92 "Trabalho02.y"
     {;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 87 "Trabalho02.y"
+#line 93 "Trabalho02.y"
     {;}
     break;
 
   case 22:
 
 /* Line 1455 of yacc.c  */
-#line 90 "Trabalho02.y"
+#line 96 "Trabalho02.y"
     { putOpInStack((yyvsp[(2) - (3)].cval));;}
     break;
 
   case 23:
 
 /* Line 1455 of yacc.c  */
-#line 91 "Trabalho02.y"
+#line 97 "Trabalho02.y"
     { ;}
     break;
 
   case 24:
 
 /* Line 1455 of yacc.c  */
-#line 94 "Trabalho02.y"
+#line 100 "Trabalho02.y"
     { int stackLocation = getLocation((yyvsp[(1) - (1)].sval)); loadVariableValue(stackLocation); ;}
     break;
 
   case 25:
 
 /* Line 1455 of yacc.c  */
-#line 95 "Trabalho02.y"
+#line 101 "Trabalho02.y"
     { ;}
     break;
 
   case 26:
 
 /* Line 1455 of yacc.c  */
-#line 96 "Trabalho02.y"
+#line 102 "Trabalho02.y"
     { ;}
     break;
 
   case 31:
 
 /* Line 1455 of yacc.c  */
-#line 107 "Trabalho02.y"
+#line 113 "Trabalho02.y"
     { (yyval.bookval) = createBook(); addStringsFrom((yyval.bookval), (yyvsp[(1) - (3)].bookval)); addString((yyval.bookval), (yyvsp[(3) - (3)].sval)); ;}
     break;
 
   case 32:
 
 /* Line 1455 of yacc.c  */
-#line 108 "Trabalho02.y"
+#line 114 "Trabalho02.y"
     { (yyval.bookval) = createBook(); addString((yyval.bookval), (yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 33:
 
 /* Line 1455 of yacc.c  */
-#line 112 "Trabalho02.y"
+#line 118 "Trabalho02.y"
     { putNumberInStack((yyvsp[(1) - (1)].ival)); ;}
     break;
 
   case 34:
 
 /* Line 1455 of yacc.c  */
-#line 115 "Trabalho02.y"
+#line 121 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 35:
 
 /* Line 1455 of yacc.c  */
-#line 116 "Trabalho02.y"
+#line 122 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 36:
 
 /* Line 1455 of yacc.c  */
-#line 117 "Trabalho02.y"
+#line 123 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 37:
 
 /* Line 1455 of yacc.c  */
-#line 120 "Trabalho02.y"
+#line 126 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 38:
 
 /* Line 1455 of yacc.c  */
-#line 121 "Trabalho02.y"
+#line 127 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 39:
 
 /* Line 1455 of yacc.c  */
-#line 122 "Trabalho02.y"
+#line 128 "Trabalho02.y"
     { (yyval.cval) = (yyvsp[(1) - (1)].cval); ;}
     break;
 
   case 46:
 
 /* Line 1455 of yacc.c  */
-#line 136 "Trabalho02.y"
+#line 142 "Trabalho02.y"
     { generateHeader(); generateMainHeader();;}
     break;
 
   case 47:
 
 /* Line 1455 of yacc.c  */
-#line 136 "Trabalho02.y"
+#line 142 "Trabalho02.y"
     { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
@@ -1620,56 +1625,56 @@ yyreduce:
   case 48:
 
 /* Line 1455 of yacc.c  */
-#line 150 "Trabalho02.y"
+#line 156 "Trabalho02.y"
     { putOpInStack((yyvsp[(2) - (3)].cval)); ;}
     break;
 
   case 49:
 
 /* Line 1455 of yacc.c  */
-#line 151 "Trabalho02.y"
+#line 157 "Trabalho02.y"
     { 					;}
     break;
 
   case 50:
 
 /* Line 1455 of yacc.c  */
-#line 154 "Trabalho02.y"
+#line 160 "Trabalho02.y"
     { (yyval.sval) = strdup((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 51:
 
 /* Line 1455 of yacc.c  */
-#line 160 "Trabalho02.y"
+#line 166 "Trabalho02.y"
     { (yyval.sval) = strdup((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 52:
 
 /* Line 1455 of yacc.c  */
-#line 161 "Trabalho02.y"
+#line 167 "Trabalho02.y"
     { (yyval.sval) = strdup((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 53:
 
 /* Line 1455 of yacc.c  */
-#line 162 "Trabalho02.y"
+#line 168 "Trabalho02.y"
     { (yyval.sval) = strdup((yyvsp[(1) - (1)].sval)); ;}
     break;
 
   case 54:
 
 /* Line 1455 of yacc.c  */
-#line 165 "Trabalho02.y"
+#line 171 "Trabalho02.y"
     { (yyval.sval) = strdup((yyvsp[(1) - (1)].sval)); ;}
     break;
 
 
 
 /* Line 1455 of yacc.c  */
-#line 1673 "Trabalho02.tab.c"
+#line 1678 "Trabalho02.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1881,7 +1886,7 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 172 "Trabalho02.y"
+#line 178 "Trabalho02.y"
 
 
 int main() {

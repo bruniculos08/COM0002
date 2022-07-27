@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
 
 int yylex(); 
 int yyparse();
@@ -48,6 +48,7 @@ void generateFooter();
 void generateMainHeader();
 void generateMainFooter();
 void yyerror(const char* s);
+bool isInteger(double val);
 
 typedef struct BookPage bookPage;
 struct BookPage{

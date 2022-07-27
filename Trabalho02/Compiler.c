@@ -1,7 +1,3 @@
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 #include "Compiler.h"
 
 headTable *fila = NULL;
@@ -129,7 +125,18 @@ int simbolExists(char *id){
 	return 1;
 }
 
-int verifySimbolType(char *id, char *type){
+char *getSymbolType(char *id){
+	if(fila == NULL || fila->first == NULL) return NULL;
+	table *auxTable;
+	auxTable = fila->first;
+	while(auxTable != NULL){
+		if(strcmp(auxTable->token, id) == 0) return auxTable->type;
+		auxTable = auxTable->next; 
+	}
+	return NULL;
+}
+
+int verifySymbolType(char *id, char *type){
 	if(fila == NULL || fila->first == NULL) return 1;
 	table *auxTable;
 	auxTable = fila->first;
@@ -249,4 +256,10 @@ void setBookType(book *listOfID, char *type){
 		auxPage = auxPage->next;
 	}
 	free(listOfID);
+}
+
+bool isInteger(double val)
+{
+    int truncated = (int)val;
+    return (val == truncated);
 }

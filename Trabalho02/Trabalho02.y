@@ -13,6 +13,10 @@
 	char cval;
 	char *sval;
 	book *bookval;
+	union result_val{
+		float result_fval;
+		int   result_ival;	
+	};
 }
 
 %token END 0 "end of file"
@@ -30,16 +34,18 @@
 %token TO_TOKEN FOR_TOKEN 
 
 %type<fval> FLOAT_TOKEN
-%type<ival> expressao_simples INT_TOKEN termo bool_lit TRUE_TOKEN FALSE_TOKEN
+%type<ival> INT_TOKEN termo bool_lit TRUE_TOKEN FALSE_TOKEN
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN
 %type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
 %type<bookval> lista_de_ids
+%type<result_val> expressao_simples
 
 %start programa
 %%
 
-atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { atributeVariable($1); }
+atribuicao: variavel TWODOTS_EQUAL_TOKEN expressao_simples { 	char *type;
+																atributeVariable($1); }
 		  ;
 
 bool_lit: TRUE_TOKEN

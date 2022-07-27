@@ -103,11 +103,15 @@ typedef union YYSTYPE
 	char cval;
 	char *sval;
 	book *bookval;
+	union result_val{
+		float result_fval;
+		int   result_ival;	
+	};
 
 
 
 /* Line 1676 of yacc.c  */
-#line 111 "Trabalho02.tab.h"
+#line 115 "Trabalho02.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
