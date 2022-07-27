@@ -29,6 +29,10 @@ ldc 1
 isub
 istore 1
 L_1:
+iload 1
+ldc 1
+iadd
+istore 1
 getstatic      java/lang/System/out Ljava/io/PrintStream;
 iload 1
 invokevirtual java/io/PrintStream/println(I)V

@@ -83,7 +83,6 @@ condicional: IF_TOKEN condicao THEN_TOKEN { $1 = count_label; labelGoToLabel($1,
 		   ;
 
 comando_else: ELSE_TOKEN lista_de_comandos
-			| lista_de_comandos
 			| vazio
 			;
 //condicionalElse: IF_TOKEN condicao { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 3;} THEN_TOKEN { onlylabel($1); } comando { onlylabel($1 + 1); } ELSE_TOKEN comando { onlylabel($1 + 2); }
