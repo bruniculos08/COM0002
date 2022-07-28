@@ -3,8 +3,11 @@ begin
 a := 3; 
 b := 1;
 c := 1;
-while (a > b) {
+while(a > 2){
     a := a - 1;
+    if(a = 3) then {
+        a := 0;
+    }
 }
-print(a);
+print(a + b + c);
 end

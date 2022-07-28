@@ -58,7 +58,6 @@ bool_lit: TRUE_TOKEN 	{ $$ = 1;	}
 
 comando: atribuicao DOTCOMMA_TOKEN
 	   | condicional
-	   | iterativo
 	   | comando_composto
 	   | comando_for
 	   | comando_while
@@ -72,8 +71,12 @@ comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN INT_TOKEN TWODOTS_TOKEN
 		   ;
 				
-comando_while: WHILE_TOKEN { printf("linha 75\n"); $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { $1 = count_label; onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
+comando_while: WHILE_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
 			 ;
+
+//comando_while: WHILE_TOKEN PLEFT_TOKEN condicao_contraria PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN
+//			 ;
+
 // Ideia para funcionamento do if else:
 // - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
 // ... ou seja, após o if else é adicionado +2 ao contador de label.
@@ -123,8 +126,8 @@ fator: variavel { loadVariableValue(getLocation($1)); }
 	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
 
-iterativo: WHILE_TOKEN expressao DO_TOKEN comando
-		 ;
+//iterativo: WHILE_TOKEN expressao DO_TOKEN comando
+//		 ;
 
 lista_de_comandos: comando 
 				 | lista_de_comandos comando
