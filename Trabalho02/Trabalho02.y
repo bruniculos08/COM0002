@@ -72,7 +72,7 @@ comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN INT_TOKEN TWODOTS_TOKEN
 		   ;
 				
-comando_while: WHILE_TOKEN PLEFT_TOKEN condicao_contraria PLEFT_TOKEN { $1 = count_label; onlyLabel($1); onlyLabelForIf($1 + 1); } CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); count_label+=2; }
+comando_while: WHILE_TOKEN { printf("linha 75\n"); $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { $1 = count_label; onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
 			 ;
 // Ideia para funcionamento do if else:
 // - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
