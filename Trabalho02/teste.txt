@@ -11,7 +11,7 @@ else {
         a := a + 15; 
     } 
     else { 
-        a := a - 15;
+        a := a - 13;
     } 
 }
 print(a + b + c + 10);
