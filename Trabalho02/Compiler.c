@@ -311,9 +311,29 @@ void ifStack(char *op){
 	else fprintf(f, "ifne");
 }
 
-void onlylabel(int label){
+void ifStackInverse(char *op){
+	f = fopen("output.j", "a");
+	if(strcmp(op, "!=") == 0) fprintf(f, "ifeq");
+	else if(strcmp(op, "<=") == 0) fprintf(f, "ifgt");
+	else if(strcmp(op, "<") == 0) fprintf(f, "ifge");
+	else if(strcmp(op, ">=") == 0) fprintf(f, "iflt");
+	else if(strcmp(op, ">") == 0) fprintf(f, "ifle");
+	else fprintf(f, "ifne");
+}
+
+void onlyLabel(int label){
 	f = fopen("output.j", "a");
 	fprintf(f, "L_%i:\n", label);
+}
+
+void onlyLabelForIf(int label){
+	f = fopen("output.j", "a");
+	fprintf(f, " L_%i\n", label);
+}
+
+void onlyGoTo(int label){
+	f = fopen("output.j", "a");
+	fprintf(f, "goto L_%i\n", label);
 }
 
 void labelGoToLabel(int label1, int label2){

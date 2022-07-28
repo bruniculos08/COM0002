@@ -67,7 +67,10 @@ struct Book{
 };
 
 void ifStack(char *op);
-void onlylabel(int label);
+void ifStackInverse(char *op);
+void onlyLabel(int label);
+void onlyLabelForIf(int label);
+void onlyGoTo(int label);
 void labelGoToLabel(int label1, int label2);
 void addString(book *lista, char *newString);
 void addStringsFrom(book *newBook, book *oldBook);
