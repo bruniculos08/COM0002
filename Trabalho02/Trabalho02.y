@@ -32,7 +32,7 @@ extern int count_label;
 %token TO_TOKEN FOR_TOKEN CBLEFT_TOKEN CBRIGHT_TOKEN
 
 %type<fval> FLOAT_TOKEN
-%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit IF_TOKEN ELSE_TOKEN WHILE_TOKEN
+%type<ival> INT_TOKEN TRUE_TOKEN FALSE_TOKEN bool_lit IF_TOKEN ELSE_TOKEN WHILE_TOKEN DO_TOKEN comando_for FOR_TOKEN
 %type<cval> op_ad op_mul ADD_TOKEN SUB_TOKEN OR_TOKEN MULT_TOKEN DIVIDE_TOKEN AND_TOKEN
 %type<sval> variavel ID_TOKEN tipo_simples tipo INTEGER_TOKEN REAL_TOKEN BOOLEAN_TOKEN literal expressao_simples fator termo
 %type<sval> op_rel SMALLER_TOKEN BIGGER_TOKEN SMALLER_EQUAL_TOKEN BIGGER_EQUAL_TOKEN EQUAL_TOKEN DIFF_TOKEN
@@ -61,41 +61,32 @@ comando: atribuicao DOTCOMMA_TOKEN
 	   | comando_composto
 	   | comando_for
 	   | comando_while
+	   | comando_do_while DOTCOMMA_TOKEN
 	   | printar DOTCOMMA_TOKEN
 	   ;
 
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 				;
 			
-			
-comando_for: FOR_TOKEN atribuicao TWODOTS_TOKEN INT_TOKEN TWODOTS_TOKEN
+comando_for: FOR_TOKEN PLEFT_TOKEN atribuicao DOTCOMMA_TOKEN { $1 = count_label; onlyLabel($1); } condicao_contraria { onlyLabelForIf($1 + 1); count_label+=2; } DOTCOMMA_TOKEN atribuicao PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
 		   ;
 				
 comando_while: WHILE_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
 			 ;
 
-//comando_while: WHILE_TOKEN PLEFT_TOKEN condicao_contraria PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN
-//			 ;
-
-// Ideia para funcionamento do if else:
-// - criar contador de label de modo que sempre o laber de um else tem índice igual ao índice do if + 1,
-// ... ou seja, após o if else é adicionado +2 ao contador de label.
+comando_do_while: DO_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN WHILE_TOKEN PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
+				;
 
 condicional: IF_TOKEN PLEFT_TOKEN condicao_contraria PRIGHT_TOKEN THEN_TOKEN CBLEFT_TOKEN { $1 = count_label; onlyLabelForIf($1); } lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1 +1); onlyLabel($1); count_label+=2;} comando_else {onlyLabel($1 + 1); }
-		// | condicionalElse
 		   ;
-
-//condicao: expressao_simples op_rel expressao_simples { putOpInStack('-'); ifStack($2); }
-//		;
 
 condicao_contraria: expressao_simples op_rel expressao_simples { putOpInStack('-'); ifStackInverse($2); }
 				  ;
 
 comando_else: ELSE_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN
+			| ELSE_TOKEN condicional
 			| vazio
 			;
-//condicionalElse: IF_TOKEN condicao { $1 = count_label; labelGoToLabel($1, $1 + 1); count_label += 3;} THEN_TOKEN { onlyLabel($1); } comando { onlyLabel($1 + 1); } ELSE_TOKEN comando { onlyLabel($1 + 2); }
-//			   ;
 
 corpo: declaracoes comando_composto
   	 ;
@@ -103,9 +94,9 @@ corpo: declaracoes comando_composto
 declaracao: declaracao_de_variavel
   		  ;
 
-declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo {	/* (7) Eis aqui a utilização da estrutura "Book": */
-																	setBookType($2, $4);
-																  	/* Obs.: isso só sera útil quando houver tratamento de tipos.*/ }
+declaracao_de_variavel: VAR_TOKEN lista_de_ids TWODOTS_TOKEN tipo //{	/* (7) Eis aqui a utilização da estrutura "Book": */
+																	//setBookType($2, $4);
+																  	///* Obs.: isso só sera útil quando houver tratamento de tipos.*/ }
   		  			  ;
 
 declaracoes: declaracao DOTCOMMA_TOKEN
@@ -113,9 +104,9 @@ declaracoes: declaracao DOTCOMMA_TOKEN
 		   | vazio
 		   ;
 
-expressao: expressao_simples {}
-		 | expressao_simples op_rel expressao_simples {}
-		 ;
+//expressao: expressao_simples {}
+//		 | expressao_simples op_rel expressao_simples {}
+//		 ;
 
 expressao_simples: expressao_simples op_ad termo { putOpInStack($2); }
 				 | termo { }
@@ -125,9 +116,6 @@ fator: variavel { loadVariableValue(getLocation($1)); }
 	 | literal 	
 	 | PLEFT_TOKEN expressao_simples PRIGHT_TOKEN { }
 	 ;
-
-//iterativo: WHILE_TOKEN expressao DO_TOKEN comando
-//		 ;
 
 lista_de_comandos: comando 
 				 | lista_de_comandos comando
