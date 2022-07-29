@@ -150,7 +150,7 @@ op_rel: SMALLER_TOKEN 		{ $$ = strdup($1); }
 	  | DIFF_TOKEN			{ $$ = strdup($1); }
 	  ;
 
-programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN 	 END { 
+programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTCOMMA_TOKEN corpo END { 
 													  // (6) Se os comandos desse bloco forem executados então...
 													  // ... a sentença (programa) pode ser gerada pela gramática (o...
 													  // ... programa está sintáticamente correto).
@@ -159,7 +159,7 @@ programa: PROGRAM_TOKEN { generateHeader(); generateMainHeader();} ID_TOKEN DOTC
 													}
 		;
 				
-printar: PRINT_TOKEN PLEFT_TOKEN {writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;\n");} expressao_simples PRIGHT_TOKEN {writeCode("invokevirtual java/io/PrintStream/println(I)V\n");}
+printar: PRINT_TOKEN PLEFT_TOKEN {writeCode("getstatic java/lang/System/out Ljava/io/PrintStream;\n");} expressao_simples PRIGHT_TOKEN {writeCode("invokevirtual java/io/PrintStream/println(I)V\n");}
 	   ;
 
 /*

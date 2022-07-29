@@ -1801,7 +1801,7 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 162 "Trabalho02.y"
-    {writeCode("getstatic      java/lang/System/out Ljava/io/PrintStream;\n");;}
+    {writeCode("getstatic java/lang/System/out Ljava/io/PrintStream;\n");;}
     break;
 
   case 63:
