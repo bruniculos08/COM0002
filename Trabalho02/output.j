@@ -20,15 +20,19 @@ L_0:
 iload 1
 ldc 5
 isub
-ifge L_1
+ifgt L_1
+goto L_2
+L_3:
 iload 1
 ldc 1
 iadd
 istore 1
+goto L_0
+L_2:
 getstatic java/lang/System/out Ljava/io/PrintStream;
 iload 1
 invokevirtual java/io/PrintStream/println(I)V
-goto L_0
+goto L_3
 L_1:
 return
 .end method

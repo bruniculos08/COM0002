@@ -68,7 +68,7 @@ comando: atribuicao DOTCOMMA_TOKEN
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 				;
 			
-comando_for: FOR_TOKEN PLEFT_TOKEN atribuicao DOTCOMMA_TOKEN { $1 = count_label; onlyLabel($1); } condicao_contraria { onlyLabelForIf($1 + 1); count_label+=2; } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
+comando_for: FOR_TOKEN PLEFT_TOKEN atribuicao {$1 = count_label; onlyLabel($1); count_label+=4;} DOTCOMMA_TOKEN condicao_contraria {onlyLabelForIf($1 + 1); onlyGoTo($1 + 1 + 1); onlyLabel($1 + 1 + 1 + 1); } DOTCOMMA_TOKEN atribuicao {onlyGoTo($1); onlyLabel($1 + 1 + 1);} PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos {onlyGoTo($1+1+1+1); onlyLabel($1+1);} CBRIGHT_TOKEN
 		   ;
 				
 comando_while: WHILE_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
