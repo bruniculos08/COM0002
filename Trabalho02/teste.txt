@@ -1,4 +1,4 @@
-program Brun10o ;
+program Bruno ;
 begin 
 a := 3; 
 b := 1;
