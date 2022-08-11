@@ -14,25 +14,19 @@ ldc 2
 istore 1
 ldc 1
 istore 2
-ldc 0
-istore 1
-L_0:
 iload 1
-ldc 5
+ldc 2
 isub
-ifgt L_1
-goto L_2
-L_3:
-iload 1
-ldc 1
-iadd
-istore 1
-goto L_0
-L_2:
-getstatic java/lang/System/out Ljava/io/PrintStream;
-iload 1
-invokevirtual java/io/PrintStream/println(I)V
-goto L_3
+ifne L_0
+ldc 0
+istore 2
+goto L_1
+L_0:
+ldc 2
+istore 2
 L_1:
+getstatic java/lang/System/out Ljava/io/PrintStream;
+iload 2
+invokevirtual java/io/PrintStream/println(I)V
 return
 .end method

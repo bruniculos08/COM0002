@@ -2,7 +2,10 @@ program Bruno ;
 begin 
 a := 2; 
 b := 1;
-for(a := 0; a <= 5; a := a + 1){
-    print(a);
+if(a = 2) then {
+    b := 0;
+} else {
+    b := 2;
 }
+print(b);
 end

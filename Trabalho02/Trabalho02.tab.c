@@ -1551,21 +1551,21 @@ yyreduce:
 
 /* Line 1455 of yacc.c  */
 #line 71 "Trabalho02.y"
-    {onlyLabelForIf((yyvsp[(1) - (6)].ival) + 1); onlyGoTo((yyvsp[(1) - (6)].ival) + 1 + 1); onlyLabel((yyvsp[(1) - (6)].ival) + 1 + 1 + 1); ;}
+    {onlyLabelForIf((yyvsp[(1) - (6)].ival) + 1); onlyGoTo((yyvsp[(1) - (6)].ival) + 2); onlyLabel((yyvsp[(1) - (6)].ival) + 3); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
 #line 71 "Trabalho02.y"
-    {onlyGoTo((yyvsp[(1) - (9)].ival)); onlyLabel((yyvsp[(1) - (9)].ival) + 1 + 1);;}
+    {onlyGoTo((yyvsp[(1) - (9)].ival)); onlyLabel((yyvsp[(1) - (9)].ival) + 2);;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
 #line 71 "Trabalho02.y"
-    {onlyGoTo((yyvsp[(1) - (13)].ival)+1+1+1); onlyLabel((yyvsp[(1) - (13)].ival)+1);;}
+    {onlyGoTo((yyvsp[(1) - (13)].ival) + 3); onlyLabel((yyvsp[(1) - (13)].ival) + 1);;}
     break;
 
   case 18:

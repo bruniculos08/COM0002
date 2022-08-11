@@ -68,7 +68,7 @@ comando: atribuicao DOTCOMMA_TOKEN
 comando_composto: BEGIN_TOKEN lista_de_comandos END_TOKEN
 				;
 			
-comando_for: FOR_TOKEN PLEFT_TOKEN atribuicao {$1 = count_label; onlyLabel($1); count_label+=4;} DOTCOMMA_TOKEN condicao_contraria {onlyLabelForIf($1 + 1); onlyGoTo($1 + 1 + 1); onlyLabel($1 + 1 + 1 + 1); } DOTCOMMA_TOKEN atribuicao {onlyGoTo($1); onlyLabel($1 + 1 + 1);} PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos {onlyGoTo($1+1+1+1); onlyLabel($1+1);} CBRIGHT_TOKEN
+comando_for: FOR_TOKEN PLEFT_TOKEN atribuicao {$1 = count_label; onlyLabel($1); count_label+=4;} DOTCOMMA_TOKEN condicao_contraria {onlyLabelForIf($1 + 1); onlyGoTo($1 + 2); onlyLabel($1 + 3); } DOTCOMMA_TOKEN atribuicao {onlyGoTo($1); onlyLabel($1 + 2);} PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos {onlyGoTo($1 + 3); onlyLabel($1 + 1);} CBRIGHT_TOKEN
 		   ;
 				
 comando_while: WHILE_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
@@ -77,7 +77,7 @@ comando_while: WHILE_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } 
 comando_do_while: DO_TOKEN { $1 = count_label; onlyLabel($1); count_label+=2; } CBLEFT_TOKEN lista_de_comandos CBRIGHT_TOKEN WHILE_TOKEN PLEFT_TOKEN condicao_contraria { onlyLabelForIf($1 + 1); } PRIGHT_TOKEN { onlyGoTo($1); onlyLabel($1 + 1); }
 				;
 
-condicional: IF_TOKEN PLEFT_TOKEN condicao_contraria PRIGHT_TOKEN THEN_TOKEN CBLEFT_TOKEN { $1 = count_label; onlyLabelForIf($1); } lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1 +1); onlyLabel($1); count_label+=2;} comando_else {onlyLabel($1 + 1); }
+condicional: IF_TOKEN PLEFT_TOKEN condicao_contraria PRIGHT_TOKEN THEN_TOKEN CBLEFT_TOKEN { $1 = count_label; onlyLabelForIf($1); count_label+=2; } lista_de_comandos CBRIGHT_TOKEN { onlyGoTo($1 +1); onlyLabel($1); } comando_else {onlyLabel($1 + 1); }
 		   ;
 
 condicao_contraria: expressao_simples op_rel expressao_simples { putOpInStack('-'); ifStackInverse($2); }
